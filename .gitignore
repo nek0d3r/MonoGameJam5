@@ -1,4 +1,5 @@
-.vscode
-Content/obj/DesktopGL/net6.0/Content/.mgstats
-bin/*
-obj/Debug/*
+.vs*
+Content/bin
+Content/obj
+bin
+obj
