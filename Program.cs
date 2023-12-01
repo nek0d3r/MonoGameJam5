@@ -1,3 +1,3 @@
 ﻿
-using var game = new MonoGameJam5.Game1();
+using var game = new MonoGameJam5.John();
 game.Run();
