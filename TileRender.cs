@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 
 public static class TileRender
@@ -30,8 +31,8 @@ public static class TileRender
     public static void WindowChanged(object sender, EventArgs e)
     {
         // Update buffer bounds
-        currentWindowSize.X = Window.ClientBounds.Width;
-        currentWindowSize.Y = Window.ClientBounds.Height;
+        currentWindowSize.X = ((GameWindow)sender).ClientBounds.Width;
+        currentWindowSize.Y = ((GameWindow)sender).ClientBounds.Height;
         
         var windowAspectRatio = (float)currentWindowSize.X / currentWindowSize.Y;
         var bufferAspectRatio = (float)BUFFER_SIZE.X / BUFFER_SIZE.Y;

@@ -28,7 +28,7 @@ public class John : Game
 
         // Allow user to resize window, add event handler
         Window.AllowUserResizing = true;
-        Window.ClientSizeChanged += WindowChanged;
+        Window.ClientSizeChanged += TileRender.WindowChanged;
     }
 
     protected override void Initialize()
@@ -52,7 +52,7 @@ public class John : Game
         _graphics.PreferredBackBufferHeight = TileRender.DEFAULT_WINDOW_SIZE.Y;
         _graphics.ApplyChanges();
 
-        WindowChanged(null, null);
+        TileRender.WindowChanged(Window, null);
     }
 
     protected override void LoadContent()
@@ -96,7 +96,7 @@ public class John : Game
                 _graphics.ApplyChanges();
             }
             // Trigger window change
-            WindowChanged(true, null);
+            TileRender.WindowChanged(Window, null);
         }
 
         base.Update(gameTime);
