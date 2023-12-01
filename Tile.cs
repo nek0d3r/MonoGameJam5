@@ -23,7 +23,7 @@ public abstract class Tile {
 
     public TileLayer Layer { get; set; }
 
-    private Texture2D Image;
+    public Texture2D Image;
 
     // Useful for connecting box tiles together,
     // such as when they're on a conveyor belt.
@@ -48,4 +48,8 @@ public abstract class Tile {
     public abstract int OnDrop();
     public abstract int OnInteract();
     public abstract int OnBump();
+
+    // Offset for spritesheet
+    public abstract int X { get; }
+    public abstract int Y { get; }
 }
