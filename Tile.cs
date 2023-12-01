@@ -27,7 +27,7 @@ public abstract class Tile {
 
     // Useful for connecting box tiles together,
     // such as when they're on a conveyor belt.
-    private Tile ConnectedTo;
+    protected Tile ConnectedTo;
 
     // Friendly reminder that this does not stop you from
     // providing the same flag multiple times. Repeats
@@ -43,6 +43,10 @@ public abstract class Tile {
         return (TileOpts & (int)opt) != 0;
     }
 
+    /**
+     * These functions return 1 if they do something, or 0 otherwise.
+     * Could also use negative numbers for error handling if necessary
+     */
     public abstract int IdleAction();
     public abstract int OnTake();
     public abstract int OnDrop();
