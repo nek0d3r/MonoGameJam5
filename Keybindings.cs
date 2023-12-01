@@ -1,18 +1,18 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 
-public class Keybindings {
+public static class Keybindings {
     // We can add or remove entries as needed when the theme solidifies, but
     // this should give us the ability to rebind keys.
     // As a left-handed dev, I will almost assuredly require this feature unless the controls are very basic.
     // -- Neila
 
-    protected Keys Right;
-    protected Keys Left;
-    protected Keys Up;
-    protected Keys Down;
-    protected Keys Jump;
-    protected List<Keys> Actions;
+    static Keys Right;
+    static Keys Left;
+    static Keys Up;
+    static Keys Down;
+    static Keys Jump;
+    static Keys Interact;
 
     /**
      * Default Keybindings
@@ -23,6 +23,6 @@ public class Keybindings {
         Down = Keys.S;
         Left = Keys.A;
         Jump = Keys.Space;
-        Actions = new List<Keys>();
+        Interact = Keys.E;
     }
 }
