@@ -55,7 +55,9 @@ public class Conveyor : Tile
                 // TODO: Handle the box moving to the next conveyor tile.
                 return 1;
             }
-            // TODO: Animate the conveyor
+            // Animate the conveyor
+            int framesForDir = Image.Count;
+            animFrame = (animFrame + 1) % framesForDir + framesForDir * (int)SlideDir;
         }
         return 0;
     }
@@ -63,14 +65,14 @@ public class Conveyor : Tile
     public override int X { get => 0; }
     public override int Y { get => 0; }
 
-    public Conveyor(Texture2D img, bool activ, Direction dir, int spd){
-        Active = false;
+    public Conveyor(List<Texture2D> imgs, bool activ, Direction dir, int spd){
+        Active = activ;
         SlideDir = Direction.North;
         SlideSpeed = spd;
-        Image = img;
+        Image = imgs;
+        animFrame = Image.Count / 4 * (int)SlideDir;
         List<TileOptions> lst = new List<TileOptions>();
         lst.Add(TileOptions.Interactable);
         SetTileOpts(lst);
-        // TODO: Determine the animation infrastructure
     }
 }

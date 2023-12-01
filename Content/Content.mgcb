@@ -35,3 +35,14 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:pixel/boxsadnarrow.png
+
+#begin boxstarenarrow
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyEnabled=False
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:pixel/boxstarenarrow.png

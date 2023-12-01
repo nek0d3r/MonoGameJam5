@@ -24,7 +24,9 @@ public abstract class Tile {
 
     public TileLayer Layer { get; set; }
 
-    public Texture2D Image;
+    public List<Texture2D> Image;
+
+    public int animFrame { get; protected set;}
 
     // Useful for connecting box tiles together,
     // such as when they're on a conveyor belt.

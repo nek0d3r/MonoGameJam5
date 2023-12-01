@@ -19,7 +19,7 @@ public class John : Game
 
     // Test sprite
     Texture2D testTile;
-    Texture2D testConveyor;
+    Texture2D testConveyor, testConveyor2;
 
     public John()
     {
@@ -55,19 +55,36 @@ public class John : Game
 
         testTile = Content.Load<Texture2D>("test");
         testConveyor = Content.Load<Texture2D>("pixel/boxsadnarrow");
+        testConveyor2 = Content.Load<Texture2D>("pixel/boxstarenarrow");
+
+        // Animations should be defined in some file eventually,
+        // but for now just hardcode it.
+        List<Texture2D> tileAnim = new List<Texture2D>(), conveyorAnim = new List<Texture2D>();
+        tileAnim.Add(testTile);
+
+        // The conveyor expects four animation sets.
+        conveyorAnim.Add(testConveyor);
+        conveyorAnim.Add(testConveyor2);
+        conveyorAnim.Add(testConveyor);
+        conveyorAnim.Add(testConveyor2);
+        conveyorAnim.Add(testConveyor);
+        conveyorAnim.Add(testConveyor2);
+        conveyorAnim.Add(testConveyor);
+        conveyorAnim.Add(testConveyor2);
 
         for(var y = 0; y < TileRender.BUFFER_TILE_DIMS.Y; y++)
         {
             for(var x = 0; x < TileRender.BUFFER_TILE_DIMS.X; x++)
             {
+                
                 testMap.AddToMap(new TestTile
                 {
-                    Image = testTile
+                    Image = tileAnim
                 }, x, y, Tile.TileLayer.Floor);
                 // For testing, one in 8 tiles will now also have a test conveyor
                 if ((Random.Shared.Next() & 0x111) == 1)
                 {
-                    testMap.AddToMap(new Conveyor(testConveyor, (Random.Shared.Next() & 1) == 1, Conveyor.Direction.North, Random.Shared.Next() % 13),
+                    testMap.AddToMap(new Conveyor(conveyorAnim, (Random.Shared.Next() & 1) == 1, Conveyor.Direction.North, Random.Shared.Next() % 13),
                         x, y, Tile.TileLayer.Active);
                 }
             }
@@ -110,6 +127,16 @@ public class John : Game
             TileRender.WindowChanged(Window, null);
         }
 
+        // For each item in the map, do the idle action.
+        for (int i = 0; i < testMap.map.Length; ++i)
+        {
+            var tileList = testMap.map[i];
+            foreach (var tile in tileList)
+            {
+                tile.tile.IdleAction();
+            }
+        }
+
         base.Update(gameTime);
     }
 
@@ -127,7 +154,7 @@ public class John : Game
             foreach (Map.TilePos t in testMap.map[l])
             {
                 _spriteBatch.Draw(
-                    t.tile.Image,
+                    t.tile.Image[t.tile.animFrame],
                     new Rectangle(t.loc.X * TileRender.TILE_SIZE, t.loc.Y * TileRender.TILE_SIZE, TileRender.TILE_SIZE, TileRender.TILE_SIZE),
                     new Rectangle(TileRender.TILE_SIZE * t.tile.X, TileRender.TILE_SIZE * t.tile.Y, TileRender.TILE_SIZE, TileRender.TILE_SIZE),
                     Color.White
