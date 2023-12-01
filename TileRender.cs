@@ -12,14 +12,14 @@ public static class TileRender
     // Previous size of window
     public static Point previousWindowSize = currentWindowSize;
 
-    // Pixel depth
-    public static readonly int PIXEL_DEPTH = 24;
+    // Tile size
+    public static readonly int TILE_SIZE = 24;
 
     // Buffer tile dimensions
     public static readonly Point BUFFER_TILE_DIMS = new Point(26, 13);
 
     // Buffer size
-    public static readonly Point BUFFER_SIZE = new Point(BUFFER_TILE_DIMS.X * PIXEL_DEPTH, BUFFER_TILE_DIMS.Y * PIXEL_DEPTH);
+    public static readonly Point BUFFER_SIZE = new Point(BUFFER_TILE_DIMS.X * TILE_SIZE, BUFFER_TILE_DIMS.Y * TILE_SIZE);
 
     // How to apply buffer to render target
     public static Rectangle renderDims;

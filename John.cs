@@ -120,8 +120,8 @@ public class John : Game
             {
                 _spriteBatch.Draw(
                     testMap[y][x].Image,
-                    new Rectangle(x * TileRender.PIXEL_DEPTH, y * TileRender.PIXEL_DEPTH, TileRender.PIXEL_DEPTH, TileRender.PIXEL_DEPTH),
-                    new Rectangle(TileRender.PIXEL_DEPTH * testMap[y][x].X, TileRender.PIXEL_DEPTH * testMap[y][x].Y, TileRender.PIXEL_DEPTH, TileRender.PIXEL_DEPTH),
+                    new Rectangle(x * TileRender.TILE_SIZE, y * TileRender.TILE_SIZE, TileRender.TILE_SIZE, TileRender.TILE_SIZE),
+                    new Rectangle(TileRender.TILE_SIZE * testMap[y][x].X, TileRender.TILE_SIZE * testMap[y][x].Y, TileRender.TILE_SIZE, TileRender.TILE_SIZE),
                     Color.White
                 );
             }
