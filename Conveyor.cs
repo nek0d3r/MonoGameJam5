@@ -60,8 +60,8 @@ public class Conveyor : Tile
         return 0;
     }
 
-    public override int X { get => X; }
-    public override int Y { get => Y; }
+    public override int X { get => 0; }
+    public override int Y { get => 0; }
 
     public Conveyor(Texture2D img, bool activ, Direction dir, int spd){
         Active = false;
