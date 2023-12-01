@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Dynamic;
 using Microsoft.Xna.Framework.Graphics;
 
 public abstract class Tile {
@@ -26,7 +27,8 @@ public abstract class Tile {
 
     public List<Texture2D> Image;
 
-    public int animFrame { get; protected set;}
+    public int animFrame { get; protected set; }
+    protected int animState { get; set; }
 
     // Useful for connecting box tiles together,
     // such as when they're on a conveyor belt.

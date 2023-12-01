@@ -17,6 +17,8 @@ public class Conveyor : Tile
     // TODO: Figure out the time of a unit of movement.
     public int SlideSpeed { get; set; }
 
+    private int SLIDE_RATE = 60;
+
     public override int OnBump()
     {
         return 0;
@@ -55,9 +57,14 @@ public class Conveyor : Tile
                 // TODO: Handle the box moving to the next conveyor tile.
                 return 1;
             }
-            // Animate the conveyor
-            int framesForDir = Image.Count;
-            animFrame = (animFrame + 1) % framesForDir + framesForDir * (int)SlideDir;
+            // 60 is arbitrary here. Trying to make the animation rate be sensible.
+            if ((animState += SlideSpeed) > SLIDE_RATE)
+            {
+                animState -= SLIDE_RATE;
+                // Animate the conveyor
+                int framesForDir = Image.Count;
+                animFrame = (animFrame + 1) % framesForDir + framesForDir * (int)SlideDir;
+            }
         }
         return 0;
     }
@@ -67,7 +74,10 @@ public class Conveyor : Tile
 
     public Conveyor(List<Texture2D> imgs, bool activ, Direction dir, int spd){
         Active = activ;
-        SlideDir = Direction.North;
+        SlideDir = dir;
+        // Sanity check. Can't go faster than animating at max speed.
+        if (spd > SLIDE_RATE)
+            spd = SLIDE_RATE;
         SlideSpeed = spd;
         Image = imgs;
         animFrame = Image.Count / 4 * (int)SlideDir;
