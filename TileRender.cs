@@ -22,4 +22,47 @@ public static class TileRender
 
     // How to apply buffer to render target
     public static Rectangle renderDims;
+
+    /***
+    * Thrown on resizing the window.
+    * Attempts to fill the buffer while maintaining aspect ratio.
+    */
+    public static void WindowChanged(object sender, EventArgs e)
+    {
+        // Update buffer bounds
+        currentWindowSize.X = Window.ClientBounds.Width;
+        currentWindowSize.Y = Window.ClientBounds.Height;
+        
+        var windowAspectRatio = (float)currentWindowSize.X / currentWindowSize.Y;
+        var bufferAspectRatio = (float)BUFFER_SIZE.X / BUFFER_SIZE.Y;
+
+        Point origin, dimensions;
+
+        // If buffer aspect ratio is higher than window aspect ratio, fill to width
+        if (bufferAspectRatio > windowAspectRatio)
+        {
+            dimensions.X = currentWindowSize.X;
+            dimensions.Y = (int)(currentWindowSize.Y / ((float)bufferAspectRatio / windowAspectRatio));
+            origin.X = 0;
+            origin.Y = currentWindowSize.Y / 2 - dimensions.Y / 2;
+        }
+        // If window aspect ratio is higher than buffer aspect ratio, fill to height
+        else if (windowAspectRatio > bufferAspectRatio)
+        {
+            dimensions.X = (int)(currentWindowSize.X / ((float)windowAspectRatio / bufferAspectRatio));
+            dimensions.Y = currentWindowSize.Y;
+            origin.X = currentWindowSize.X / 2 - dimensions.X / 2;
+            origin.Y = 0;
+        }
+        // Window aspect ratio matches buffer, fill to bounds
+        else
+        {
+            dimensions.X = currentWindowSize.X;
+            dimensions.Y = currentWindowSize.Y;
+            origin.X = 0;
+            origin.Y = 0;
+        }
+
+        renderDims = new Rectangle(origin, dimensions);
+    }
 }

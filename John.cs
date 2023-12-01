@@ -31,49 +31,6 @@ public class John : Game
         Window.ClientSizeChanged += WindowChanged;
     }
 
-    /***
-    * Thrown on resizing the window.
-    * Attempts to fill the buffer while maintaining aspect ratio.
-    */
-    public void WindowChanged(object sender, EventArgs e)
-    {
-        // Update buffer bounds
-        TileRender.currentWindowSize.X = Window.ClientBounds.Width;
-        TileRender.currentWindowSize.Y = Window.ClientBounds.Height;
-        
-        var windowAspectRatio = (float)TileRender.currentWindowSize.X / TileRender.currentWindowSize.Y;
-        var bufferAspectRatio = (float)TileRender.BUFFER_SIZE.X / TileRender.BUFFER_SIZE.Y;
-
-        Point origin, dimensions;
-
-        // If buffer aspect ratio is higher than window aspect ratio, fill to width
-        if (bufferAspectRatio > windowAspectRatio)
-        {
-            dimensions.X = TileRender.currentWindowSize.X;
-            dimensions.Y = (int)(TileRender.currentWindowSize.Y / ((float)bufferAspectRatio / windowAspectRatio));
-            origin.X = 0;
-            origin.Y = TileRender.currentWindowSize.Y / 2 - dimensions.Y / 2;
-        }
-        // If window aspect ratio is higher than buffer aspect ratio, fill to height
-        else if (windowAspectRatio > bufferAspectRatio)
-        {
-            dimensions.X = (int)(TileRender.currentWindowSize.X / ((float)windowAspectRatio / bufferAspectRatio));
-            dimensions.Y = TileRender.currentWindowSize.Y;
-            origin.X = TileRender.currentWindowSize.X / 2 - dimensions.X / 2;
-            origin.Y = 0;
-        }
-        // Window aspect ratio matches buffer, fill to bounds
-        else
-        {
-            dimensions.X = TileRender.currentWindowSize.X;
-            dimensions.Y = TileRender.currentWindowSize.Y;
-            origin.X = 0;
-            origin.Y = 0;
-        }
-
-        TileRender.renderDims = new Rectangle(origin, dimensions);
-    }
-
     protected override void Initialize()
     {
         testMap = new List<List<Point>>();
@@ -147,36 +104,36 @@ public class John : Game
 
     protected override void Draw(GameTime gameTime)
     {
-            // Render drawing to sprite buffer
-            GraphicsDevice.SetRenderTarget(_render);
-            GraphicsDevice.Clear(Color.Black);
+        // Render drawing to sprite buffer
+        GraphicsDevice.SetRenderTarget(_render);
+        GraphicsDevice.Clear(Color.Black);
 
-            // Drawing begins here
-            _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp);
+        // Drawing begins here
+        _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp);
 
-            for(var i = 0; i < TileRender.BUFFER_TILE_DIMS.Y; i++)
+        for(var i = 0; i < TileRender.BUFFER_TILE_DIMS.Y; i++)
+        {
+            for(var j = 0; j < TileRender.BUFFER_TILE_DIMS.X; j++)
             {
-                for(var j = 0; j < TileRender.BUFFER_TILE_DIMS.X; j++)
-                {
-                    _spriteBatch.Draw(
-                        testTile,
-                        new Rectangle(j * TileRender.PIXEL_DEPTH, i * TileRender.PIXEL_DEPTH, TileRender.PIXEL_DEPTH, TileRender.PIXEL_DEPTH),
-                        new Rectangle(TileRender.PIXEL_DEPTH * testMap[i][j].X, TileRender.PIXEL_DEPTH * testMap[i][j].X, TileRender.PIXEL_DEPTH, TileRender.PIXEL_DEPTH),
-                        Color.White
-                    );
-                }
+                _spriteBatch.Draw(
+                    testTile,
+                    new Rectangle(j * TileRender.PIXEL_DEPTH, i * TileRender.PIXEL_DEPTH, TileRender.PIXEL_DEPTH, TileRender.PIXEL_DEPTH),
+                    new Rectangle(TileRender.PIXEL_DEPTH * testMap[i][j].X, TileRender.PIXEL_DEPTH * testMap[i][j].X, TileRender.PIXEL_DEPTH, TileRender.PIXEL_DEPTH),
+                    Color.White
+                );
             }
+        }
 
-            _spriteBatch.End();
+        _spriteBatch.End();
 
-            // Set render target to device back buffer and clear
-            GraphicsDevice.SetRenderTarget(null);
-            GraphicsDevice.Clear(Color.Black);
+        // Set render target to device back buffer and clear
+        GraphicsDevice.SetRenderTarget(null);
+        GraphicsDevice.Clear(Color.Black);
 
-            // Draw sprite buffer to back buffer
-            _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp);
-            _spriteBatch.Draw((Texture2D)_render, TileRender.renderDims, Color.White);
-            _spriteBatch.End();
+        // Draw sprite buffer to back buffer
+        _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp);
+        _spriteBatch.Draw((Texture2D)_render, TileRender.renderDims, Color.White);
+        _spriteBatch.End();
 
         base.Draw(gameTime);
     }
