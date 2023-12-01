@@ -15,7 +15,7 @@ public class John : Game
     KeyboardState currentKey = new KeyboardState(), prevKey;
     
     // Test tilemap
-    List<List<Point>> testMap;
+    List<List<Tile>> testMap;
 
     // Test sprite
     Texture2D testTile;
@@ -33,17 +33,7 @@ public class John : Game
 
     protected override void Initialize()
     {
-        testMap = new List<List<Point>>();
-
-        for(var i = 0; i < TileRender.BUFFER_TILE_DIMS.Y; i++)
-        {
-            var testMapRow = new List<Point>();
-            for(var j = 0; j < TileRender.BUFFER_TILE_DIMS.X; j++)
-            {
-                testMapRow.Add(new Point(0,0));
-            }
-            testMap.Add(testMapRow);
-        }
+        testMap = new List<List<Tile>>();
 
         base.Initialize();
 
@@ -61,6 +51,19 @@ public class John : Game
         _render = new RenderTarget2D(GraphicsDevice, TileRender.BUFFER_SIZE.X, TileRender.BUFFER_SIZE.Y);
 
         testTile = Content.Load<Texture2D>("test");
+
+        for(var y = 0; y < TileRender.BUFFER_TILE_DIMS.Y; y++)
+        {
+            var testMapRow = new List<Tile>();
+            for(var x = 0; x < TileRender.BUFFER_TILE_DIMS.X; x++)
+            {
+                testMapRow.Add(new TestTile
+                {
+                    Image = testTile
+                });
+            }
+            testMap.Add(testMapRow);
+        }
     }
 
     protected override void Update(GameTime gameTime)
@@ -111,14 +114,14 @@ public class John : Game
         // Drawing begins here
         _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp);
 
-        for(var i = 0; i < TileRender.BUFFER_TILE_DIMS.Y; i++)
+        for(var y = 0; y < TileRender.BUFFER_TILE_DIMS.Y; y++)
         {
-            for(var j = 0; j < TileRender.BUFFER_TILE_DIMS.X; j++)
+            for(var x = 0; x < TileRender.BUFFER_TILE_DIMS.X; x++)
             {
                 _spriteBatch.Draw(
-                    testTile,
-                    new Rectangle(j * TileRender.PIXEL_DEPTH, i * TileRender.PIXEL_DEPTH, TileRender.PIXEL_DEPTH, TileRender.PIXEL_DEPTH),
-                    new Rectangle(TileRender.PIXEL_DEPTH * testMap[i][j].X, TileRender.PIXEL_DEPTH * testMap[i][j].X, TileRender.PIXEL_DEPTH, TileRender.PIXEL_DEPTH),
+                    testMap[y][x].Image,
+                    new Rectangle(x * TileRender.PIXEL_DEPTH, y * TileRender.PIXEL_DEPTH, TileRender.PIXEL_DEPTH, TileRender.PIXEL_DEPTH),
+                    new Rectangle(TileRender.PIXEL_DEPTH * testMap[y][x].X, TileRender.PIXEL_DEPTH * testMap[y][x].Y, TileRender.PIXEL_DEPTH, TileRender.PIXEL_DEPTH),
                     Color.White
                 );
             }
