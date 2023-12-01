@@ -15,7 +15,7 @@ public class John : Game
     KeyboardState currentKey = new KeyboardState(), prevKey;
     
     // Test tilemap
-    List<List<Tile>> testMap;
+    Map testMap;
 
     // Test sprite
     Texture2D testTile;
@@ -34,7 +34,9 @@ public class John : Game
 
     protected override void Initialize()
     {
-        testMap = new List<List<Tile>>();
+        // TODO: The map will need to be bigger than the viewport eventually.
+        // We will make changes here when that happens.
+        testMap = new Map(TileRender.BUFFER_TILE_DIMS);
 
         base.Initialize();
 
@@ -56,20 +58,19 @@ public class John : Game
 
         for(var y = 0; y < TileRender.BUFFER_TILE_DIMS.Y; y++)
         {
-            var testMapRow = new List<Tile>();
             for(var x = 0; x < TileRender.BUFFER_TILE_DIMS.X; x++)
             {
-                testMapRow.Add(new TestTile
+                testMap.AddToMap(new TestTile
                 {
                     Image = testTile
-                });
+                }, x, y, Tile.TileLayer.Floor);
                 // For testing, one in 8 tiles will now also have a test conveyor
                 if ((Random.Shared.Next() & 0x111) == 1)
                 {
-                    testMapRow.Add(new Conveyor(testConveyor, (Random.Shared.Next() & 1) == 1, Conveyor.Direction.North, Random.Shared.Next() % 13));
+                    testMap.AddToMap(new Conveyor(testConveyor, (Random.Shared.Next() & 1) == 1, Conveyor.Direction.North, Random.Shared.Next() % 13),
+                        x, y, Tile.TileLayer.Active);
                 }
             }
-            testMap.Add(testMapRow);
         }
     }
 
@@ -121,14 +122,14 @@ public class John : Game
         // Drawing begins here
         _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp);
 
-        for(var y = 0; y < TileRender.BUFFER_TILE_DIMS.Y; y++)
+        for (int l = 0; l < (int)Tile.TileLayer.NumLayers; ++l)
         {
-            for(var x = 0; x < TileRender.BUFFER_TILE_DIMS.X; x++)
+            foreach (Map.TilePos t in testMap.map[l])
             {
                 _spriteBatch.Draw(
-                    testMap[y][x].Image,
-                    new Rectangle(x * TileRender.TILE_SIZE, y * TileRender.TILE_SIZE, TileRender.TILE_SIZE, TileRender.TILE_SIZE),
-                    new Rectangle(TileRender.TILE_SIZE * testMap[y][x].X, TileRender.TILE_SIZE * testMap[y][x].Y, TileRender.TILE_SIZE, TileRender.TILE_SIZE),
+                    t.tile.Image,
+                    new Rectangle(t.loc.X * TileRender.TILE_SIZE, t.loc.Y * TileRender.TILE_SIZE, TileRender.TILE_SIZE, TileRender.TILE_SIZE),
+                    new Rectangle(TileRender.TILE_SIZE * t.tile.X, TileRender.TILE_SIZE * t.tile.Y, TileRender.TILE_SIZE, TileRender.TILE_SIZE),
                     Color.White
                 );
             }

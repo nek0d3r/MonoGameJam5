@@ -16,7 +16,8 @@ public abstract class Tile {
         Floor = 0,
         Underfoot,
         Active,
-        Looming
+        Looming,
+        NumLayers
     };
 
     public int TileOpts { get; private set; }
