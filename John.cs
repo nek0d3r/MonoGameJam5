@@ -19,6 +19,7 @@ public class John : Game
 
     // Test sprite
     Texture2D testTile;
+    Texture2D testConveyor;
 
     public John()
     {
@@ -51,6 +52,7 @@ public class John : Game
         _render = new RenderTarget2D(GraphicsDevice, TileRender.BUFFER_SIZE.X, TileRender.BUFFER_SIZE.Y);
 
         testTile = Content.Load<Texture2D>("test");
+        testConveyor = Content.Load<Texture2D>("pixel/boxsadnarrow");
 
         for(var y = 0; y < TileRender.BUFFER_TILE_DIMS.Y; y++)
         {
@@ -61,6 +63,11 @@ public class John : Game
                 {
                     Image = testTile
                 });
+                // For testing, one in 8 tiles will now also have a test conveyor
+                if ((Random.Shared.Next() & 0x111) == 1)
+                {
+                    testMapRow.Add(new Conveyor(testConveyor, (Random.Shared.Next() & 1) == 1, Conveyor.Direction.North, Random.Shared.Next() % 13));
+                }
             }
             testMap.Add(testMapRow);
         }
