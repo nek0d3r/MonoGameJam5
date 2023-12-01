@@ -5,7 +5,7 @@
     <Compile Update="Controls\SampleControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="Form1.cs">
+    <Compile Update="EditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
