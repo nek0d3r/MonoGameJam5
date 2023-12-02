@@ -76,6 +76,17 @@
 /processorParam:TextureFormat=Color
 /build:pixel/wall1.png
 
+#begin wall2
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyEnabled=False
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:pixel/wall2.png
+
 #begin floor4
 /importer:TextureImporter
 /processor:TextureProcessor
