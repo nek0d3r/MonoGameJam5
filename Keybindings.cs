@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 
 public static class Keybindings
@@ -8,12 +7,13 @@ public static class Keybindings
     // As a left-handed dev, I will almost assuredly require this feature unless the controls are very basic.
     // -- Neila
 
-    static Keys Right;
-    static Keys Left;
-    static Keys Up;
-    static Keys Down;
-    static Keys Jump;
-    static Keys Interact;
+    public static Keys Right;
+    public static Keys Left;
+    public static Keys Up;
+    public static Keys Down;
+    public static Keys Jump;
+    public static Keys Interact;
+    public static Keys Exit;
 
     /**
      * Default Keybindings
@@ -26,5 +26,6 @@ public static class Keybindings
         Left = Keys.A;
         Jump = Keys.Space;
         Interact = Keys.E;
+        Exit = Keys.Escape;
     }
 }

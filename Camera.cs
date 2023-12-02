@@ -1,4 +1,3 @@
-using System.IO.Compression;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
@@ -23,19 +22,19 @@ public static class Camera
     {
         var movementDirection = Vector2.Zero;
         var state = Keyboard.GetState();
-        if (state.IsKeyDown(Keys.Down))
+        if (state.IsKeyDown(Keybindings.Down))
         {
             movementDirection += Vector2.UnitY;
         }
-        if (state.IsKeyDown(Keys.Up))
+        if (state.IsKeyDown(Keybindings.Up))
         {
             movementDirection -= Vector2.UnitY;
         }
-        if (state.IsKeyDown(Keys.Left))
+        if (state.IsKeyDown(Keybindings.Left))
         {
             movementDirection -= Vector2.UnitX;
         }
-        if (state.IsKeyDown(Keys.Right))
+        if (state.IsKeyDown(Keybindings.Right))
         {
             movementDirection += Vector2.UnitX;
         }
