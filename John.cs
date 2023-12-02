@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Renderers;
+using MonoGame.Extended.ViewportAdapters;
 
 namespace MonoGameJam5;
 
@@ -13,6 +15,8 @@ public class John : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private RenderTarget2D _render;
+    private OrthographicCamera _camera;
+    private Vector2 _cameraPosition;
     
     KeyboardState currentKey = new KeyboardState(), prevKey;
     
@@ -51,6 +55,15 @@ public class John : Game
         _graphics.ApplyChanges();
 
         TileRender.WindowChanged(Window, null);
+
+        var viewportadapter = new BoxingViewportAdapter(
+            Window,
+            GraphicsDevice,
+            TileRender.DEFAULT_WINDOW_SIZE.X,
+            TileRender.DEFAULT_WINDOW_SIZE.Y
+        );
+        _camera = new OrthographicCamera(viewportadapter);
+        _cameraPosition = new Vector2(TileRender.DEFAULT_WINDOW_SIZE.X / 2, TileRender.DEFAULT_WINDOW_SIZE.Y / 2);
     }
 
     protected override void LoadContent()
@@ -120,6 +133,9 @@ public class John : Game
 
         _tiledMapRenderer.Update(gameTime);
 
+        Camera.MoveCamera(gameTime, ref _cameraPosition, _tiledMap);
+        _camera.LookAt(_cameraPosition);
+
         base.Update(gameTime);
     }
 
@@ -147,7 +163,7 @@ public class John : Game
 
         // _spriteBatch.End();
 
-        _tiledMapRenderer.Draw();
+        _tiledMapRenderer.Draw(_camera.GetViewMatrix());
 
         // Set render target to device back buffer and clear
         GraphicsDevice.SetRenderTarget(null);
