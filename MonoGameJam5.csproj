@@ -24,19 +24,37 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Extended">
-      <HintPath>Content\MonoGame.Extended.dll</HintPath>
+      <HintPath>Extended\MonoGame.Extended.dll</HintPath>
     </Reference>
     <Reference Include="MonoGame.Extended.Content.Pipeline">
-      <HintPath>Content\MonoGame.Extended.Content.Pipeline.dll</HintPath>
+      <HintPath>Extended\MonoGame.Extended.Content.Pipeline.dll</HintPath>
     </Reference>
     <Reference Include="MonoGame.Extended.Graphics">
-      <HintPath>Content\MonoGame.Extended.Graphics.dll</HintPath>
+      <HintPath>Extended\MonoGame.Extended.Graphics.dll</HintPath>
     </Reference>
     <Reference Include="MonoGame.Extended.Tiled">
-      <HintPath>Content\MonoGame.Extended.Tiled.dll</HintPath>
+      <HintPath>Extended\MonoGame.Extended.Tiled.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Extended.Particles">
+      <HintPath>Extended\MonoGame.Extended.Particles.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Extended.Collisions">
+      <HintPath>Extended\MonoGame.Extended.Collisions.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Extended.Entities">
+      <HintPath>Extended\MonoGame.Extended.Entities.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Extended.Gui">
+      <HintPath>Extended\MonoGame.Extended.Gui.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Extended.Input">
+      <HintPath>Extended\MonoGame.Extended.Input.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Extended.Tweening">
+      <HintPath>Extended\MonoGame.Extended.Tweening.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>Content\Newtonsoft.Json.dll</HintPath>
+      <HintPath>Extended\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
