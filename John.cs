@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended.Tiled;
+using MonoGame.Extended.Tiled.Renderers;
 
 namespace MonoGameJam5;
 
@@ -16,6 +18,9 @@ public class John : Game
     
     // Test tilemap
     Map testMap;
+
+    TiledMap _tiledMap;
+    TiledMapRenderer _tiledMapRenderer;
 
     // Test sprite
     Texture2D testTile;
@@ -55,6 +60,9 @@ public class John : Game
 
         testTile = Content.Load<Texture2D>("test");
         testConveyor = Content.Load<Texture2D>("pixel/boxsadnarrow");
+
+        _tiledMap = Content.Load<TiledMap>("testmap");
+        _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
 
         for(var y = 0; y < TileRender.BUFFER_TILE_DIMS.Y; y++)
         {
@@ -110,6 +118,8 @@ public class John : Game
             TileRender.WindowChanged(Window, null);
         }
 
+        _tiledMapRenderer.Update(gameTime);
+
         base.Update(gameTime);
     }
 
@@ -120,22 +130,24 @@ public class John : Game
         GraphicsDevice.Clear(Color.Black);
 
         // Drawing begins here
-        _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp);
+        // _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp);
 
-        for (int l = 0; l < (int)Tile.TileLayer.NumLayers; ++l)
-        {
-            foreach (Map.TilePos t in testMap.map[l])
-            {
-                _spriteBatch.Draw(
-                    t.tile.Image,
-                    new Rectangle(t.loc.X * TileRender.TILE_SIZE, t.loc.Y * TileRender.TILE_SIZE, TileRender.TILE_SIZE, TileRender.TILE_SIZE),
-                    new Rectangle(TileRender.TILE_SIZE * t.tile.X, TileRender.TILE_SIZE * t.tile.Y, TileRender.TILE_SIZE, TileRender.TILE_SIZE),
-                    Color.White
-                );
-            }
-        }
+        // for (int l = 0; l < (int)Tile.TileLayer.NumLayers; ++l)
+        // {
+        //     foreach (Map.TilePos t in testMap.map[l])
+        //     {
+        //         _spriteBatch.Draw(
+        //             t.tile.Image,
+        //             new Rectangle(t.loc.X * TileRender.TILE_SIZE, t.loc.Y * TileRender.TILE_SIZE, TileRender.TILE_SIZE, TileRender.TILE_SIZE),
+        //             new Rectangle(TileRender.TILE_SIZE * t.tile.X, TileRender.TILE_SIZE * t.tile.Y, TileRender.TILE_SIZE, TileRender.TILE_SIZE),
+        //             Color.White
+        //         );
+        //     }
+        // }
 
-        _spriteBatch.End();
+        // _spriteBatch.End();
+
+        _tiledMapRenderer.Draw();
 
         // Set render target to device back buffer and clear
         GraphicsDevice.SetRenderTarget(null);
