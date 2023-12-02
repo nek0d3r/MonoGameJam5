@@ -41,21 +41,22 @@ public static class Camera
         var seconds = gameTime.GetElapsedSeconds();
         var movementDirection = GetMovementDirection();
         cameraPosition += speed * movementDirection * seconds;
-        if (cameraPosition.X < TileRender.renderDims.Width / 2)
+
+        if (cameraPosition.X < TileRender.BUFFER_SIZE.X / 2)
         {
-            cameraPosition.X = TileRender.renderDims.Width / 2;
+            cameraPosition.X = TileRender.BUFFER_SIZE.X / 2;
         }
-        if (cameraPosition.Y < TileRender.renderDims.Height / 2)
+        if (cameraPosition.Y < TileRender.BUFFER_SIZE.Y / 2)
         {
-            cameraPosition.Y = TileRender.renderDims.Height / 2;
+            cameraPosition.Y = TileRender.BUFFER_SIZE.Y / 2;
         }
-        if (cameraPosition.X > map.WidthInPixels - TileRender.renderDims.Width / 2)
+        if (cameraPosition.X > map.WidthInPixels - TileRender.BUFFER_SIZE.X / 2)
         {
-            cameraPosition.X = map.WidthInPixels - TileRender.renderDims.Width / 2;
+            cameraPosition.X = map.WidthInPixels - TileRender.BUFFER_SIZE.X / 2;
         }
-        if (cameraPosition.Y > map.HeightInPixels - TileRender.renderDims.Height / 2)
+        if (cameraPosition.Y > map.HeightInPixels - TileRender.BUFFER_SIZE.Y / 2)
         {
-            cameraPosition.Y = map.HeightInPixels - TileRender.renderDims.Height / 2;
+            cameraPosition.Y = map.HeightInPixels - TileRender.BUFFER_SIZE.Y / 2;
         }
     }
 }
