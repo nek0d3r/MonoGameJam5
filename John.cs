@@ -15,20 +15,11 @@ public class John : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private RenderTarget2D _render;
-    private OrthographicCamera _camera;
-    private Vector2 _cameraPosition;
     
     KeyboardState currentKey = new KeyboardState(), prevKey;
-    
-    // Test tilemap
-    Map testMap;
 
     TiledMap _tiledMap;
     TiledMapRenderer _tiledMapRenderer;
-
-    // Test sprite
-    Texture2D testTile;
-    Texture2D testConveyor;
 
     public John()
     {
@@ -43,12 +34,6 @@ public class John : Game
 
     protected override void Initialize()
     {
-        // TODO: The map will need to be bigger than the viewport eventually.
-        // We will make changes here when that happens.
-        testMap = new Map(TileRender.BUFFER_TILE_DIMS);
-
-        base.Initialize();
-
         // Set buffer size to default
         _graphics.PreferredBackBufferWidth = TileRender.DEFAULT_WINDOW_SIZE.X;
         _graphics.PreferredBackBufferHeight = TileRender.DEFAULT_WINDOW_SIZE.Y;
@@ -56,14 +41,14 @@ public class John : Game
 
         TileRender.WindowChanged(Window, null);
 
-        var viewportadapter = new BoxingViewportAdapter(
+        Camera.Initialize(new BoxingViewportAdapter(
             Window,
             GraphicsDevice,
             TileRender.DEFAULT_WINDOW_SIZE.X,
             TileRender.DEFAULT_WINDOW_SIZE.Y
-        );
-        _camera = new OrthographicCamera(viewportadapter);
-        _cameraPosition = new Vector2(TileRender.DEFAULT_WINDOW_SIZE.X / 2, TileRender.DEFAULT_WINDOW_SIZE.Y / 2);
+        ));
+        
+        base.Initialize();
     }
 
     protected override void LoadContent()
@@ -71,28 +56,8 @@ public class John : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         _render = new RenderTarget2D(GraphicsDevice, TileRender.BUFFER_SIZE.X, TileRender.BUFFER_SIZE.Y);
 
-        testTile = Content.Load<Texture2D>("test");
-        testConveyor = Content.Load<Texture2D>("pixel/boxsadnarrow");
-
         _tiledMap = Content.Load<TiledMap>("testmap");
         _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
-
-        for(var y = 0; y < TileRender.BUFFER_TILE_DIMS.Y; y++)
-        {
-            for(var x = 0; x < TileRender.BUFFER_TILE_DIMS.X; x++)
-            {
-                testMap.AddToMap(new TestTile
-                {
-                    Image = testTile
-                }, x, y, Tile.TileLayer.Floor);
-                // For testing, one in 8 tiles will now also have a test conveyor
-                if ((Random.Shared.Next() & 0x111) == 1)
-                {
-                    testMap.AddToMap(new Conveyor(testConveyor, (Random.Shared.Next() & 1) == 1, Conveyor.Direction.North, Random.Shared.Next() % 13),
-                        x, y, Tile.TileLayer.Active);
-                }
-            }
-        }
     }
 
     protected override void Update(GameTime gameTime)
@@ -133,8 +98,7 @@ public class John : Game
 
         _tiledMapRenderer.Update(gameTime);
 
-        Camera.MoveCamera(gameTime, ref _cameraPosition, _tiledMap);
-        _camera.LookAt(_cameraPosition);
+        Camera.MoveCamera(gameTime, _tiledMap);
 
         base.Update(gameTime);
     }
@@ -145,25 +109,7 @@ public class John : Game
         GraphicsDevice.SetRenderTarget(_render);
         GraphicsDevice.Clear(Color.Black);
 
-        // Drawing begins here
-        // _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp);
-
-        // for (int l = 0; l < (int)Tile.TileLayer.NumLayers; ++l)
-        // {
-        //     foreach (Map.TilePos t in testMap.map[l])
-        //     {
-        //         _spriteBatch.Draw(
-        //             t.tile.Image,
-        //             new Rectangle(t.loc.X * TileRender.TILE_SIZE, t.loc.Y * TileRender.TILE_SIZE, TileRender.TILE_SIZE, TileRender.TILE_SIZE),
-        //             new Rectangle(TileRender.TILE_SIZE * t.tile.X, TileRender.TILE_SIZE * t.tile.Y, TileRender.TILE_SIZE, TileRender.TILE_SIZE),
-        //             Color.White
-        //         );
-        //     }
-        // }
-
-        // _spriteBatch.End();
-
-        _tiledMapRenderer.Draw(_camera.GetViewMatrix());
+        _tiledMapRenderer.Draw(Camera.ViewMatrix);
 
         // Set render target to device back buffer and clear
         GraphicsDevice.SetRenderTarget(null);
@@ -171,7 +117,7 @@ public class John : Game
 
         // Draw sprite buffer to back buffer
         _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp);
-        _spriteBatch.Draw((Texture2D)_render, TileRender.renderDims, Color.White);
+        _spriteBatch.Draw(_render, TileRender.renderDims, Color.White);
         _spriteBatch.End();
 
         base.Draw(gameTime);

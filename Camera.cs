@@ -1,10 +1,24 @@
+using System.IO.Compression;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using MonoGame.Extended.Tiled;
+using MonoGame.Extended.ViewportAdapters;
 
 public static class Camera
 {
+    private static OrthographicCamera _camera;
+    private static Vector2 _cameraPosition;
+    public static Matrix ViewMatrix { get => _camera.GetViewMatrix(); }
+
+    public static void Initialize(BoxingViewportAdapter boxingViewportAdapter)
+    {
+        _camera = new OrthographicCamera(boxingViewportAdapter);
+        _cameraPosition = new Vector2(
+            TileRender.DEFAULT_WINDOW_SIZE.X / 2,
+            TileRender.DEFAULT_WINDOW_SIZE.Y / 2
+        );
+    }
     public static Vector2 GetMovementDirection()
     {
         var movementDirection = Vector2.Zero;
@@ -35,28 +49,30 @@ public static class Camera
         return movementDirection;
     }
 
-    public static void MoveCamera(GameTime gameTime, ref Vector2 cameraPosition, TiledMap map)
+    public static void MoveCamera(GameTime gameTime, TiledMap map)
     {
         var speed = 200;
         var seconds = gameTime.GetElapsedSeconds();
         var movementDirection = GetMovementDirection();
-        cameraPosition += speed * movementDirection * seconds;
+        _cameraPosition += speed * movementDirection * seconds;
 
-        if (cameraPosition.X < TileRender.BUFFER_SIZE.X / 2)
+        if (_cameraPosition.X < TileRender.BUFFER_SIZE.X / 2)
         {
-            cameraPosition.X = TileRender.BUFFER_SIZE.X / 2;
+            _cameraPosition.X = TileRender.BUFFER_SIZE.X / 2;
         }
-        if (cameraPosition.Y < TileRender.BUFFER_SIZE.Y / 2)
+        if (_cameraPosition.Y < TileRender.BUFFER_SIZE.Y / 2)
         {
-            cameraPosition.Y = TileRender.BUFFER_SIZE.Y / 2;
+            _cameraPosition.Y = TileRender.BUFFER_SIZE.Y / 2;
         }
-        if (cameraPosition.X > map.WidthInPixels - TileRender.BUFFER_SIZE.X / 2)
+        if (_cameraPosition.X > map.WidthInPixels - TileRender.BUFFER_SIZE.X / 2)
         {
-            cameraPosition.X = map.WidthInPixels - TileRender.BUFFER_SIZE.X / 2;
+            _cameraPosition.X = map.WidthInPixels - TileRender.BUFFER_SIZE.X / 2;
         }
-        if (cameraPosition.Y > map.HeightInPixels - TileRender.BUFFER_SIZE.Y / 2)
+        if (_cameraPosition.Y > map.HeightInPixels - TileRender.BUFFER_SIZE.Y / 2)
         {
-            cameraPosition.Y = map.HeightInPixels - TileRender.BUFFER_SIZE.Y / 2;
+            _cameraPosition.Y = map.HeightInPixels - TileRender.BUFFER_SIZE.Y / 2;
         }
+
+        _camera.LookAt(_cameraPosition);
     }
 }
