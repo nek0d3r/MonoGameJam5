@@ -33,9 +33,9 @@ public static class TileRender
         // Update buffer bounds
         currentWindowSize.X = ((GameWindow)sender).ClientBounds.Width;
         currentWindowSize.Y = ((GameWindow)sender).ClientBounds.Height;
-        
-        var windowAspectRatio = (float)currentWindowSize.X / currentWindowSize.Y;
-        var bufferAspectRatio = (float)BUFFER_SIZE.X / BUFFER_SIZE.Y;
+
+        float windowAspectRatio = (float)currentWindowSize.X / currentWindowSize.Y;
+        float bufferAspectRatio = (float)BUFFER_SIZE.X / BUFFER_SIZE.Y;
 
         Point origin, dimensions;
 

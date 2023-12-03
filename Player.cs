@@ -1,19 +1,22 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended;
 
 public class Player
 {
     private Vector2 position;
+    private int Speed { get; set; } = 200;
 
     public Player()
     {
     }
 
     // Determines input for movement
-    private static Vector2 GetMovementDirection(KeyboardState key)
+    private static Vector2 GetMovementDirection()
     {
         // Get inputs and add to direction vector
-        var movementDirection = Vector2.Zero;
+        Vector2 movementDirection = Vector2.Zero;
+        KeyboardState key = Keyboard.GetState();
         if (key.IsKeyDown(Keybindings.Down))
         {
             movementDirection += Vector2.UnitY;
@@ -41,7 +44,9 @@ public class Player
         return movementDirection;
     }
 
-    public void Update()
+    public void Update(GameTime gameTime)
     {
+        float seconds = gameTime.GetElapsedSeconds();
+        Vector2 movementDirection = GetMovementDirection();
     }
 }

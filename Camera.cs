@@ -25,8 +25,8 @@ public static class Camera
     private static Vector2 GetMovementDirection()
     {
         // Get inputs and add to direction vector
-        var movementDirection = Vector2.Zero;
-        var state = Keyboard.GetState();
+        Vector2 movementDirection = Vector2.Zero;
+        KeyboardState state = Keyboard.GetState();
         if (state.IsKeyDown(Keybindings.Down))
         {
             movementDirection += Vector2.UnitY;
@@ -57,9 +57,9 @@ public static class Camera
     // Handle camera movement based on user input
     public static void MoveCamera(GameTime gameTime, TiledMap map)
     {
-        var speed = 200;
-        var seconds = gameTime.GetElapsedSeconds();
-        var movementDirection = GetMovementDirection();
+        int speed = 200;
+        float seconds = gameTime.GetElapsedSeconds();
+        Vector2 movementDirection = GetMovementDirection();
 
         // Change camera position based on a provided speed, direction, and delta.
         // Time delta prevents tying a logical change to framerate.
