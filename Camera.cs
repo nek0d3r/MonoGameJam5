@@ -6,10 +6,12 @@ using MonoGame.Extended.ViewportAdapters;
 
 public static class Camera
 {
+    // Camera object and position, calculated property of camera view
     private static OrthographicCamera _camera;
     private static Vector2 _cameraPosition;
     public static Matrix ViewMatrix { get => _camera.GetViewMatrix(); }
 
+    // Creates a new camera based on provided graphics
     public static void Initialize(BoxingViewportAdapter boxingViewportAdapter)
     {
         _camera = new OrthographicCamera(boxingViewportAdapter);
@@ -18,8 +20,11 @@ public static class Camera
             TileRender.DEFAULT_WINDOW_SIZE.Y / 2
         );
     }
-    public static Vector2 GetMovementDirection()
+
+    // Determines input for movement
+    private static Vector2 GetMovementDirection()
     {
+        // Get inputs and add to direction vector
         var movementDirection = Vector2.Zero;
         var state = Keyboard.GetState();
         if (state.IsKeyDown(Keybindings.Down))
@@ -42,19 +47,26 @@ public static class Camera
         // Can't normalize the zero vector so test for it before normalizing
         if (movementDirection != Vector2.Zero)
         {
+            // Normalize the vector. This prevents issues like diagonal movement having more input than a single direction
             movementDirection.Normalize(); 
         }
         
         return movementDirection;
     }
 
+    // Handle camera movement based on user input
     public static void MoveCamera(GameTime gameTime, TiledMap map)
     {
         var speed = 200;
         var seconds = gameTime.GetElapsedSeconds();
         var movementDirection = GetMovementDirection();
+
+        // Change camera position based on a provided speed, direction, and delta.
+        // Time delta prevents tying a logical change to framerate.
+        // See why Fallout 4 or Okami HD have locked framerates.
         _cameraPosition += speed * movementDirection * seconds;
 
+        // Prevent scrolling beyond the map limits
         if (_cameraPosition.X < TileRender.BUFFER_SIZE.X / 2)
         {
             _cameraPosition.X = TileRender.BUFFER_SIZE.X / 2;
@@ -72,6 +84,7 @@ public static class Camera
             _cameraPosition.Y = map.HeightInPixels - TileRender.BUFFER_SIZE.Y / 2;
         }
 
+        // Set camera to new position
         _camera.LookAt(_cameraPosition);
     }
 }
