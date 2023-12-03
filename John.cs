@@ -9,15 +9,19 @@ namespace MonoGameJam5;
 
 public class John : Game
 {
+    // Handles graphics, drawing, and rendering
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private RenderTarget2D _render;
-    
+
+    // Input handling and listening
     KeyboardState currentKey = new KeyboardState(), prevKey;
 
+    // Map and level resources and rendering
     TiledMap _tiledMap;
     TiledMapRenderer _tiledMapRenderer;
 
+    // Main constructor, called when program starts
     public John()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -29,6 +33,7 @@ public class John : Game
         Window.ClientSizeChanged += TileRender.WindowChanged;
     }
 
+    // Called once after main constructor finishes
     protected override void Initialize()
     {
         // Set buffer size to default
@@ -36,8 +41,10 @@ public class John : Game
         _graphics.PreferredBackBufferHeight = TileRender.DEFAULT_WINDOW_SIZE.Y;
         _graphics.ApplyChanges();
 
+        // Update window handler to reflect buffer change
         TileRender.WindowChanged(Window, null);
 
+        // Create new camera
         Camera.Initialize(new BoxingViewportAdapter(
             Window,
             GraphicsDevice,
@@ -48,15 +55,19 @@ public class John : Game
         base.Initialize();
     }
 
+    // Called once after initialization
     protected override void LoadContent()
     {
+        // Create drawing and buffer objects
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         _render = new RenderTarget2D(GraphicsDevice, TileRender.BUFFER_SIZE.X, TileRender.BUFFER_SIZE.Y);
 
+        // Load level and create Tiled map renderer
         _tiledMap = Content.Load<TiledMap>("testmap");
         _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
     }
 
+    // Called repeatedly until game ends, handles logic updates (e.g. object positions, game state)
     protected override void Update(GameTime gameTime)
     {
         // Set previous key state and update current state
@@ -95,19 +106,23 @@ public class John : Game
             TileRender.WindowChanged(Window, null);
         }
 
+        // Handles any animated tiles in Tiled map
         _tiledMapRenderer.Update(gameTime);
 
+        // Updates camera based on input
         Camera.MoveCamera(gameTime, _tiledMap);
 
         base.Update(gameTime);
     }
 
+    // Called repeatedly until game ends, handles all drawing and rendering
     protected override void Draw(GameTime gameTime)
     {
         // Render drawing to sprite buffer
         GraphicsDevice.SetRenderTarget(_render);
         GraphicsDevice.Clear(Color.Black);
 
+        // Handles drawing map based on camera's view
         _tiledMapRenderer.Draw(Camera.ViewMatrix);
 
         // Set render target to device back buffer and clear
