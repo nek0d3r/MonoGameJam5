@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -10,6 +11,7 @@ public class Player
 {
     public AnimatedSprite Sprite { get; set; }
     public Vector2 Position { get; set; } = Vector2.Zero;
+    public Vector2 realPos { get; set; } = Vector2.Zero;
     public int Speed { get; set; } = 70;
     public Facing Direction { get; private set; } = Facing.Down;
 
@@ -93,27 +95,28 @@ public class Player
         // Change camera position based on a provided speed, direction, and delta.
         // Time delta prevents tying a logical change to framerate.
         // See why Fallout 4 or Okami HD have locked framerates.
-        Position += Speed * runMult * movementDirection * seconds;
+        realPos += Speed * runMult * movementDirection * seconds;
 
         // Prevent moving beyond the map limits
-        float X = Position.X, Y = Position.Y;
-        if (Position.X < TileRender.TILE_SIZE / 2)
+        float X = realPos.X, Y = realPos.Y;
+        if (realPos.X < TileRender.TILE_SIZE / 2)
         {
             X = TileRender.TILE_SIZE / 2;
         }
-        if (Position.Y < TileRender.TILE_SIZE / 2)
+        if (realPos.Y < TileRender.TILE_SIZE / 2)
         {
             Y = TileRender.TILE_SIZE / 2;
         }
-        if (Position.X > map.WidthInPixels - TileRender.TILE_SIZE / 2)
+        if (realPos.X > map.WidthInPixels - TileRender.TILE_SIZE / 2)
         {
             X = map.WidthInPixels - TileRender.TILE_SIZE / 2;
         }
-        if (Position.Y > map.HeightInPixels - TileRender.TILE_SIZE / 2)
+        if (realPos.Y > map.HeightInPixels - TileRender.TILE_SIZE / 2)
         {
             Y = map.HeightInPixels - TileRender.TILE_SIZE / 2;
         }
-        Position = new Vector2(X, Y);
+        realPos = new Vector2(X, Y);
+        Position = new Vector2((int)Math.Round(realPos.X), (int)Math.Round(realPos.Y));
 
         // Update sprite animation
         if (movementDirection != Vector2.Zero)

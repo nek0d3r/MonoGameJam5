@@ -103,6 +103,10 @@ public class John : Game
                 TileRender.BUFFER_SIZE.X / 2,
                 TileRender.BUFFER_SIZE.Y / 2
             ),
+            realPos = new Vector2(
+                TileRender.BUFFER_SIZE.X / 2,
+                TileRender.BUFFER_SIZE.Y / 2
+            ),
             Sprite = new AnimatedSprite(_spriteSheet)
         };
         // This will force the first frame of the animation to play.
