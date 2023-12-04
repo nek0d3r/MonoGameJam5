@@ -143,8 +143,8 @@ public class John : Game
         _tiledMapRenderer.Draw(Camera.ViewMatrix);
 
         // Draw player
-        _spriteBatch.Begin();
-        _spriteBatch.Draw(player.Texture, player.RelativePosition, Color.White);
+        _spriteBatch.Begin(transformMatrix: Camera.ViewMatrix);
+        _spriteBatch.Draw(player.Texture, player.Position, Color.White);
         _spriteBatch.End();
 
         // Set render target to device back buffer and clear

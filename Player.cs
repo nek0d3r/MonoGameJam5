@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -9,15 +8,6 @@ using MonoGameJam5;
 public class Player
 {
     public Vector2 Position { get; set; } = Vector2.Zero;
-    public Vector2 RelativePosition { get
-    {
-        Console.WriteLine($"Camera X: {Camera.Position.X}\tPlayer X: {Position.X}");
-        return Position;
-        // return new Vector2(
-        //     Camera.Position.X - (Camera.Position.X - Position.X),
-        //     Position.Y
-        // );
-    }}
     public int Speed { get; set; } = 200;
     public Texture2D Texture { get; set; }
 
