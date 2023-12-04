@@ -1,6 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended.Content;
+using MonoGame.Extended.Particles;
+using MonoGame.Extended.Serialization;
+using MonoGame.Extended.Sprites;
+using MonoGame.Extended.TextureAtlases;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Renderers;
 using MonoGame.Extended.ViewportAdapters;
@@ -20,6 +25,9 @@ public class John : Game
     // Map and level resources and rendering
     public static TiledMap _tiledMap;
     TiledMapRenderer _tiledMapRenderer;
+
+    // Spritesheet
+    SpriteSheet _spriteSheet;
 
     // Player object
     Player player;
@@ -66,8 +74,11 @@ public class John : Game
         _render = new RenderTarget2D(GraphicsDevice, TileRender.BUFFER_SIZE.X, TileRender.BUFFER_SIZE.Y);
 
         // Load level and create Tiled map renderer
-        _tiledMap = Content.Load<TiledMap>("testmap");
+        _tiledMap = Content.Load<TiledMap>("maps/map");
         _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
+
+        // Load spritesheet
+        _spriteSheet = Content.Load<SpriteSheet>("pixel/spritesheet-animations.sf", new JsonContentLoader());
 
         // Create new player
         player = new Player()
@@ -77,8 +88,10 @@ public class John : Game
                 TileRender.BUFFER_SIZE.X / 2,
                 TileRender.BUFFER_SIZE.Y / 2
             ),
-            Texture = Content.Load<Texture2D>("pixel/Johnfrontleftstep")
+            Sprite = new AnimatedSprite(_spriteSheet)
         };
+        player.Sprite.Play("playerDown");
+        player.Sprite.Update(0);
     }
 
     // Called repeatedly until game ends, handles logic updates (e.g. object positions, game state)
@@ -143,8 +156,8 @@ public class John : Game
         _tiledMapRenderer.Draw(Camera.ViewMatrix);
 
         // Draw player
-        _spriteBatch.Begin(transformMatrix: Camera.ViewMatrix);
-        _spriteBatch.Draw(player.Texture, player.Position, Color.White);
+        _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Camera.ViewMatrix);
+        _spriteBatch.Draw(player.Sprite, player.Position);
         _spriteBatch.End();
 
         // Set render target to device back buffer and clear

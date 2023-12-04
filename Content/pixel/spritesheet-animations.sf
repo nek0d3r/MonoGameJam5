@@ -1,0 +1,24 @@
+{
+  "textureAtlas": {
+    "texture": "spritesheet.png",
+    "regionWidth": 24,
+    "regionHeight": 24
+  },
+  "cycles": {
+    "playerDown": {
+      "frames": [17,18],
+      "isLooping": true,
+      "frameDuration": 0.2
+    },
+    "playerUp": {
+      "frames": [16],
+      "isLooping": true,
+      "frameDuration": 0.2
+    },
+    "playerSide": {
+      "frames": [19,21],
+      "isLooping": true,
+      "frameDuration": 0.2
+    }
+  }
+}

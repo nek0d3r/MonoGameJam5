@@ -1,15 +1,15 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
+using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Tiled;
 using MonoGameJam5;
 
 public class Player
 {
+    public AnimatedSprite Sprite { get; set; }
     public Vector2 Position { get; set; } = Vector2.Zero;
     public int Speed { get; set; } = 200;
-    public Texture2D Texture { get; set; }
 
     public Player()
     {
@@ -61,22 +61,28 @@ public class Player
 
         // Prevent moving beyond the map limits
         float X = Position.X, Y = Position.Y;
-        if (Position.X < 0)
+        if (Position.X < TileRender.TILE_SIZE / 2)
         {
-            X = 0;
+            X = TileRender.TILE_SIZE / 2;
         }
-        if (Position.Y < 0)
+        if (Position.Y < TileRender.TILE_SIZE / 2)
         {
-            Y = 0;
+            Y = TileRender.TILE_SIZE / 2;
         }
-        if (Position.X > map.WidthInPixels - Texture.Width)
+        if (Position.X > map.WidthInPixels - TileRender.TILE_SIZE / 2)
         {
-            X = map.WidthInPixels - Texture.Width;
+            X = map.WidthInPixels - TileRender.TILE_SIZE / 2;
         }
-        if (Position.Y > map.HeightInPixels - Texture.Height)
+        if (Position.Y > map.HeightInPixels - TileRender.TILE_SIZE / 2)
         {
-            Y = map.HeightInPixels - Texture.Height;
+            Y = map.HeightInPixels - TileRender.TILE_SIZE / 2;
         }
         Position = new Vector2(X, Y);
+
+        // Update sprite animation
+        if (movementDirection != Vector2.Zero)
+        {
+            Sprite.Update(seconds);
+        }
     }
 }
