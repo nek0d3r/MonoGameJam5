@@ -3,19 +3,20 @@ using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.ViewportAdapters;
+using MonoGameJam5;
 
 public static class Camera
 {
     // Camera object and position, calculated property of camera view
-    private static OrthographicCamera _camera;
-    private static Vector2 _cameraPosition;
+    public static OrthographicCamera _camera;
+    public static Vector2 Position { get; private set; }
     public static Matrix ViewMatrix { get => _camera.GetViewMatrix(); }
 
     // Creates a new camera based on provided graphics
     public static void Initialize(BoxingViewportAdapter boxingViewportAdapter)
     {
         _camera = new OrthographicCamera(boxingViewportAdapter);
-        _cameraPosition = new Vector2(
+        Position = new Vector2(
             TileRender.DEFAULT_WINDOW_SIZE.X / 2,
             TileRender.DEFAULT_WINDOW_SIZE.Y / 2
         );
@@ -55,36 +56,32 @@ public static class Camera
     }
 
     // Handle camera movement based on user input
-    public static void MoveCamera(GameTime gameTime, TiledMap map)
+    public static void MoveCamera(GameTime gameTime, Player player)
     {
-        int speed = 200;
-        float seconds = gameTime.GetElapsedSeconds();
-        Vector2 movementDirection = GetMovementDirection();
-
-        // Change camera position based on a provided speed, direction, and delta.
-        // Time delta prevents tying a logical change to framerate.
-        // See why Fallout 4 or Okami HD have locked framerates.
-        _cameraPosition += speed * movementDirection * seconds;
+        Position = player.Position;
+        TiledMap map = John._tiledMap;
 
         // Prevent scrolling beyond the map limits
-        if (_cameraPosition.X < TileRender.BUFFER_SIZE.X / 2)
+        float X = Position.X, Y = Position.Y;
+        if (Position.X < TileRender.BUFFER_SIZE.X / 2)
         {
-            _cameraPosition.X = TileRender.BUFFER_SIZE.X / 2;
+            X = TileRender.BUFFER_SIZE.X / 2;
         }
-        if (_cameraPosition.Y < TileRender.BUFFER_SIZE.Y / 2)
+        if (Position.Y < TileRender.BUFFER_SIZE.Y / 2)
         {
-            _cameraPosition.Y = TileRender.BUFFER_SIZE.Y / 2;
+            Y = TileRender.BUFFER_SIZE.Y / 2;
         }
-        if (_cameraPosition.X > map.WidthInPixels - TileRender.BUFFER_SIZE.X / 2)
+        if (Position.X > map.WidthInPixels - TileRender.BUFFER_SIZE.X / 2)
         {
-            _cameraPosition.X = map.WidthInPixels - TileRender.BUFFER_SIZE.X / 2;
+            X = map.WidthInPixels - TileRender.BUFFER_SIZE.X / 2;
         }
-        if (_cameraPosition.Y > map.HeightInPixels - TileRender.BUFFER_SIZE.Y / 2)
+        if (Position.Y > map.HeightInPixels - TileRender.BUFFER_SIZE.Y / 2)
         {
-            _cameraPosition.Y = map.HeightInPixels - TileRender.BUFFER_SIZE.Y / 2;
+            Y = map.HeightInPixels - TileRender.BUFFER_SIZE.Y / 2;
         }
+        Position = new Vector2(X, Y);
 
         // Set camera to new position
-        _camera.LookAt(_cameraPosition);
+        _camera.LookAt(Position);
     }
 }
