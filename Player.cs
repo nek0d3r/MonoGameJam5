@@ -7,7 +7,7 @@ using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Tiled;
 using MonoGameJam5;
 
-public class Player
+public class Player : IObject
 {
     public AnimatedSprite Sprite { get; set; }
     public Vector2 Position { get; set; } = Vector2.Zero;
