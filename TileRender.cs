@@ -71,9 +71,9 @@ public static class TileRender
     }
 }
 
-public class DrawComparer : IComparer<TiledMapObject>
+public class DrawComparer : IComparer<Entity>
 {
-    public int Compare(TiledMapObject a, TiledMapObject b)
+    public int Compare(Entity a, Entity b)
     {
         if (a == null || b == null)
         {

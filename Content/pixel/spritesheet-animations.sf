@@ -19,6 +19,31 @@
       "frames": [19,21],
       "isLooping": true,
       "frameDuration": 0.6
+    },
+    "boxdednarrow": {
+      "frames": [30],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "boxhelpnarrow": {
+      "frames": [31],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "boxmadnarrow": {
+      "frames": [32],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "boxsadnarrow": {
+      "frames": [33],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "boxstarenarrow": {
+      "frames": [35],
+      "isLooping": false,
+      "frameDuration": 0.2
     }
   }
 }

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended;
+using MonoGame.Extended.Collisions;
 using MonoGame.Extended.Content;
 using MonoGame.Extended.Particles;
 using MonoGame.Extended.Serialization;
@@ -45,11 +45,11 @@ public class John : Game
     // Spritesheet
     SpriteSheet _spriteSheet;
 
-    // Player object
-    Player player;
+    // Entities like player, boxes, etc
+    List<Entity> _entities;
 
-    // Testing object texture
-    Texture2D boxded;
+    // Collision component for collider handling
+    private CollisionComponent _collisionComponent;
 
     // Main constructor, called when program starts
     public John()
@@ -99,43 +99,74 @@ public class John : Game
         // Load spritesheet
         _spriteSheet = Content.Load<SpriteSheet>("pixel/spritesheet-animations.sf", new JsonContentLoader());
 
+        // Create collider area
+        _collisionComponent = new CollisionComponent(
+            new RectangleF(
+                0,
+                0,
+                _tiledMap.WidthInPixels,
+                _tiledMap.HeightInPixels
+            )
+        );
+
+        // Create game objects
+        _entities = new List<Entity>();
+
+        // For every object layer in the map
+        foreach(TiledMapObjectLayer layer in _tiledMap.ObjectLayers)
+        {
+            // For every object in the layer
+            foreach(TiledMapObject tiledObject in layer.Objects)
+            {
+                switch (tiledObject.Type)
+                {
+                    case "box":
+                        _entities.Add(new Box()
+                        {
+                            Position = tiledObject.Position,
+                            Sprite = new AnimatedSprite(_spriteSheet),
+                            Animation = tiledObject.Properties["texture"]
+                        });
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
         // Create new player
-        player = new Player()
+        _entities.Add(new Player()
         {
             Speed = 70,
             Position = new Vector2(
                 TileRender.BUFFER_SIZE.X / 2,
                 TileRender.BUFFER_SIZE.Y / 2
             ),
-            realPos = new Vector2(
-                TileRender.BUFFER_SIZE.X / 2,
-                TileRender.BUFFER_SIZE.Y / 2
-            ),
-            Sprite = new AnimatedSprite(_spriteSheet)
-        };
-        // This will force the first frame of the animation to play.
-        // Without this, idling at the game start will only draw the first sprite in the sheet
-        player.Sprite.Play("playerDown");
-        player.Sprite.Update(0);
+            Sprite = new AnimatedSprite(_spriteSheet),
+            Animation = "playerDown"
+        });
+
+        _entities.ForEach(entity =>
+        {
+            // Force the first frame of the animation to play.
+            // Without this, idling at the game start will only draw the first sprite in the sheet.
+            entity.Sprite.Update(0);
+            
+            // Add entity as a collider
+            _collisionComponent.Insert(entity);
+        });
 
         // Load music
         _backgroundMusic = Content.Load<Song>("Music/Sneak");
-
-        boxded = Content.Load<Texture2D>("pixel/boxdednarrow");
+        MediaPlayer.Play(_backgroundMusic);
+        // This should be a setting in an options menu eventually.
+        MediaPlayer.Volume = 0.1f;
+        MediaPlayer.IsRepeating = true;
     }
 
     // Called repeatedly until game ends, handles logic updates (e.g. object positions, game state)
     protected override void Update(GameTime gameTime)
     {
-        // If the music is not playing, then play it
-        if (MediaPlayer.State != MediaState.Playing) 
-        {
-            MediaPlayer.Play(_backgroundMusic);
-            // This should be a setting in an options menu eventually.
-            MediaPlayer.Volume = 0.3f;
-            MediaPlayer.IsRepeating = true;
-        }
-        
         // Set previous key state and update current state
         prevKey = currentKey;
         currentKey = Keyboard.GetState();
@@ -175,11 +206,14 @@ public class John : Game
         // Handles any animated tiles in Tiled map
         _tiledMapRenderer.Update(gameTime);
 
-        // Update player based on user input
-        player.Update(gameTime);
+        // Update entities
+        _entities.ForEach(entity => entity.Update(gameTime));
+
+        // Update collisions
+        _collisionComponent.Update(gameTime);
 
         // Updates camera to player position
-        Camera.MoveCamera(gameTime, player);
+        Camera.MoveCamera(gameTime, (Player)_entities.Where(entity => entity.GetType() == typeof(Player)).FirstOrDefault());
 
         base.Update(gameTime);
     }
@@ -194,31 +228,17 @@ public class John : Game
         // Handles drawing map based on camera's view
         _tiledMapRenderer.Draw(Camera.ViewMatrix);
 
-        // Draw player
+        // Start point clamped drawing based on camera view
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Camera.ViewMatrix);
 
-        bool hasPlayerBeenDrawn = false;
-        foreach(TiledMapObjectLayer layer in _tiledMap.ObjectLayers)
-        {
-            List<TiledMapObject> sortedObjects = layer.Objects.ToList();
-            DrawComparer drawSort = new DrawComparer();
-            sortedObjects.Sort(drawSort);
+        // Sort objects in the layer by Y position
+        // This allows sprites to draw over each other based on which one "looks" in front
+        _entities.Sort(new DrawComparer());
 
-            foreach(TiledMapObject tiledObject in sortedObjects)
-            {
-                if (!hasPlayerBeenDrawn && player.Position.Y < tiledObject.Position.Y)
-                {
-                    _spriteBatch.Draw(player.Sprite, player.Position);
-                    hasPlayerBeenDrawn = true;
-                }
-                _spriteBatch.Draw(boxded, tiledObject.Position, Color.White);
-            }
-            if (!hasPlayerBeenDrawn)
-            {
-                _spriteBatch.Draw(player.Sprite, player.Position);
-            }
-        }
+        // Draw each entity
+        _entities.ForEach(entity => { entity.Draw(_spriteBatch, true); });
 
+        // End drawing
         _spriteBatch.End();
 
         // Set render target to device back buffer and clear

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <tileset firstgid="1" source="spritesheet.tsx"/>
+ <object name="Stare Box" type="box" gid="36" width="24" height="24">
+  <properties>
+   <property name="texture" value="boxstarenarrow"/>
+  </properties>
+ </object>
+</template>
