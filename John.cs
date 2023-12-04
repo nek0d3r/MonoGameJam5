@@ -122,6 +122,10 @@ public class John : Game
                             Animation = tiledObject.Properties["animation"]
                         });
                         break;
+                    case "employee":
+                        break;
+                    case "manager":
+                        break;
                     case "box":
                         _entities.Add(new Box()
                         {
