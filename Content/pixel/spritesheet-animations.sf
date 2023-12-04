@@ -8,17 +8,17 @@
     "playerDown": {
       "frames": [17,18],
       "isLooping": true,
-      "frameDuration": 0.2
+      "frameDuration": 0.6
     },
     "playerUp": {
       "frames": [16],
       "isLooping": true,
-      "frameDuration": 0.2
+      "frameDuration": 0.6
     },
     "playerSide": {
       "frames": [19,21],
       "isLooping": true,
-      "frameDuration": 0.2
+      "frameDuration": 0.6
     }
   }
 }
