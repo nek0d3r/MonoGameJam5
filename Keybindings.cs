@@ -11,6 +11,7 @@ public static class Keybindings
     public static Keys Left;
     public static Keys Up;
     public static Keys Down;
+    public static Keys Run;
     public static Keys Jump;
     public static Keys Interact;
     public static Keys Exit;
@@ -24,6 +25,7 @@ public static class Keybindings
         Up = Keys.W;
         Down = Keys.S;
         Left = Keys.A;
+        Run = Keys.LeftShift;
         Jump = Keys.Space;
         Interact = Keys.E;
         Exit = Keys.Escape;
