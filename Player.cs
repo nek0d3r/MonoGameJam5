@@ -8,7 +8,7 @@ using MonoGameJam5;
 public class Player
 {
     public Vector2 Position { get; set; } = Vector2.Zero;
-    public int Speed { get; set; } = 200;
+    public int Speed { get; set; } = 70;
     public Texture2D Texture { get; set; }
 
     public Player()
@@ -53,11 +53,18 @@ public class Player
         float seconds = gameTime.GetElapsedSeconds();
         Vector2 movementDirection = GetMovementDirection();
         TiledMap map = John._tiledMap;
+        float runMult = 1;
+        KeyboardState key = Keyboard.GetState();
+
+        if (key.IsKeyDown(Keybindings.Run)) 
+        {
+            runMult = 3;
+        }
 
         // Change camera position based on a provided speed, direction, and delta.
         // Time delta prevents tying a logical change to framerate.
         // See why Fallout 4 or Okami HD have locked framerates.
-        Position += Speed * movementDirection * seconds;
+        Position += Speed * runMult * movementDirection * seconds;
 
         // Prevent moving beyond the map limits
         float X = Position.X, Y = Position.Y;

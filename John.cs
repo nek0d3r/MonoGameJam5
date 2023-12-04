@@ -72,7 +72,7 @@ public class John : Game
         // Create new player
         player = new Player()
         {
-            Speed = 200,
+            Speed = 70,
             Position = new Vector2(
                 TileRender.BUFFER_SIZE.X / 2,
                 TileRender.BUFFER_SIZE.Y / 2
