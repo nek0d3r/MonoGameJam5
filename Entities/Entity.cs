@@ -3,8 +3,14 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using MonoGame.Extended.Collisions;
 using MonoGame.Extended.Sprites;
-using MonoGameJam5;
 
+public enum Facing
+{
+    Up = 0,
+    Down = 1,
+    Left = 2,
+    Right = 3
+}
 public abstract class Entity : ICollisionActor
 {
     protected string _animation;

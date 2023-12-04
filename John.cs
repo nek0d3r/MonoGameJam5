@@ -17,14 +17,6 @@ using MonoGame.Extended.ViewportAdapters;
 
 namespace MonoGameJam5;
 
-public enum Facing
-{
-    Up = 0,
-    Down = 1,
-    Left = 2,
-    Right = 3
-}
-
 public class John : Game
 {
     // Handles graphics, drawing, and rendering
