@@ -44,6 +44,9 @@ public class John : Game
     // Player object
     Player player;
 
+    // Testing object texture
+    Texture2D boxded;
+
     // Main constructor, called when program starts
     public John()
     {
@@ -106,6 +109,8 @@ public class John : Game
         // Without this, idling at the game start will only draw the first sprite in the sheet
         player.Sprite.Play("playerDown");
         player.Sprite.Update(0);
+
+        boxded = Content.Load<Texture2D>("pixel/boxdednarrow");
     }
 
     // Called repeatedly until game ends, handles logic updates (e.g. object positions, game state)
@@ -186,7 +191,7 @@ public class John : Game
                     _spriteBatch.Draw(player.Sprite, player.Position);
                     hasPlayerBeenDrawn = true;
                 }
-                _spriteBatch.Draw(player.Sprite, tiledObject.Position);
+                _spriteBatch.Draw(boxded, tiledObject.Position, Color.White);
             }
             if (!hasPlayerBeenDrawn)
             {

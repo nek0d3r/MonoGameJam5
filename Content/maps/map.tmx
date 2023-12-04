@@ -52,10 +52,10 @@
 </data>
  </layer>
  <objectgroup id="7" name="Boxes">
-  <object id="2" gid="31" x="225" y="199.5" width="24" height="24"/>
-  <object id="3" gid="31" x="253.5" y="220" width="24" height="24"/>
-  <object id="4" gid="31" x="217.5" y="215" width="24" height="24"/>
-  <object id="5" gid="31" x="224.5" y="230" width="24" height="24"/>
-  <object id="6" gid="31" x="239.5" y="237.5" width="24" height="24"/>
+  <object id="2" gid="31" x="225" y="200" width="24" height="24"/>
+  <object id="3" gid="31" x="254" y="220" width="24" height="24"/>
+  <object id="4" gid="31" x="218" y="215" width="24" height="24"/>
+  <object id="5" gid="31" x="225" y="230" width="24" height="24"/>
+  <object id="6" gid="31" x="240" y="238" width="24" height="24"/>
  </objectgroup>
 </map>
