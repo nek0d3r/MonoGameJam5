@@ -46,3 +46,7 @@
 /processorParam:TextureFormat=Color
 /build:pixel/spritesheet.png
 
+#begin Music/Sneak.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/build:Music/Sneak.ogg
