@@ -19,6 +19,9 @@
 /processor:TiledMapProcessor
 /build:maps/map.tmx
 
+#begin pixel/spritesheet-animations.sf
+/copy:pixel/spritesheet-animations.sf
+
 #begin pixel/spritesheet.png
 /importer:TextureImporter
 /processor:TextureProcessor
