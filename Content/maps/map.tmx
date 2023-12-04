@@ -53,9 +53,9 @@
  </layer>
  <objectgroup id="7" name="Boxes">
   <object id="6" template="dedbox.tx" type="box" x="240" y="238"/>
-  <object id="12" template="sadbox.tx" type="box" x="255" y="248"/>
+  <object id="12" template="sadbox.tx" type="box" x="266" y="254"/>
   <object id="15" template="helpbox.tx" type="box" x="216" y="267"/>
-  <object id="17" template="madbox.tx" type="box" x="234" y="281"/>
+  <object id="17" template="madbox.tx" type="box" x="246" y="287"/>
   <object id="18" template="starebox.tx" type="box" x="219" y="297"/>
  </objectgroup>
 </map>

@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
@@ -64,6 +65,5 @@ public class Box : Entity
 
     public override void OnCollision(CollisionEventArgs collisionInfo)
     {
-        throw new System.NotImplementedException();
     }
 }

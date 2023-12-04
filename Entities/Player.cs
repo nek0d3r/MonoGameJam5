@@ -18,7 +18,6 @@ public class Player : Entity
         get => _position;
         set
         {
-            _position = value;
             ActualPosition = value;
         }
     }
@@ -28,26 +27,23 @@ public class Player : Entity
         set
         {
             _actualPosition = value;
-            Bounds = new EllipseF(
-                ColliderPosition,
-                ColliderRadii.X,
-                ColliderRadii.Y
+            _position = new Vector2(
+                (int)Math.Round(_actualPosition.X),
+                (int)Math.Round(_actualPosition.Y)
             );
+            Bounds = new CircleF(ColliderPosition, ColliderRadius);
         }
     }
     protected override Vector2 ColliderPosition
     {
         get => new Vector2(
             ActualPosition.X,
-            ActualPosition.Y + TileRender.TILE_SIZE / 2 - ColliderRadii.Y
+            ActualPosition.Y + TileRender.TILE_SIZE / 2 - ColliderRadius
         );
     }
-    protected Vector2 ColliderRadii
+    protected float ColliderRadius
     {
-        get => new Vector2(
-            TileRender.TILE_SIZE * 0.3f,
-            TileRender.TILE_SIZE * 0.25f
-        );
+        get => TileRender.TILE_SIZE * 0.25f;
     }
     public int Speed { get; set; } = 70;
     public override Facing Direction { get; protected set; } = Facing.Down;
@@ -159,7 +155,6 @@ public class Player : Entity
             Y = map.HeightInPixels - TileRender.TILE_SIZE / 2;
         }
         ActualPosition = new Vector2(X, Y);
-        _position = new Vector2((int)Math.Round(X), (int)Math.Round(Y));
 
         // Update sprite animation
         if (movementDirection != Vector2.Zero)
@@ -173,12 +168,17 @@ public class Player : Entity
         spriteBatch.Draw(Sprite, Position);
         if (drawCollider)
         {
-            spriteBatch.DrawEllipse(ColliderPosition, ColliderRadii, 20, Color.Red, 2);
+            spriteBatch.DrawCircle((CircleF)Bounds, 15, Color.Red, 2);
         }
     }
 
     public override void OnCollision(CollisionEventArgs collisionInfo)
     {
-        throw new NotImplementedException();
+        Type entityType = collisionInfo.Other.GetType();
+
+        if (entityType == typeof(Box))
+        {
+            ActualPosition -= collisionInfo.PenetrationVector;
+        }
     }
 }

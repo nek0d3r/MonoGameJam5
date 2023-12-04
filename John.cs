@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended;
+using MonoGame.Extended.Collisions;
 using MonoGame.Extended.Content;
 using MonoGame.Extended.Particles;
 using MonoGame.Extended.Serialization;
@@ -45,7 +46,10 @@ public class John : Game
     SpriteSheet _spriteSheet;
 
     // Entities like player, boxes, etc
-    List<Entity> entities;
+    List<Entity> _entities;
+
+    // Collision component for collider handling
+    private CollisionComponent _collisionComponent;
 
     // Main constructor, called when program starts
     public John()
@@ -95,7 +99,18 @@ public class John : Game
         // Load spritesheet
         _spriteSheet = Content.Load<SpriteSheet>("pixel/spritesheet-animations.sf", new JsonContentLoader());
 
-        entities = new List<Entity>();
+        // Create collider area
+        _collisionComponent = new CollisionComponent(
+            new RectangleF(
+                0,
+                0,
+                _tiledMap.WidthInPixels,
+                _tiledMap.HeightInPixels
+            )
+        );
+
+        // Create game objects
+        _entities = new List<Entity>();
 
         // For every object layer in the map
         foreach(TiledMapObjectLayer layer in _tiledMap.ObjectLayers)
@@ -106,7 +121,7 @@ public class John : Game
                 switch (tiledObject.Type)
                 {
                     case "box":
-                        entities.Add(new Box()
+                        _entities.Add(new Box()
                         {
                             Position = tiledObject.Position,
                             Sprite = new AnimatedSprite(_spriteSheet),
@@ -120,7 +135,7 @@ public class John : Game
         }
 
         // Create new player
-        entities.Add(new Player()
+        _entities.Add(new Player()
         {
             Speed = 70,
             Position = new Vector2(
@@ -130,9 +145,16 @@ public class John : Game
             Sprite = new AnimatedSprite(_spriteSheet),
             Animation = "playerDown"
         });
-        // This will force the first frame of the animation to play.
-        // Without this, idling at the game start will only draw the first sprite in the sheet
-        entities.ForEach(entity => entity.Sprite.Update(0));
+
+        _entities.ForEach(entity =>
+        {
+            // Force the first frame of the animation to play.
+            // Without this, idling at the game start will only draw the first sprite in the sheet.
+            entity.Sprite.Update(0);
+            
+            // Add entity as a collider
+            _collisionComponent.Insert(entity);
+        });
 
         // Load music
         _backgroundMusic = Content.Load<Song>("Music/Sneak");
@@ -185,10 +207,13 @@ public class John : Game
         _tiledMapRenderer.Update(gameTime);
 
         // Update entities
-        entities.ForEach(entity => entity.Update(gameTime));
+        _entities.ForEach(entity => entity.Update(gameTime));
+
+        // Update collisions
+        _collisionComponent.Update(gameTime);
 
         // Updates camera to player position
-        Camera.MoveCamera(gameTime, (Player)entities.Where(entity => entity.GetType() == typeof(Player)).FirstOrDefault());
+        Camera.MoveCamera(gameTime, (Player)_entities.Where(entity => entity.GetType() == typeof(Player)).FirstOrDefault());
 
         base.Update(gameTime);
     }
@@ -208,10 +233,10 @@ public class John : Game
 
         // Sort objects in the layer by Y position
         // This allows sprites to draw over each other based on which one "looks" in front
-        entities.Sort(new DrawComparer());
+        _entities.Sort(new DrawComparer());
 
         // Draw each entity
-        entities.ForEach(entity => { entity.Draw(_spriteBatch, true); });
+        _entities.ForEach(entity => { entity.Draw(_spriteBatch, true); });
 
         // End drawing
         _spriteBatch.End();
