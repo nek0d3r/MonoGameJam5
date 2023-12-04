@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended;
 using MonoGame.Extended.Content;
 using MonoGame.Extended.Particles;
 using MonoGame.Extended.Serialization;
@@ -11,6 +12,14 @@ using MonoGame.Extended.Tiled.Renderers;
 using MonoGame.Extended.ViewportAdapters;
 
 namespace MonoGameJam5;
+
+public enum Facing
+{
+    Up = 0,
+    Down = 1,
+    Left = 2,
+    Right = 3
+}
 
 public class John : Game
 {
@@ -90,6 +99,8 @@ public class John : Game
             ),
             Sprite = new AnimatedSprite(_spriteSheet)
         };
+        // This will force the first frame of the animation to play.
+        // Without this, idling at the game start will only draw the first sprite in the sheet
         player.Sprite.Play("playerDown");
         player.Sprite.Update(0);
     }
