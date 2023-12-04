@@ -1,8 +1,9 @@
-using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using MonoGame.Extended.Sprites;
+using MonoGameJam5;
 
-public class Enemy : NPC, IObject
+public class Enemy : Entity
 {
     public bool detectedPlayer { get; }
     private Point lastSpotted { get; }
@@ -14,11 +15,16 @@ public class Enemy : NPC, IObject
 
     // Managers are intentionally faster than you,
     // so that you cannot cheese their speed easily.
-    protected new float moveSpeed = 75f;
+    protected float moveSpeed = 75f;
+
+    public override AnimatedSprite Sprite { get; set; }
+    public override Facing Direction { get; protected set; }
+    public override string Animation { get; set; }
+    public override Vector2 Position { get; set; }
 
     private List<Point> soundsToParse { get; }
 
-    public new void Update(GameTime tm)
+    public override void Update(GameTime tm)
     {
         // TODO: Check for player detection, and move along any predefined routes they have
         // TODO: Figure out if how to get map contents in here.
