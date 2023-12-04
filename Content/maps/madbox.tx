@@ -3,7 +3,7 @@
  <tileset firstgid="1" source="spritesheet.tsx"/>
  <object name="Mad Box" type="box" gid="33" width="24" height="24">
   <properties>
-   <property name="texture" value="boxmadnarrow"/>
+   <property name="animation" value="boxmadnarrow"/>
   </properties>
  </object>
 </template>

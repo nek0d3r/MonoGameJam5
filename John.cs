@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -112,12 +113,21 @@ public class John : Game
             {
                 switch (tiledObject.Type)
                 {
+                    case "player":
+                        _entities.Add(new Player()
+                        {
+                            Speed = Convert.ToInt32(tiledObject.Properties["speed"]),
+                            Position = tiledObject.Position,
+                            Sprite = new AnimatedSprite(_spriteSheet),
+                            Animation = tiledObject.Properties["animation"]
+                        });
+                        break;
                     case "box":
                         _entities.Add(new Box()
                         {
                             Position = tiledObject.Position,
                             Sprite = new AnimatedSprite(_spriteSheet),
-                            Animation = tiledObject.Properties["texture"]
+                            Animation = tiledObject.Properties["animation"]
                         });
                         break;
                     default:
@@ -125,18 +135,6 @@ public class John : Game
                 }
             }
         }
-
-        // Create new player
-        _entities.Add(new Player()
-        {
-            Speed = 70,
-            Position = new Vector2(
-                TileRender.BUFFER_SIZE.X / 2,
-                TileRender.BUFFER_SIZE.Y / 2
-            ),
-            Sprite = new AnimatedSprite(_spriteSheet),
-            Animation = "playerDown"
-        });
 
         _entities.ForEach(entity =>
         {

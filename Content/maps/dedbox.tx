@@ -3,7 +3,7 @@
  <tileset firstgid="1" source="spritesheet.tsx"/>
  <object name="Ded Box" type="box" gid="31" width="24" height="24">
   <properties>
-   <property name="texture" value="boxdednarrow"/>
+   <property name="animation" value="boxdednarrow"/>
   </properties>
  </object>
 </template>
