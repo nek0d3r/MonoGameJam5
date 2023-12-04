@@ -18,7 +18,6 @@ public class Wall : Entity
         {
             _position = value;
             Bounds = new RectangleF(ColliderPosition.ToPoint(), ColliderSize);
-            bool flag = true;
         }
     }
     protected override Vector2 ColliderPosition
