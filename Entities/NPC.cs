@@ -14,6 +14,7 @@ public class NPC : Entity
     protected float moveSpeed = 60f;
 
     public override AnimatedSprite Sprite { get; set; }
+    protected override Vector2 ColliderPosition { get; }
     public override Facing Direction { get; protected set; }
     public override string Animation { get; set; }
     public override Vector2 Position { get; set; }
