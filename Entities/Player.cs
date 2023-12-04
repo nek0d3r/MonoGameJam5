@@ -7,16 +7,21 @@ using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Tiled;
 using MonoGameJam5;
 
-public class Player : IObject
+public class Player : Entity
 {
-    public AnimatedSprite Sprite { get; set; }
-    public Vector2 Position { get; set; } = Vector2.Zero;
+    public override AnimatedSprite Sprite { get; set; }
+    public override Vector2 Position { get; set; } = Vector2.Zero;
     public Vector2 realPos { get; set; } = Vector2.Zero;
     public int Speed { get; set; } = 70;
-    public Facing Direction { get; private set; } = Facing.Down;
-
-    public Player()
+    public override Facing Direction { get; protected set; } = Facing.Down;
+    public override string Animation
     {
+        get => _animation;
+        set
+        {
+            _animation = value;
+            Sprite.Play(_animation);
+        }
     }
 
     // Determines input for movement
@@ -79,7 +84,7 @@ public class Player : IObject
         return movementDirection;
     }
 
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
         float seconds = gameTime.GetElapsedSeconds();
         Vector2 movementDirection = GetMovementDirection();
