@@ -89,7 +89,7 @@ public class Player
         // Update sprite animation
         if (movementDirection != Vector2.Zero)
         {
-            Sprite.Update(seconds);
+            Sprite.Update(seconds*runMult);
         }
     }
 }
