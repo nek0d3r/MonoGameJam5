@@ -3,15 +3,34 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
+using MonoGame.Extended.Collisions;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Tiled;
 using MonoGameJam5;
 
 public class Player : Entity
 {
+    protected Vector2 _actualPosition;
+    protected Vector2 _position;
     public override AnimatedSprite Sprite { get; set; }
-    public override Vector2 Position { get; set; } = Vector2.Zero;
-    public Vector2 realPos { get; set; } = Vector2.Zero;
+    public override Vector2 Position
+    {
+        get => _position;
+        set
+        {
+            _position = value;
+            ActualPosition = value;
+        }
+    }
+    protected Vector2 ActualPosition
+    {
+        get => _actualPosition;
+        set
+        {
+            _actualPosition = value;
+            Bounds = new CircleF(_actualPosition.ToPoint(), TileRender.TILE_SIZE / 2);
+        }
+    }
     public int Speed { get; set; } = 70;
     public override Facing Direction { get; protected set; } = Facing.Down;
     public override string Animation
@@ -23,6 +42,7 @@ public class Player : Entity
             Sprite.Play(_animation);
         }
     }
+    public override IShapeF Bounds { get; protected set; }
 
     // Determines input for movement
     private Vector2 GetMovementDirection()
@@ -100,33 +120,47 @@ public class Player : Entity
         // Change camera position based on a provided speed, direction, and delta.
         // Time delta prevents tying a logical change to framerate.
         // See why Fallout 4 or Okami HD have locked framerates.
-        realPos += Speed * runMult * movementDirection * seconds;
+        ActualPosition += Speed * runMult * movementDirection * seconds;
 
         // Prevent moving beyond the map limits
-        float X = realPos.X, Y = realPos.Y;
-        if (realPos.X < TileRender.TILE_SIZE / 2)
+        float X = ActualPosition.X, Y = ActualPosition.Y;
+        if (X < TileRender.TILE_SIZE / 2)
         {
             X = TileRender.TILE_SIZE / 2;
         }
-        if (realPos.Y < TileRender.TILE_SIZE / 2)
+        if (Y < TileRender.TILE_SIZE / 2)
         {
             Y = TileRender.TILE_SIZE / 2;
         }
-        if (realPos.X > map.WidthInPixels - TileRender.TILE_SIZE / 2)
+        if (X > map.WidthInPixels - TileRender.TILE_SIZE / 2)
         {
             X = map.WidthInPixels - TileRender.TILE_SIZE / 2;
         }
-        if (realPos.Y > map.HeightInPixels - TileRender.TILE_SIZE / 2)
+        if (Y > map.HeightInPixels - TileRender.TILE_SIZE / 2)
         {
             Y = map.HeightInPixels - TileRender.TILE_SIZE / 2;
         }
-        realPos = new Vector2(X, Y);
-        Position = new Vector2((int)Math.Round(realPos.X), (int)Math.Round(realPos.Y));
+        ActualPosition = new Vector2(X, Y);
+        _position = new Vector2((int)Math.Round(X), (int)Math.Round(Y));
 
         // Update sprite animation
         if (movementDirection != Vector2.Zero)
         {
             Sprite.Update(seconds*runMult);
         }
+    }
+
+    public override void Draw(SpriteBatch spriteBatch, bool drawCollider = false)
+    {
+        spriteBatch.Draw(Sprite, Position);
+        if (drawCollider)
+        {
+            spriteBatch.DrawCircle((CircleF)Bounds, 8, Color.Red, 3);
+        }
+    }
+
+    public override void OnCollision(CollisionEventArgs collisionInfo)
+    {
+        throw new NotImplementedException();
     }
 }

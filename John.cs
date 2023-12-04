@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using MonoGame.Extended;
 using MonoGame.Extended.Content;
 using MonoGame.Extended.Particles;
 using MonoGame.Extended.Serialization;
@@ -126,10 +127,6 @@ public class John : Game
                 TileRender.BUFFER_SIZE.X / 2,
                 TileRender.BUFFER_SIZE.Y / 2
             ),
-            realPos = new Vector2(
-                TileRender.BUFFER_SIZE.X / 2,
-                TileRender.BUFFER_SIZE.Y / 2
-            ),
             Sprite = new AnimatedSprite(_spriteSheet),
             Animation = "playerDown"
         });
@@ -214,9 +211,7 @@ public class John : Game
         entities.Sort(new DrawComparer());
 
         // Draw each entity
-        entities.ForEach(entity => {
-            _spriteBatch.Draw(entity.Sprite, entity.Position);
-        });
+        entities.ForEach(entity => { entity.Draw(_spriteBatch, true); });
 
         // End drawing
         _spriteBatch.End();
