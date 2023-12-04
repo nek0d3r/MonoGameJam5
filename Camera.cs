@@ -80,6 +80,7 @@ public static class Camera
             Y = map.HeightInPixels - TileRender.BUFFER_SIZE.Y / 2;
         }
         Position = new Vector2(X, Y);
+        Position.Round();
 
         // Set camera to new position
         _camera.LookAt(Position);
