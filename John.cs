@@ -1,6 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended.Content;
+using MonoGame.Extended.Particles;
+using MonoGame.Extended.Serialization;
+using MonoGame.Extended.Sprites;
+using MonoGame.Extended.TextureAtlases;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Renderers;
 using MonoGame.Extended.ViewportAdapters;
@@ -18,8 +23,14 @@ public class John : Game
     KeyboardState currentKey = new KeyboardState(), prevKey;
 
     // Map and level resources and rendering
-    TiledMap _tiledMap;
+    public static TiledMap _tiledMap;
     TiledMapRenderer _tiledMapRenderer;
+
+    // Spritesheet
+    SpriteSheet _spriteSheet;
+
+    // Player object
+    Player player;
 
     // Main constructor, called when program starts
     public John()
@@ -63,8 +74,24 @@ public class John : Game
         _render = new RenderTarget2D(GraphicsDevice, TileRender.BUFFER_SIZE.X, TileRender.BUFFER_SIZE.Y);
 
         // Load level and create Tiled map renderer
-        _tiledMap = Content.Load<TiledMap>("testmap");
+        _tiledMap = Content.Load<TiledMap>("maps/map");
         _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
+
+        // Load spritesheet
+        _spriteSheet = Content.Load<SpriteSheet>("pixel/spritesheet-animations.sf", new JsonContentLoader());
+
+        // Create new player
+        player = new Player()
+        {
+            Speed = 70,
+            Position = new Vector2(
+                TileRender.BUFFER_SIZE.X / 2,
+                TileRender.BUFFER_SIZE.Y / 2
+            ),
+            Sprite = new AnimatedSprite(_spriteSheet)
+        };
+        player.Sprite.Play("playerDown");
+        player.Sprite.Update(0);
     }
 
     // Called repeatedly until game ends, handles logic updates (e.g. object positions, game state)
@@ -109,8 +136,11 @@ public class John : Game
         // Handles any animated tiles in Tiled map
         _tiledMapRenderer.Update(gameTime);
 
-        // Updates camera based on input
-        Camera.MoveCamera(gameTime, _tiledMap);
+        // Update player based on user input
+        player.Update(gameTime);
+
+        // Updates camera to player position
+        Camera.MoveCamera(gameTime, player);
 
         base.Update(gameTime);
     }
@@ -124,6 +154,11 @@ public class John : Game
 
         // Handles drawing map based on camera's view
         _tiledMapRenderer.Draw(Camera.ViewMatrix);
+
+        // Draw player
+        _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Camera.ViewMatrix);
+        _spriteBatch.Draw(player.Sprite, player.Position);
+        _spriteBatch.End();
 
         // Set render target to device back buffer and clear
         GraphicsDevice.SetRenderTarget(null);
