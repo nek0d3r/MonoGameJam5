@@ -1,4 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
@@ -44,6 +47,9 @@ public class John : Game
 
     // Player object
     Player player;
+
+    // Testing object texture
+    Texture2D boxded;
 
     // Main constructor, called when program starts
     public John()
@@ -101,6 +107,10 @@ public class John : Game
                 TileRender.BUFFER_SIZE.X / 2,
                 TileRender.BUFFER_SIZE.Y / 2
             ),
+            realPos = new Vector2(
+                TileRender.BUFFER_SIZE.X / 2,
+                TileRender.BUFFER_SIZE.Y / 2
+            ),
             Sprite = new AnimatedSprite(_spriteSheet)
         };
         // This will force the first frame of the animation to play.
@@ -110,6 +120,8 @@ public class John : Game
 
         // Load music
         _backgroundMusic = Content.Load<Song>("Music/Sneak");
+
+        boxded = Content.Load<Texture2D>("pixel/boxdednarrow");
     }
 
     // Called repeatedly until game ends, handles logic updates (e.g. object positions, game state)
@@ -184,7 +196,29 @@ public class John : Game
 
         // Draw player
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Camera.ViewMatrix);
-        _spriteBatch.Draw(player.Sprite, player.Position);
+
+        bool hasPlayerBeenDrawn = false;
+        foreach(TiledMapObjectLayer layer in _tiledMap.ObjectLayers)
+        {
+            List<TiledMapObject> sortedObjects = layer.Objects.ToList();
+            DrawComparer drawSort = new DrawComparer();
+            sortedObjects.Sort(drawSort);
+
+            foreach(TiledMapObject tiledObject in sortedObjects)
+            {
+                if (!hasPlayerBeenDrawn && player.Position.Y < tiledObject.Position.Y)
+                {
+                    _spriteBatch.Draw(player.Sprite, player.Position);
+                    hasPlayerBeenDrawn = true;
+                }
+                _spriteBatch.Draw(boxded, tiledObject.Position, Color.White);
+            }
+            if (!hasPlayerBeenDrawn)
+            {
+                _spriteBatch.Draw(player.Sprite, player.Position);
+            }
+        }
+
         _spriteBatch.End();
 
         // Set render target to device back buffer and clear
