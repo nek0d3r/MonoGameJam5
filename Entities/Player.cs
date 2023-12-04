@@ -28,8 +28,26 @@ public class Player : Entity
         set
         {
             _actualPosition = value;
-            Bounds = new CircleF(_actualPosition.ToPoint(), TileRender.TILE_SIZE / 2);
+            Bounds = new EllipseF(
+                ColliderPosition,
+                ColliderRadii.X,
+                ColliderRadii.Y
+            );
         }
+    }
+    protected override Vector2 ColliderPosition
+    {
+        get => new Vector2(
+            ActualPosition.X,
+            ActualPosition.Y + TileRender.TILE_SIZE / 2 - ColliderRadii.Y
+        );
+    }
+    protected Vector2 ColliderRadii
+    {
+        get => new Vector2(
+            TileRender.TILE_SIZE * 0.3f,
+            TileRender.TILE_SIZE * 0.25f
+        );
     }
     public int Speed { get; set; } = 70;
     public override Facing Direction { get; protected set; } = Facing.Down;
@@ -155,7 +173,7 @@ public class Player : Entity
         spriteBatch.Draw(Sprite, Position);
         if (drawCollider)
         {
-            spriteBatch.DrawCircle((CircleF)Bounds, 8, Color.Red, 3);
+            spriteBatch.DrawEllipse(ColliderPosition, ColliderRadii, 20, Color.Red, 2);
         }
     }
 

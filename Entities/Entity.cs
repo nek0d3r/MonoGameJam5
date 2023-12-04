@@ -9,6 +9,7 @@ public abstract class Entity : ICollisionActor
 {
     protected string _animation;
     public abstract Vector2 Position { get; set; }
+    protected abstract Vector2 ColliderPosition { get; }
     public abstract AnimatedSprite Sprite { get; set; }
     public abstract Facing Direction { get; protected set; }
     public abstract string Animation { get; set; }

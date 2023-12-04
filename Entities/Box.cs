@@ -15,8 +15,22 @@ public class Box : Entity
         set
         {
             _position = value;
-            Bounds = new RectangleF(value.X, value.Y, 24f, 24f);
+            Bounds = new RectangleF(ColliderPosition.ToPoint(), ColliderSize);
         }
+    }
+    protected override Vector2 ColliderPosition
+    {
+        get => new Vector2(
+            Position.X - ColliderSize.Width / 2,
+            Position.Y
+        );
+    }
+    protected Size2 ColliderSize
+    {
+        get => new Size2(
+            TileRender.TILE_SIZE * 0.75f,
+            TileRender.TILE_SIZE * 0.5f
+        );
     }
     public override Facing Direction
     {
@@ -44,7 +58,7 @@ public class Box : Entity
         spriteBatch.Draw(Sprite, Position);
         if (drawCollider)
         {
-            spriteBatch.DrawRectangle((RectangleF)Bounds, Color.Red, 3);
+            spriteBatch.DrawRectangle((RectangleF)Bounds, Color.Red, 2);
         }
     }
 
