@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using MonoGame.Extended.Sprites;
@@ -10,32 +11,60 @@ public class Player
     public AnimatedSprite Sprite { get; set; }
     public Vector2 Position { get; set; } = Vector2.Zero;
     public int Speed { get; set; } = 70;
+    public Facing Direction { get; private set; } = Facing.Down;
 
     public Player()
     {
     }
 
     // Determines input for movement
-    private static Vector2 GetMovementDirection()
+    private Vector2 GetMovementDirection()
     {
         // Get inputs and add to direction vector
         Vector2 movementDirection = Vector2.Zero;
         KeyboardState key = Keyboard.GetState();
-        if (key.IsKeyDown(Keybindings.Down))
-        {
-            movementDirection += Vector2.UnitY;
-        }
-        if (key.IsKeyDown(Keybindings.Up))
-        {
-            movementDirection -= Vector2.UnitY;
-        }
+        Facing prevDirection = Direction;
         if (key.IsKeyDown(Keybindings.Left))
         {
             movementDirection -= Vector2.UnitX;
+            Direction = Facing.Left;
         }
         if (key.IsKeyDown(Keybindings.Right))
         {
             movementDirection += Vector2.UnitX;
+            Direction = Facing.Right;
+        }
+        if (key.IsKeyDown(Keybindings.Up))
+        {
+            movementDirection -= Vector2.UnitY;
+            Direction = Facing.Up;
+        }
+        if (key.IsKeyDown(Keybindings.Down))
+        {
+            movementDirection += Vector2.UnitY;
+            Direction = Facing.Down;
+        }
+
+        if (prevDirection != Direction)
+        {
+            Sprite.Effect = SpriteEffects.None;
+            switch (Direction)
+            {
+                case Facing.Up:
+                    Sprite.Play("playerUp");
+                    break;
+                case Facing.Right:
+                    Sprite.Effect = SpriteEffects.FlipHorizontally;
+                    Sprite.Play("playerSide");
+                    break;
+                case Facing.Left:
+                    Sprite.Play("playerSide");
+                    break;
+                case Facing.Down:
+                default:
+                    Sprite.Play("playerDown");
+                    break;
+            }
         }
 
         // Can't normalize the zero vector so test for it before normalizing
