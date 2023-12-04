@@ -174,9 +174,8 @@ public class Player : Entity
 
     public override void OnCollision(CollisionEventArgs collisionInfo)
     {
-        Type entityType = collisionInfo.Other.GetType();
-
-        if (entityType == typeof(Box))
+        if (collisionInfo.Other is Box ||
+            collisionInfo.Other is Wall)
         {
             ActualPosition -= collisionInfo.PenetrationVector;
         }

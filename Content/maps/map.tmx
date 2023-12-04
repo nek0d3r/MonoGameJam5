@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="21" tilewidth="24" tileheight="24" infinite="0" nextlayerid="9" nextobjectid="23">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="21" tilewidth="24" tileheight="24" infinite="0" nextlayerid="10" nextobjectid="139">
  <tileset firstgid="1" source="spritesheet.tsx"/>
+ <tileset firstgid="92" source="gameobjects.tsx"/>
  <layer id="4" name="Floor" width="30" height="21">
   <data encoding="csv">
 30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,30,
@@ -51,14 +52,112 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="7" name="Boxes">
-  <object id="6" template="dedbox.tx" type="box" x="240" y="238"/>
-  <object id="12" template="sadbox.tx" type="box" x="266" y="254"/>
-  <object id="15" template="helpbox.tx" type="box" x="216" y="267"/>
-  <object id="17" template="madbox.tx" type="box" x="246" y="287"/>
-  <object id="18" template="starebox.tx" type="box" x="219" y="297"/>
+ <objectgroup id="7" name="Entities">
+  <object id="6" template="dedbox.tx" type="box" x="240" y="238" visible="1"/>
+  <object id="12" template="sadbox.tx" type="box" x="266" y="254" visible="1"/>
+  <object id="15" template="helpbox.tx" type="box" x="216" y="267" visible="1"/>
+  <object id="17" template="madbox.tx" type="box" x="246" y="287" visible="1"/>
+  <object id="18" template="starebox.tx" type="box" x="219" y="297" visible="1"/>
   <object id="19" template="player.tx" type="player" x="346" y="250"/>
   <object id="21" template="employee.tx" type="employee" x="215" y="112"/>
   <object id="22" template="manager.tx" type="manager" x="491" y="141"/>
+ </objectgroup>
+ <objectgroup id="9" name="Walls">
+  <object id="42" template="wall.tx" type="wall" x="120" y="48"/>
+  <object id="43" template="wall.tx" x="144" y="48"/>
+  <object id="44" template="wall.tx" x="96" y="48"/>
+  <object id="45" template="wall.tx" x="72" y="48"/>
+  <object id="46" template="wall.tx" x="48" y="48"/>
+  <object id="47" template="wall.tx" x="24" y="48"/>
+  <object id="48" template="wall.tx" x="0" y="48"/>
+  <object id="49" template="wall.tx" x="0" y="72"/>
+  <object id="50" template="wall.tx" x="0" y="96"/>
+  <object id="51" template="wall.tx" x="0" y="120"/>
+  <object id="52" template="wall.tx" x="0" y="144"/>
+  <object id="53" template="wall.tx" x="0" y="168"/>
+  <object id="54" template="wall.tx" x="0" y="192"/>
+  <object id="55" template="wall.tx" x="0" y="216"/>
+  <object id="56" template="wall.tx" x="0" y="240"/>
+  <object id="57" template="wall.tx" x="0" y="264"/>
+  <object id="58" template="wall.tx" x="0" y="288"/>
+  <object id="59" template="wall.tx" x="0" y="312"/>
+  <object id="60" template="wall.tx" x="0" y="336"/>
+  <object id="61" template="wall.tx" x="0" y="360"/>
+  <object id="62" template="wall.tx" x="0" y="384"/>
+  <object id="63" template="wall.tx" x="0" y="408"/>
+  <object id="64" template="wall.tx" x="0" y="432"/>
+  <object id="65" template="wall.tx" x="0" y="456"/>
+  <object id="66" template="wall.tx" x="0" y="480"/>
+  <object id="67" template="wall.tx" x="0" y="504"/>
+  <object id="68" template="wall.tx" x="24" y="504"/>
+  <object id="69" template="wall.tx" x="48" y="504"/>
+  <object id="70" template="wall.tx" x="72" y="504"/>
+  <object id="71" template="wall.tx" x="96" y="504"/>
+  <object id="72" template="wall.tx" x="120" y="504"/>
+  <object id="73" template="wall.tx" x="144" y="504"/>
+  <object id="74" template="wall.tx" x="168" y="504"/>
+  <object id="75" template="wall.tx" x="192" y="504"/>
+  <object id="76" template="wall.tx" x="216" y="504"/>
+  <object id="77" template="wall.tx" x="240" y="504"/>
+  <object id="78" template="wall.tx" x="264" y="504"/>
+  <object id="79" template="wall.tx" x="288" y="504"/>
+  <object id="80" template="wall.tx" x="312" y="504"/>
+  <object id="81" template="wall.tx" x="336" y="504"/>
+  <object id="82" template="wall.tx" x="360" y="504"/>
+  <object id="83" template="wall.tx" x="384" y="504"/>
+  <object id="84" template="wall.tx" x="408" y="504"/>
+  <object id="85" template="wall.tx" x="432" y="504"/>
+  <object id="86" template="wall.tx" x="480" y="504"/>
+  <object id="87" template="wall.tx" x="456" y="504"/>
+  <object id="88" template="wall.tx" x="504" y="504"/>
+  <object id="89" template="wall.tx" x="528" y="504"/>
+  <object id="90" template="wall.tx" x="552" y="504"/>
+  <object id="91" template="wall.tx" x="576" y="504"/>
+  <object id="92" template="wall.tx" x="600" y="504"/>
+  <object id="93" template="wall.tx" x="624" y="504"/>
+  <object id="94" template="wall.tx" x="648" y="504"/>
+  <object id="95" template="wall.tx" x="672" y="504"/>
+  <object id="96" template="wall.tx" x="696" y="504"/>
+  <object id="97" template="wall.tx" x="696" y="480"/>
+  <object id="98" template="wall.tx" x="696" y="456"/>
+  <object id="99" template="wall.tx" x="696" y="432"/>
+  <object id="100" template="wall.tx" x="696" y="408"/>
+  <object id="101" template="wall.tx" x="696" y="384"/>
+  <object id="102" template="wall.tx" x="696" y="360"/>
+  <object id="103" template="wall.tx" x="696" y="336"/>
+  <object id="104" template="wall.tx" x="696" y="312"/>
+  <object id="105" template="wall.tx" x="696" y="288"/>
+  <object id="106" template="wall.tx" x="696" y="264"/>
+  <object id="107" template="wall.tx" x="696" y="240"/>
+  <object id="108" template="wall.tx" x="696" y="216"/>
+  <object id="109" template="wall.tx" x="696" y="192"/>
+  <object id="110" template="wall.tx" x="696" y="168"/>
+  <object id="111" template="wall.tx" x="696" y="144"/>
+  <object id="112" template="wall.tx" x="696" y="120"/>
+  <object id="113" template="wall.tx" x="696" y="96"/>
+  <object id="114" template="wall.tx" x="696" y="72"/>
+  <object id="115" template="wall.tx" x="696" y="48"/>
+  <object id="116" template="wall.tx" x="672" y="48"/>
+  <object id="117" template="wall.tx" x="648" y="48"/>
+  <object id="118" template="wall.tx" x="624" y="48"/>
+  <object id="119" template="wall.tx" x="600" y="48"/>
+  <object id="121" template="wall.tx" x="576" y="48"/>
+  <object id="122" template="wall.tx" x="552" y="48"/>
+  <object id="123" template="wall.tx" x="528" y="48"/>
+  <object id="124" template="wall.tx" x="504" y="48"/>
+  <object id="125" template="wall.tx" x="480" y="48"/>
+  <object id="126" template="wall.tx" x="456" y="48"/>
+  <object id="127" template="wall.tx" x="432" y="48"/>
+  <object id="128" template="wall.tx" x="408" y="48"/>
+  <object id="129" template="wall.tx" x="384" y="48"/>
+  <object id="130" template="wall.tx" x="360" y="48"/>
+  <object id="131" template="wall.tx" x="336" y="48"/>
+  <object id="132" template="wall.tx" x="312" y="48"/>
+  <object id="133" template="wall.tx" x="288" y="48"/>
+  <object id="134" template="wall.tx" x="264" y="48"/>
+  <object id="135" template="wall.tx" x="240" y="48"/>
+  <object id="136" template="wall.tx" x="216" y="48"/>
+  <object id="137" template="wall.tx" x="192" y="48"/>
+  <object id="138" template="wall.tx" x="168" y="48"/>
  </objectgroup>
 </map>

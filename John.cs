@@ -134,6 +134,12 @@ public class John : Game
                             Animation = tiledObject.Properties["animation"]
                         });
                         break;
+                    case "wall":
+                        _entities.Add(new Wall()
+                        {
+                            Position = tiledObject.Position
+                        });
+                        break;
                     default:
                         break;
                 }
@@ -144,7 +150,10 @@ public class John : Game
         {
             // Force the first frame of the animation to play.
             // Without this, idling at the game start will only draw the first sprite in the sheet.
-            entity.Sprite.Update(0);
+            if (entity.Sprite != null)
+            {
+                entity.Sprite.Update(0);
+            }
             
             // Add entity as a collider
             _collisionComponent.Insert(entity);
