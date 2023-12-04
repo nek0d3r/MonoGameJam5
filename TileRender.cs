@@ -1,5 +1,8 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using MonoGame.Extended.Tiled;
 
 public static class TileRender
 {
@@ -65,5 +68,18 @@ public static class TileRender
         }
 
         renderDims = new Rectangle(origin, dimensions);
+    }
+}
+
+public class DrawComparer : IComparer<TiledMapObject>
+{
+    public int Compare(TiledMapObject a, TiledMapObject b)
+    {
+        if (a == null || b == null)
+        {
+            return 0;
+        }
+
+        return a.Position.Y.CompareTo(b.Position.Y);
     }
 }

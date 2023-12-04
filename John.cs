@@ -1,4 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
@@ -168,7 +171,29 @@ public class John : Game
 
         // Draw player
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Camera.ViewMatrix);
-        _spriteBatch.Draw(player.Sprite, player.Position);
+
+        bool hasPlayerBeenDrawn = false;
+        foreach(TiledMapObjectLayer layer in _tiledMap.ObjectLayers)
+        {
+            List<TiledMapObject> sortedObjects = layer.Objects.ToList();
+            DrawComparer drawSort = new DrawComparer();
+            sortedObjects.Sort(drawSort);
+
+            foreach(TiledMapObject tiledObject in sortedObjects)
+            {
+                if (!hasPlayerBeenDrawn && player.Position.Y < tiledObject.Position.Y)
+                {
+                    _spriteBatch.Draw(player.Sprite, player.Position);
+                    hasPlayerBeenDrawn = true;
+                }
+                _spriteBatch.Draw(player.Sprite, tiledObject.Position);
+            }
+            if (!hasPlayerBeenDrawn)
+            {
+                _spriteBatch.Draw(player.Sprite, player.Position);
+            }
+        }
+
         _spriteBatch.End();
 
         // Set render target to device back buffer and clear
