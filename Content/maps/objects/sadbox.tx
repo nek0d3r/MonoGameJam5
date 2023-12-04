@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <template>
- <tileset firstgid="1" source="spritesheet.tsx"/>
+ <tileset firstgid="1" source="../spritesheets/spritesheet.tsx"/>
  <object name="Sad Box" type="box" gid="34" width="24" height="24">
   <properties>
    <property name="animation" value="boxsadnarrow"/>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="21" tilewidth="24" tileheight="24" infinite="0" nextlayerid="10" nextobjectid="144">
- <tileset firstgid="1" source="spritesheet.tsx"/>
- <tileset firstgid="92" source="gameobjects.tsx"/>
+ <tileset firstgid="1" source="spritesheets/spritesheet.tsx"/>
+ <tileset firstgid="92" source="spritesheets/gameobjects.tsx"/>
  <layer id="4" name="Floor" width="30" height="21">
   <data encoding="csv">
 30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,30,
@@ -53,19 +53,19 @@
 </data>
  </layer>
  <objectgroup id="7" name="Entities">
-  <object id="6" template="dedbox.tx" type="box" x="240" y="238" visible="1"/>
-  <object id="12" template="sadbox.tx" type="box" x="266" y="254" visible="1"/>
-  <object id="15" template="helpbox.tx" type="box" x="216" y="267" visible="1"/>
-  <object id="17" template="madbox.tx" type="box" x="246" y="287" visible="1"/>
-  <object id="18" template="starebox.tx" type="box" x="219" y="297" visible="1"/>
-  <object id="19" template="player.tx" type="player" x="346" y="250"/>
-  <object id="21" template="employee.tx" type="employee" x="215" y="112"/>
-  <object id="22" template="manager.tx" type="manager" x="491" y="141"/>
+  <object id="6" template="objects/dedbox.tx" type="box" x="240" y="238" visible="1"/>
+  <object id="12" template="objects/sadbox.tx" type="box" x="266" y="254" visible="1"/>
+  <object id="15" template="objects/helpbox.tx" type="box" x="216" y="267" visible="1"/>
+  <object id="17" template="objects/madbox.tx" type="box" x="246" y="287" visible="1"/>
+  <object id="18" template="objects/starebox.tx" type="box" x="219" y="297" visible="1"/>
+  <object id="19" template="objects/player.tx" type="player" x="346" y="250"/>
+  <object id="21" template="objects/employee.tx" type="employee" x="215" y="112"/>
+  <object id="22" template="objects/manager.tx" type="manager" x="491" y="141"/>
  </objectgroup>
  <objectgroup id="9" name="Walls">
-  <object id="139" template="wall.tx" x="0" y="504" width="24" height="480"/>
-  <object id="140" template="wall.tx" x="696" y="504" width="24" height="480"/>
-  <object id="141" template="wall.tx" x="24" y="504" width="672" height="24"/>
-  <object id="143" template="wall.tx" x="24" y="48" width="672" height="24"/>
+  <object id="139" template="objects/wall.tx" x="0" y="504" width="24" height="480"/>
+  <object id="140" template="objects/wall.tx" x="696" y="504" width="24" height="480"/>
+  <object id="141" template="objects/wall.tx" x="24" y="504" width="672" height="24"/>
+  <object id="143" template="objects/wall.tx" x="24" y="48" width="672" height="24"/>
  </objectgroup>
 </map>

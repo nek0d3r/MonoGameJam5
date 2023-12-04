@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <template>
- <tileset firstgid="1" source="gameobjects.tsx"/>
+ <tileset firstgid="1" source="../spritesheets/gameobjects.tsx"/>
  <object name="Wall" type="wall" gid="1" width="24" height="24"/>
 </template>
