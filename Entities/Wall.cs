@@ -9,6 +9,7 @@ using MonoGameJam5;
 public class Wall : Entity
 {
     protected Vector2 _position;
+    protected Size2 _colliderSize = new Size2(TileRender.TILE_SIZE, TileRender.TILE_SIZE);
     public override AnimatedSprite Sprite { get; set; }
     public override Vector2 Position
     {
@@ -17,21 +18,20 @@ public class Wall : Entity
         {
             _position = value;
             Bounds = new RectangleF(ColliderPosition.ToPoint(), ColliderSize);
+            bool flag = true;
         }
     }
     protected override Vector2 ColliderPosition
     {
         get => new Vector2(
             Position.X,
-            Position.Y - TileRender.TILE_SIZE
+            Position.Y - ColliderSize.Height
         );
     }
-    protected Size2 ColliderSize
+    public Size2 ColliderSize
     {
-        get => new Size2(
-            TileRender.TILE_SIZE,
-            TileRender.TILE_SIZE
-        );
+        get => _colliderSize;
+        set => _colliderSize = value;
     }
     public override Facing Direction
     {

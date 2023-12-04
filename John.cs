@@ -137,6 +137,7 @@ public class John : Game
                     case "wall":
                         _entities.Add(new Wall()
                         {
+                            ColliderSize = tiledObject.Size,
                             Position = tiledObject.Position
                         });
                         break;
