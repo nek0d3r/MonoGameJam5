@@ -32,27 +32,41 @@ public class Conveyor : Entity
     {
         get
         {
-            // Default to top left
+            // Default to center
             float x = _position.X - ColliderSize.Width / 2;
             float y = _position.Y - ColliderSize.Height / 2;
 
-            // North/south only needs y adjustments
-            if (_direction == Facing.North)
+            // North flow ends and south flow starts and paths shift collider to
+            // align with bottom of tile
+            if ((_direction == Facing.North && ConveyorType == ConveyorType.End) ||
+                (_direction == Facing.South &&
+                    (ConveyorType == ConveyorType.Start ||
+                     ConveyorType == ConveyorType.Path)))
             {
-                if (ConveyorType == ConveyorType.End)
-                {
-                }
+                y = _position.Y + TileRender.TILE_SIZE / 2 - ColliderSize.Height;
             }
-            else if (_direction == Facing.South)
+            // South flow ends and north flow starts and paths shift collider to
+            // align with top of tile
+            else if ((_direction == Facing.South && ConveyorType == ConveyorType.End) ||
+                      _direction == Facing.North &&
+                        (ConveyorType == ConveyorType.Start ||
+                         ConveyorType == ConveyorType.Path))
             {
-                if (ConveyorType == ConveyorType.End)
-                {
-                    y = _position.Y;
-                }
+                y = _position.Y - TileRender.TILE_SIZE / 2;
             }
-            // East/west only needs x adjustments
-            else
+            else if ((_direction == Facing.West && ConveyorType == ConveyorType.End) ||
+                      _direction == Facing.East &&
+                        (ConveyorType == ConveyorType.Start ||
+                         ConveyorType == ConveyorType.Path))
             {
+                x = _position.X + TileRender.TILE_SIZE / 2 - ColliderSize.Width;
+            }
+            else if ((_direction == Facing.East && ConveyorType == ConveyorType.End) ||
+                      _direction == Facing.West &&
+                        (ConveyorType == ConveyorType.Start ||
+                         ConveyorType == ConveyorType.Path))
+            {
+                x = _position.X - TileRender.TILE_SIZE / 2;
             }
 
             return new Vector2(x, y);
@@ -78,11 +92,27 @@ public class Conveyor : Entity
                 {
                     y *= 0.25f;
                 }
+                // Path pieces are always a fixed height
+                else if (ConveyorType == ConveyorType.Path)
+                {
+                    y *= 0.75f;
+                }
             }
             // East/west conveyors are always fixed height
             else
             {
                 y *= 0.4f;
+                // Start/end pieces are always a fixed width
+                if (ConveyorType == ConveyorType.Start ||
+                    ConveyorType == ConveyorType.End)
+                {
+                    x *= 0.2f;
+                }
+                // Path pieces are always a fixed width
+                else if (ConveyorType == ConveyorType.Path)
+                {
+                    x *= 0.8f;
+                }
             }
 
             return new Size2(x, y);
