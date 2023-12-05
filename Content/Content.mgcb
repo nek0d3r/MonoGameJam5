@@ -31,6 +31,11 @@
 /processorParam:TextureFormat=Color
 /build:pixel/boxdednarrow.png
 
+#begin Music/Sneak.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/build:Music/Escape.ogg
+
 #begin pixel/spritesheet-animations.sf
 /copy:pixel/spritesheet-animations.sf
 
@@ -50,3 +55,15 @@
 /importer:OggImporter
 /processor:SongProcessor
 /build:Music/Sneak.ogg
+
+#begin pixel/title.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:pixel/title.png
