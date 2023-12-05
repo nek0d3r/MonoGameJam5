@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,14 +17,6 @@ using MonoGame.Extended.Tiled.Renderers;
 using MonoGame.Extended.ViewportAdapters;
 
 namespace MonoGameJam5;
-
-public enum Facing
-{
-    Up = 0,
-    Down = 1,
-    Left = 2,
-    Right = 3
-}
 
 public class John : Game
 {
@@ -120,12 +113,34 @@ public class John : Game
             {
                 switch (tiledObject.Type)
                 {
+                    case "player":
+                        _entities.Add(new Player()
+                        {
+                            Speed = Convert.ToInt32(tiledObject.Properties["speed"]),
+                            Position = tiledObject.Position,
+                            Sprite = new AnimatedSprite(_spriteSheet),
+                            Animation = tiledObject.Properties["animation"]
+                        });
+                        break;
+                    case "employee":
+                        break;
+                    case "manager":
+                        break;
+                    case "conveyor":
+                        break;
                     case "box":
                         _entities.Add(new Box()
                         {
                             Position = tiledObject.Position,
                             Sprite = new AnimatedSprite(_spriteSheet),
-                            Animation = tiledObject.Properties["texture"]
+                            Animation = tiledObject.Properties["animation"]
+                        });
+                        break;
+                    case "wall":
+                        _entities.Add(new Wall()
+                        {
+                            ColliderSize = tiledObject.Size,
+                            Position = tiledObject.Position
                         });
                         break;
                     default:
@@ -134,23 +149,14 @@ public class John : Game
             }
         }
 
-        // Create new player
-        _entities.Add(new Player()
-        {
-            Speed = 70,
-            Position = new Vector2(
-                TileRender.BUFFER_SIZE.X / 2,
-                TileRender.BUFFER_SIZE.Y / 2
-            ),
-            Sprite = new AnimatedSprite(_spriteSheet),
-            Animation = "playerDown"
-        });
-
         _entities.ForEach(entity =>
         {
             // Force the first frame of the animation to play.
             // Without this, idling at the game start will only draw the first sprite in the sheet.
-            entity.Sprite.Update(0);
+            if (entity.Sprite != null)
+            {
+                entity.Sprite.Update(0);
+            }
             
             // Add entity as a collider
             _collisionComponent.Insert(entity);

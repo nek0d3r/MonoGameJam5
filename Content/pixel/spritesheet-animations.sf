@@ -44,6 +44,76 @@
       "frames": [35],
       "isLooping": false,
       "frameDuration": 0.2
+    },
+    "employeeDown": {
+      "frames": [11,12],
+      "isLooping": true,
+      "frameDuration": 0.7
+    },
+    "employeeUp": {
+      "frames": [4,5],
+      "isLooping": true,
+      "frameDuration": 0.7
+    },
+    "employeeSide": {
+      "frames": [14,15],
+      "isLooping": true,
+      "frameDuration": 0.7
+    },
+    "managerDown": {
+      "frames": [26,28],
+      "isLooping": true,
+      "frameDuration": 0.57
+    },
+    "managerUp": {
+      "frames": [22,23],
+      "isLooping": true,
+      "frameDuration": 0.57
+    },
+    "managerSide": {
+      "frames": [24,25],
+      "isLooping": true,
+      "frameDuration": 0.57
+    },
+    "conveyorEastEnd": {
+      "frames": [42,43,44,45,46,47],
+      "isLooping": true,
+      "frameDuration": 0.2
+    },
+    "conveyorEastPath": {
+      "frames": [48,49,50,51,52,53],
+      "isLooping": true,
+      "frameDuration": 0.2
+    },
+    "conveyorEastStart": {
+      "frames": [54,55,56,57,58,59],
+      "isLooping": true,
+      "frameDuration": 0.2
+    },
+    "conveyorEastWest": {
+      "frames": [60,61,62,63,64,65],
+      "isLooping": true,
+      "frameDuration": 0.2
+    },
+    "conveyorNorthSouth": {
+      "frames": [66,67,68,69,70,71],
+      "isLooping": true,
+      "frameDuration": 0.2
+    },
+    "conveyorSouthEnd": {
+      "frames": [72,73,74,75,76,77],
+      "isLooping": true,
+      "frameDuration": 0.2
+    },
+    "conveyorSouthPath": {
+      "frames": [78,79,80,81,82,83],
+      "isLooping": true,
+      "frameDuration": 0.2
+    },
+    "conveyorSouthStart": {
+      "frames": [84,85,86,87,88,89],
+      "isLooping": true,
+      "frameDuration": 0.2
     }
   }
 }

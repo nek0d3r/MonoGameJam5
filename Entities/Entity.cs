@@ -3,8 +3,14 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using MonoGame.Extended.Collisions;
 using MonoGame.Extended.Sprites;
-using MonoGameJam5;
 
+public enum Facing
+{
+    North = 0,
+    South = 1,
+    West = 2,
+    East = 3
+}
 public abstract class Entity : ICollisionActor
 {
     protected string _animation;

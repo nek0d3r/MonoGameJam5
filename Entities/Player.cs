@@ -46,7 +46,7 @@ public class Player : Entity
         get => TileRender.TILE_SIZE * 0.25f;
     }
     public int Speed { get; set; } = 70;
-    public override Facing Direction { get; protected set; } = Facing.Down;
+    public override Facing Direction { get; protected set; } = Facing.South;
     public override string Animation
     {
         get => _animation;
@@ -68,22 +68,22 @@ public class Player : Entity
         if (key.IsKeyDown(Keybindings.Left))
         {
             movementDirection -= Vector2.UnitX;
-            Direction = Facing.Left;
+            Direction = Facing.West;
         }
         if (key.IsKeyDown(Keybindings.Right))
         {
             movementDirection += Vector2.UnitX;
-            Direction = Facing.Right;
+            Direction = Facing.East;
         }
         if (key.IsKeyDown(Keybindings.Up))
         {
             movementDirection -= Vector2.UnitY;
-            Direction = Facing.Up;
+            Direction = Facing.North;
         }
         if (key.IsKeyDown(Keybindings.Down))
         {
             movementDirection += Vector2.UnitY;
-            Direction = Facing.Down;
+            Direction = Facing.South;
         }
 
         if (prevDirection != Direction)
@@ -91,17 +91,17 @@ public class Player : Entity
             Sprite.Effect = SpriteEffects.None;
             switch (Direction)
             {
-                case Facing.Up:
+                case Facing.North:
                     Sprite.Play("playerUp");
                     break;
-                case Facing.Right:
+                case Facing.East:
                     Sprite.Effect = SpriteEffects.FlipHorizontally;
                     Sprite.Play("playerSide");
                     break;
-                case Facing.Left:
+                case Facing.West:
                     Sprite.Play("playerSide");
                     break;
-                case Facing.Down:
+                case Facing.South:
                 default:
                     Sprite.Play("playerDown");
                     break;
@@ -174,9 +174,8 @@ public class Player : Entity
 
     public override void OnCollision(CollisionEventArgs collisionInfo)
     {
-        Type entityType = collisionInfo.Other.GetType();
-
-        if (entityType == typeof(Box))
+        if (collisionInfo.Other is Box ||
+            collisionInfo.Other is Wall)
         {
             ActualPosition -= collisionInfo.PenetrationVector;
         }
