@@ -55,39 +55,39 @@
 </data>
  </layer>
  <objectgroup id="7" name="Entities">
-  <object id="6" template="objects/dedbox.tx" type="box" x="240" y="262" visible="1"/>
-  <object id="12" template="objects/sadbox.tx" type="box" x="266" y="278" visible="1"/>
-  <object id="15" template="objects/helpbox.tx" type="box" x="216" y="291" visible="1"/>
-  <object id="17" template="objects/madbox.tx" type="box" x="246" y="311" visible="1"/>
-  <object id="18" template="objects/starebox.tx" type="box" x="219" y="321" visible="1"/>
-  <object id="19" template="objects/player.tx" type="player" x="346" y="274"/>
-  <object id="21" template="objects/employee.tx" type="employee" x="215" y="136"/>
-  <object id="22" template="objects/manager.tx" type="manager" x="491" y="165"/>
-  <object id="144" template="objects/conveyor-east-end.tx" type="conveyorEnd" gid="43" x="528" y="312"/>
-  <object id="146" template="objects/conveyor-east-path.tx" type="conveyor" x="504" y="312"/>
-  <object id="147" template="objects/conveyor-east-west.tx" type="conveyor" x="504" y="360"/>
-  <object id="149" template="objects/conveyor-east-start.tx" type="conveyor" x="480" y="360"/>
-  <object id="150" template="objects/conveyor-east-end.tx" x="528" y="360"/>
-  <object id="151" template="objects/conveyor-north-south.tx" type="conveyor" x="432" y="336"/>
-  <object id="152" template="objects/conveyor-south-end.tx" type="conveyor" x="432" y="360"/>
-  <object id="153" template="objects/conveyor-south-path.tx" type="conveyor" x="432" y="312"/>
-  <object id="154" template="objects/conveyor-south-start.tx" type="conveyor" x="384" y="312"/>
-  <object id="155" template="objects/conveyor-south-end.tx" gid="73" x="384" y="336"/>
-  <object id="156" template="objects/conveyor-west-end.tx" type="conveyor" x="504" y="408"/>
-  <object id="157" template="objects/conveyor-west-path.tx" type="conveyor" x="528" y="408"/>
-  <object id="158" template="objects/conveyor-west-start.tx" type="conveyor" x="528" y="432"/>
-  <object id="159" template="objects/conveyor-west-east.tx" type="conveyor" x="504" y="432"/>
-  <object id="160" template="objects/conveyor-west-end.tx" x="480" y="432"/>
-  <object id="161" template="objects/conveyor-south-north.tx" type="conveyor" x="408" y="336"/>
-  <object id="162" template="objects/conveyor-north-end.tx" type="conveyor" x="408" y="312"/>
-  <object id="163" template="objects/conveyor-north-path.tx" type="conveyor" x="456" y="336"/>
-  <object id="164" template="objects/conveyor-north-start.tx" type="conveyor" x="408" y="360"/>
-  <object id="165" template="objects/conveyor-north-end.tx" x="456" y="312"/>
+  <object id="6" template="objects/boxes/dedbox.tx" type="box" x="240" y="262" visible="1"/>
+  <object id="12" template="objects/boxes/sadbox.tx" type="box" x="266" y="278" visible="1"/>
+  <object id="15" template="objects/boxes/helpbox.tx" type="box" x="216" y="291" visible="1"/>
+  <object id="17" template="objects/boxes/madbox.tx" type="box" x="246" y="311" visible="1"/>
+  <object id="18" template="objects/boxes/starebox.tx" type="box" x="219" y="321" visible="1"/>
+  <object id="19" template="objects/characters/player.tx" type="player" x="346" y="274"/>
+  <object id="21" template="objects/characters/employee.tx" type="employee" x="215" y="136"/>
+  <object id="22" template="objects/characters/manager.tx" type="manager" x="491" y="165"/>
+  <object id="144" template="objects/conveyors/east/conveyor-east-end.tx" type="conveyorEnd" gid="43" x="528" y="312"/>
+  <object id="146" template="objects/conveyors/east/conveyor-east-path.tx" type="conveyor" x="504" y="312"/>
+  <object id="147" template="objects/conveyors/west/conveyor-east-west.tx" type="conveyor" x="504" y="360"/>
+  <object id="149" template="objects/conveyors/east/conveyor-east-start.tx" type="conveyor" x="480" y="360"/>
+  <object id="150" template="objects/conveyors/east/conveyor-east-end.tx" x="528" y="360"/>
+  <object id="151" template="objects/conveyors/south/conveyor-north-south.tx" type="conveyor" x="432" y="336"/>
+  <object id="152" template="objects/conveyors/south/conveyor-south-end.tx" type="conveyor" x="432" y="360"/>
+  <object id="153" template="objects/conveyors/south/conveyor-south-path.tx" type="conveyor" x="432" y="312"/>
+  <object id="154" template="objects/conveyors/south/conveyor-south-start.tx" type="conveyor" x="384" y="312"/>
+  <object id="155" template="objects/conveyors/south/conveyor-south-end.tx" gid="73" x="384" y="336"/>
+  <object id="156" template="objects/conveyors/west/conveyor-west-end.tx" type="conveyor" x="504" y="408"/>
+  <object id="157" template="objects/conveyors/west/conveyor-west-path.tx" type="conveyor" x="528" y="408"/>
+  <object id="158" template="objects/conveyors/west/conveyor-west-start.tx" type="conveyor" x="528" y="432"/>
+  <object id="159" template="objects/conveyors/east/conveyor-west-east.tx" type="conveyor" x="504" y="432"/>
+  <object id="160" template="objects/conveyors/west/conveyor-west-end.tx" x="480" y="432"/>
+  <object id="161" template="objects/conveyors/north/conveyor-south-north.tx" type="conveyor" x="408" y="336"/>
+  <object id="162" template="objects/conveyors/north/conveyor-north-end.tx" type="conveyor" x="408" y="312"/>
+  <object id="163" template="objects/conveyors/north/conveyor-north-path.tx" type="conveyor" x="456" y="336"/>
+  <object id="164" template="objects/conveyors/north/conveyor-north-start.tx" type="conveyor" x="408" y="360"/>
+  <object id="165" template="objects/conveyors/north/conveyor-north-end.tx" x="456" y="312"/>
  </objectgroup>
  <objectgroup id="9" name="Walls">
-  <object id="139" template="objects/wall.tx" x="0" y="528" width="24" height="480"/>
-  <object id="140" template="objects/wall.tx" x="696" y="528" width="24" height="480"/>
-  <object id="141" template="objects/wall.tx" x="24" y="528" width="672" height="24"/>
-  <object id="143" template="objects/wall.tx" x="24" y="72" width="672" height="24"/>
+  <object id="139" template="objects/colliders/wall.tx" x="0" y="528" width="24" height="480"/>
+  <object id="140" template="objects/colliders/wall.tx" x="696" y="528" width="24" height="480"/>
+  <object id="141" template="objects/colliders/wall.tx" x="24" y="528" width="672" height="24"/>
+  <object id="143" template="objects/colliders/wall.tx" x="24" y="72" width="672" height="24"/>
  </objectgroup>
 </map>
