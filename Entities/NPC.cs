@@ -8,8 +8,7 @@ using MonoGame.Extended.Collisions;
 
 public class NPC : Entity
 {
-    // TODO: Make an actual class
-    protected List<object> idleActions { get; }
+    protected List<Action> idleActions { get; private set; }
     // Regular NPCs are slower than you
     protected float moveSpeed = 60f;
 

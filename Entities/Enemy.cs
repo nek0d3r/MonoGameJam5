@@ -8,8 +8,9 @@ using MonoGame.Extended.Sprites;
 
 public class Enemy : Entity
 {
-    public bool detectedPlayer { get; }
-    private Point lastSpotted { get; }
+    protected List<Action> idleActions { get; private set; }
+    public bool detectedPlayer { get; private set; }
+    private Point lastSpotted { get; set; }
     private float sightRange { get; }
     private float sightAngle { get; }
 
@@ -32,12 +33,18 @@ public class Enemy : Entity
 
     public override void Update(GameTime tm)
     {
-        // TODO: Check for player detection, and move along any predefined routes they have
+        if (!detectedPlayer)
+        {
+            // TODO: Implement cycling through idle actions.
+        }
         // TODO: Figure out if how to get map contents in here.
 
-        // For each sound within range, discern if it is audible enough for them to pay heed.
-        foreach (Point snd in soundsToParse) {
+        // TODO: Check line of sight
 
+        // For each sound within range, discern if it is audible enough for them to pay heed.
+        foreach (Point snd in soundsToParse)
+        {
+            // TODO: Implement
         }
         soundsToParse.Clear();
     }
