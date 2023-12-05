@@ -126,6 +126,8 @@ public class John : Game
                         break;
                     case "manager":
                         break;
+                    case "conveyor":
+                        break;
                     case "box":
                         _entities.Add(new Box()
                         {

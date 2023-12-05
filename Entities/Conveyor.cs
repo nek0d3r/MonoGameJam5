@@ -13,7 +13,7 @@ public enum ConveyorType
     End = 2,
     Path = 3
 }
-// ID & 2147483648 for horizontal flip
+
 public class Conveyor : Entity
 {
     protected Vector2 _position;
