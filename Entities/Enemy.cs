@@ -28,6 +28,7 @@ public class Enemy : Entity
     public override IShapeF Bounds { get; protected set; }
 
     private List<Point> soundsToParse { get; }
+    public override int DrawPriority { get; set; } = 0;
 
     public override void Update(GameTime tm)
     {

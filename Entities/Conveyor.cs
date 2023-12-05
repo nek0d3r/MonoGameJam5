@@ -32,14 +32,14 @@ public class Conveyor : Entity
     {
         get => new Vector2(
             Position.X - ColliderSize.Width / 2,
-            Position.Y
+            Position.Y - ColliderSize.Height / 2
         );
     }
     protected Size2 ColliderSize
     {
         get => new Size2(
-            TileRender.TILE_SIZE * 0.75f,
-            TileRender.TILE_SIZE * 0.5f
+            TileRender.TILE_SIZE,
+            TileRender.TILE_SIZE
         );
     }
     public override Facing Direction
@@ -73,7 +73,7 @@ public class Conveyor : Entity
         }
     }
     public override IShapeF Bounds { get; protected set; }
-
+    public override int DrawPriority { get; set; } = 0;
 
     public override void Update(GameTime gameTime)
     {

@@ -80,6 +80,13 @@ public class DrawComparer : IComparer<Entity>
             return 0;
         }
 
+        if (a.DrawPriority > 0 &&
+            b.DrawPriority > 0 &&
+            a.DrawPriority != b.DrawPriority)
+        {
+            return a.DrawPriority.CompareTo(b.DrawPriority);
+        }
+
         return a.Position.Y.CompareTo(b.Position.Y);
     }
 }

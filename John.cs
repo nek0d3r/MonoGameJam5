@@ -119,7 +119,8 @@ public class John : Game
                             Speed = Convert.ToInt32(tiledObject.Properties["speed"]),
                             Position = tiledObject.Position,
                             Sprite = new AnimatedSprite(_spriteSheet),
-                            Animation = tiledObject.Properties["animation"]
+                            Animation = tiledObject.Properties["animation"],
+                            DrawPriority = 2
                         });
                         break;
                     case "employee":
@@ -133,7 +134,8 @@ public class John : Game
                             Sprite = new AnimatedSprite(_spriteSheet),
                             Animation = tiledObject.Properties["animation"],
                             Direction = (Facing)Convert.ToInt32(tiledObject.Properties["facing"]),
-                            ConveyorType = (ConveyorType)Convert.ToInt32(tiledObject.Properties["conveyorType"])
+                            ConveyorType = (ConveyorType)Convert.ToInt32(tiledObject.Properties["conveyorType"]),
+                            DrawPriority = 1
                         });
                         break;
                     case "box":
