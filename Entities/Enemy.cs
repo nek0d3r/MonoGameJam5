@@ -22,12 +22,13 @@ public class Enemy : Entity
 
     public override AnimatedSprite Sprite { get; set; }
     protected override Vector2 ColliderPosition { get; }
-    public override Facing Direction { get; protected set; }
+    public override Facing Direction { get; set; }
     public override string Animation { get; set; }
     public override Vector2 Position { get; set; }
     public override IShapeF Bounds { get; protected set; }
 
     private List<Point> soundsToParse { get; }
+    public override int DrawPriority { get; set; } = 0;
 
     public override void Update(GameTime tm)
     {

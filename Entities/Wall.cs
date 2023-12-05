@@ -23,8 +23,8 @@ public class Wall : Entity
     protected override Vector2 ColliderPosition
     {
         get => new Vector2(
-            Position.X,
-            Position.Y - ColliderSize.Height
+            Position.X - TileRender.TILE_SIZE / 2,
+            Position.Y - ColliderSize.Height + TileRender.TILE_SIZE / 2
         );
     }
     public Size2 ColliderSize
@@ -35,7 +35,7 @@ public class Wall : Entity
     public override Facing Direction
     {
         get => throw new NotSupportedException();
-        protected set => throw new NotSupportedException();
+        set => throw new NotSupportedException();
     }
     public override string Animation
     {
@@ -43,7 +43,7 @@ public class Wall : Entity
         set => throw new NotSupportedException();
     }
     public override IShapeF Bounds { get; protected set; }
-
+    public override int DrawPriority { get; set; } = 0;
 
     public override void Update(GameTime gameTime) { }
 

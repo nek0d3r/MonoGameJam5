@@ -70,16 +70,3 @@ public static class TileRender
         renderDims = new Rectangle(origin, dimensions);
     }
 }
-
-public class DrawComparer : IComparer<Entity>
-{
-    public int Compare(Entity a, Entity b)
-    {
-        if (a == null || b == null)
-        {
-            return 0;
-        }
-
-        return a.Position.Y.CompareTo(b.Position.Y);
-    }
-}

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="22" tilewidth="24" tileheight="24" infinite="0" nextlayerid="10" nextobjectid="166">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="22" tilewidth="24" tileheight="24" infinite="0" nextlayerid="10" nextobjectid="167">
  <tileset firstgid="1" source="spritesheets/spritesheet.tsx"/>
  <tileset firstgid="92" source="spritesheets/gameobjects.tsx"/>
  <layer id="4" name="Floor" width="30" height="22">
@@ -63,7 +63,6 @@
   <object id="19" template="objects/characters/player.tx" type="player" x="346" y="274"/>
   <object id="21" template="objects/characters/employee.tx" type="employee" x="215" y="136"/>
   <object id="22" template="objects/characters/manager.tx" type="manager" x="491" y="165"/>
-  <object id="144" template="objects/conveyors/east/conveyor-east-end.tx" type="conveyorEnd" gid="43" x="528" y="312"/>
   <object id="146" template="objects/conveyors/east/conveyor-east-path.tx" type="conveyor" x="504" y="312"/>
   <object id="147" template="objects/conveyors/west/conveyor-east-west.tx" type="conveyor" x="504" y="360"/>
   <object id="149" template="objects/conveyors/east/conveyor-east-start.tx" type="conveyor" x="480" y="360"/>
@@ -83,6 +82,7 @@
   <object id="163" template="objects/conveyors/north/conveyor-north-path.tx" type="conveyor" x="456" y="336"/>
   <object id="164" template="objects/conveyors/north/conveyor-north-start.tx" type="conveyor" x="408" y="360"/>
   <object id="165" template="objects/conveyors/north/conveyor-north-end.tx" x="456" y="312"/>
+  <object id="166" template="objects/conveyors/east/conveyor-east-end.tx" x="528" y="312"/>
  </objectgroup>
  <objectgroup id="9" name="Walls">
   <object id="139" template="objects/colliders/wall.tx" x="0" y="528" width="24" height="480"/>

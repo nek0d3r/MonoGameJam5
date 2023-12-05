@@ -12,6 +12,8 @@ public class Player : Entity
 {
     protected Vector2 _actualPosition;
     protected Vector2 _position;
+    public Vector2 influence = Vector2.Zero;
+    protected float maxInfluence = 0;
     public override AnimatedSprite Sprite { get; set; }
     public override Vector2 Position
     {
@@ -45,8 +47,8 @@ public class Player : Entity
     {
         get => TileRender.TILE_SIZE * 0.25f;
     }
-    public int Speed { get; set; } = 70;
-    public override Facing Direction { get; protected set; } = Facing.South;
+    public float Speed { get; set; } = 70f;
+    public override Facing Direction { get; set; } = Facing.South;
     public override string Animation
     {
         get => _animation;
@@ -57,6 +59,7 @@ public class Player : Entity
         }
     }
     public override IShapeF Bounds { get; protected set; }
+    public override int DrawPriority { get; set; } = 0;
 
     // Determines input for movement
     private Vector2 GetMovementDirection()
@@ -131,10 +134,22 @@ public class Player : Entity
             runMult = 3;
         }
 
+        // Can't normalize the zero vector so test for it before normalizing
+        if (influence != Vector2.Zero)
+        {
+            influence.Normalize();
+        }
+
         // Change camera position based on a provided speed, direction, and delta.
         // Time delta prevents tying a logical change to framerate.
         // See why Fallout 4 or Okami HD have locked framerates.
         ActualPosition += Speed * runMult * movementDirection * seconds;
+
+        // Additionally add outside influences if they exist
+        ActualPosition += maxInfluence * influence * seconds;
+
+        influence = Vector2.Zero;
+        maxInfluence = 0;
 
         // Prevent moving beyond the map limits
         float X = ActualPosition.X, Y = ActualPosition.Y;
@@ -178,6 +193,32 @@ public class Player : Entity
             collisionInfo.Other is Wall)
         {
             ActualPosition -= collisionInfo.PenetrationVector;
+        }
+        else if (collisionInfo.Other is Conveyor)
+        {
+            Conveyor conveyor = (Conveyor)collisionInfo.Other;
+            Vector2 force;
+            switch (conveyor.Direction)
+            {
+                case Facing.North:
+                    force = -Vector2.UnitY;
+                    break;
+                case Facing.South:
+                    force = Vector2.UnitY;
+                    break;
+                case Facing.West:
+                    force = -Vector2.UnitX;
+                    break;
+                default:
+                    force = Vector2.UnitX;
+                    break;
+            }
+            influence += force;
+
+            if (conveyor.Speed > maxInfluence)
+            {
+                maxInfluence = conveyor.Speed;
+            }
         }
     }
 }

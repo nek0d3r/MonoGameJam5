@@ -9,6 +9,8 @@ using MonoGameJam5;
 public class Box : Entity
 {
     protected Vector2 _position;
+    public Vector2 influence = Vector2.Zero;
+    protected float maxInfluence = 0;
     public override AnimatedSprite Sprite { get; set; }
     public override Vector2 Position
     {
@@ -36,7 +38,7 @@ public class Box : Entity
     public override Facing Direction
     {
         get => throw new System.NotSupportedException();
-        protected set => throw new System.NotSupportedException();
+        set => throw new System.NotSupportedException();
     }
     public override string Animation
     {
@@ -48,10 +50,21 @@ public class Box : Entity
         }
     }
     public override IShapeF Bounds { get; protected set; }
-
+    public override int DrawPriority { get; set; } = 0;
 
     public override void Update(GameTime gameTime)
     {
+        // Can't normalize the zero vector so test for it before normalizing
+        if (influence != Vector2.Zero)
+        {
+            influence.Normalize();
+        }
+
+        // Add outside influences if they exist
+        Position += maxInfluence * influence * gameTime.GetElapsedSeconds();
+
+        influence = Vector2.Zero;
+        maxInfluence = 0;
     }
 
     public override void Draw(SpriteBatch spriteBatch, bool drawCollider = false)
@@ -65,5 +78,31 @@ public class Box : Entity
 
     public override void OnCollision(CollisionEventArgs collisionInfo)
     {
+        if (collisionInfo.Other is Conveyor)
+        {
+            Conveyor conveyor = (Conveyor)collisionInfo.Other;
+            Vector2 force;
+            switch (conveyor.Direction)
+            {
+                case Facing.North:
+                    force = -Vector2.UnitY;
+                    break;
+                case Facing.South:
+                    force = Vector2.UnitY;
+                    break;
+                case Facing.West:
+                    force = -Vector2.UnitX;
+                    break;
+                default:
+                    force = Vector2.UnitX;
+                    break;
+            }
+            influence += force;
+
+            if (conveyor.Speed > maxInfluence)
+            {
+                maxInfluence = conveyor.Speed;
+            }
+        }
     }
 }
