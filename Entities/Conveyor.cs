@@ -18,7 +18,10 @@ public class Conveyor : Entity
 {
     protected Vector2 _position;
     protected Facing _direction;
-    public float Speed { get; set; } = 50f;
+    // If we don't want to have to twiddle with animation speeds for any speed of conveyor,
+    // we'll want some infrastructure to always store a default speed.
+    private const float _defaultSpeed = 40f;
+    public float Speed { get; set; } = _defaultSpeed;
     public override AnimatedSprite Sprite { get; set; }
     public override Vector2 Position
     {
@@ -154,7 +157,8 @@ public class Conveyor : Entity
 
     public override void Update(GameTime gameTime)
     {
-        Sprite.Update(gameTime.GetElapsedSeconds());
+        // Make sure if we've set a conveyor to be faster, it automatically animates faster.
+        Sprite.Update(gameTime.GetElapsedSeconds()*Speed/_defaultSpeed);
     }
 
     public override void Draw(SpriteBatch spriteBatch, bool drawCollider = false)
