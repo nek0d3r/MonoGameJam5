@@ -6,6 +6,7 @@
    <property name="animation" value="conveyorEastPath"/>
    <property name="conveyorType" type="int" value="3"/>
    <property name="facing" type="int" value="3"/>
+   <property name="speed" type="float" value="50"/>
   </properties>
  </object>
 </template>
