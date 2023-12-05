@@ -15,7 +15,7 @@ public class Action
     // I would have used a union for these. IF C# HAD UNIONS.
 
     // Move uses destination
-    public Point Destination { get; protected set; }
+    public Vector2 Destination { get; protected set; }
     // Wander and pause use a duration.
     public float Duration { get; protected set; }
     // NaN is our sentinel to 
@@ -60,5 +60,11 @@ public class Action
     private bool doWander(Entity actor, GameTime tm) {
         // TODO: Handle wandering
         return doWait(tm);
+    }
+
+    public void Reset()
+    {
+        // Make sure our durations properly reset.
+        _durationLeft = float.NaN;
     }
 }

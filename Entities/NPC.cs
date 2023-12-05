@@ -8,7 +8,7 @@ using MonoGame.Extended.Collisions;
 
 public class NPC : Entity
 {
-    protected List<Action> idleActions { get; private set; }
+    protected LinkedList<Action> idleActions { get; private set; }
     // Regular NPCs are slower than you
     protected float moveSpeed = 60f;
 
@@ -22,7 +22,18 @@ public class NPC : Entity
 
     public override void Update(GameTime tm)
     {
-        // TODO: Handle idleActions
+        if (idleActions.First != null)
+        {
+            // Handle idleActions
+            Action current = idleActions.First.Value;
+            bool isDone = current.PerformAction(this, tm);
+            if (isDone) {
+                // Rotate the action to the end of the list.
+                idleActions.RemoveFirst();
+                current.Reset();
+                idleActions.AddLast(current);
+            }
+        }
     }
     public override void Draw(SpriteBatch spriteBatch, bool drawCollider = false)
     {

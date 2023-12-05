@@ -8,9 +8,9 @@ using MonoGame.Extended.Sprites;
 
 public class Enemy : Entity
 {
-    protected List<Action> idleActions { get; private set; }
+    protected LinkedList<Action> idleActions { get; private set; }
     public bool detectedPlayer { get; private set; }
-    private Point lastSpotted { get; set; }
+    private Vector2 lastSpotted { get; set; }
     private float sightRange { get; }
     private float sightAngle { get; }
 
@@ -33,9 +33,17 @@ public class Enemy : Entity
 
     public override void Update(GameTime tm)
     {
-        if (!detectedPlayer)
+        if (!detectedPlayer && idleActions.First != null)
         {
-            // TODO: Implement cycling through idle actions.
+            // Handle idleActions
+            Action current = idleActions.First.Value;
+            bool isDone = current.PerformAction(this, tm);
+            if (isDone) {
+                // Rotate the action to the end of the list.
+                idleActions.RemoveFirst();
+                current.Reset();
+                idleActions.AddLast(current);
+            }
         }
         // TODO: Figure out if how to get map contents in here.
 
