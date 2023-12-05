@@ -20,13 +20,23 @@ namespace MonoGameJam5;
 
 public class John : Game
 {
+    protected enum GameState {
+        MainMenu,
+        Playing,
+        Paused
+    }
+
     // Handles graphics, drawing, and rendering
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private RenderTarget2D _render;
 
     // Once we have menus and stuff, this should probably go to it's own class.
-    private Song _backgroundMusic;
+    private Song _backgroundMusic, _titleMusic;
+
+    // Game state variable.
+    private GameState _gameState;
+    private Texture2D _mainMenuScreen;
 
     // Input handling and listening
     KeyboardState currentKey = new KeyboardState(), prevKey;
@@ -59,6 +69,9 @@ public class John : Game
     // Called once after main constructor finishes
     protected override void Initialize()
     {
+        // Start at the main menu
+        _gameState = GameState.MainMenu;
+
         // Set buffer size to default
         _graphics.PreferredBackBufferWidth = TileRender.DEFAULT_WINDOW_SIZE.X;
         _graphics.PreferredBackBufferHeight = TileRender.DEFAULT_WINDOW_SIZE.Y;
@@ -163,11 +176,16 @@ public class John : Game
         });
 
         // Load music
+        _titleMusic = Content.Load<Song>("Music/Escape");
         _backgroundMusic = Content.Load<Song>("Music/Sneak");
-        MediaPlayer.Play(_backgroundMusic);
+        MediaPlayer.Play(_titleMusic);
         // This should be a setting in an options menu eventually.
         MediaPlayer.Volume = 0.1f;
         MediaPlayer.IsRepeating = true;
+
+        // Load the main menu screen.
+        _mainMenuScreen = Content.Load<Texture2D>("pixel/title");
+
     }
 
     // Called repeatedly until game ends, handles logic updates (e.g. object positions, game state)
@@ -209,18 +227,30 @@ public class John : Game
             TileRender.WindowChanged(Window, null);
         }
 
-        // Handles any animated tiles in Tiled map
-        _tiledMapRenderer.Update(gameTime);
+        if (_gameState != GameState.MainMenu) 
+        {
+            // Handles any animated tiles in Tiled map
+            _tiledMapRenderer.Update(gameTime);
 
-        // Update entities
-        _entities.ForEach(entity => entity.Update(gameTime));
+            // Update entities
+            _entities.ForEach(entity => entity.Update(gameTime));
 
-        // Update collisions
-        _collisionComponent.Update(gameTime);
+            // Update collisions
+            _collisionComponent.Update(gameTime);
 
-        // Updates camera to player position
-        Camera.MoveCamera(gameTime, (Player)_entities.Where(entity => entity.GetType() == typeof(Player)).FirstOrDefault());
-
+            // Updates camera to player position
+            Camera.MoveCamera(gameTime, (Player)_entities.Where(entity => entity.GetType() == typeof(Player)).FirstOrDefault());
+        }
+        else
+        {
+            // TODO: Have some sort of animation effect before entering the game.
+            // TODO: Tell the player to press any key to begin.
+            if (currentKey.GetPressedKeyCount() > 0)
+            {
+                _gameState = GameState.Playing;
+                MediaPlayer.Play(_backgroundMusic);
+            }
+        }
         base.Update(gameTime);
     }
 
@@ -237,13 +267,19 @@ public class John : Game
         // Start point clamped drawing based on camera view
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Camera.ViewMatrix);
 
-        // Sort objects in the layer by Y position
-        // This allows sprites to draw over each other based on which one "looks" in front
-        _entities.Sort(new DrawComparer());
+        if (_gameState != GameState.MainMenu)
+        {
+            // Sort objects in the layer by Y position
+            // This allows sprites to draw over each other based on which one "looks" in front
+            _entities.Sort(new DrawComparer());
 
-        // Draw each entity
-        _entities.ForEach(entity => { entity.Draw(_spriteBatch, true); });
+            // Draw each entity
+            _entities.ForEach(entity => { entity.Draw(_spriteBatch, true); });
 
+        }
+        else {
+            _spriteBatch.Draw(_mainMenuScreen, Vector2.Zero, Color.White);
+        }
         // End drawing
         _spriteBatch.End();
 
