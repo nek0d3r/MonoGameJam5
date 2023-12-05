@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using MonoGame.Extended;
 
 public class Action 
 {
@@ -18,7 +19,7 @@ public class Action
     public Vector2 Destination { get; protected set; }
     // Wander and pause use a duration.
     public float Duration { get; protected set; }
-    // NaN is our sentinel to 
+    // NaN is our sentinel to denote unstarted timer.
     private float _durationLeft = float.NaN;
     // TODO: Figure out interacting with an item.
 
@@ -53,7 +54,7 @@ public class Action
         {
             _durationLeft = Duration;
         }
-        _durationLeft -= tm.ElapsedGameTime.Milliseconds / 1000f;
+        _durationLeft -= tm.GetElapsedSeconds();
         return _durationLeft <= 0f;
     }
 
