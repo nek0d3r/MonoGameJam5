@@ -35,7 +35,7 @@ public class Wall : Entity
     public override Facing Direction
     {
         get => throw new NotSupportedException();
-        protected set => throw new NotSupportedException();
+        set => throw new NotSupportedException();
     }
     public override string Animation
     {

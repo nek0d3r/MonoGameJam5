@@ -127,6 +127,13 @@ public class John : Game
                     case "manager":
                         break;
                     case "conveyor":
+                        _entities.Add(new Conveyor()
+                        {
+                            Position = tiledObject.Position,
+                            Sprite = new AnimatedSprite(_spriteSheet),
+                            Animation = tiledObject.Properties["animation"],
+                            Direction = (Facing)Convert.ToInt32(tiledObject.Properties["facing"])
+                        });
                         break;
                     case "box":
                         _entities.Add(new Box()

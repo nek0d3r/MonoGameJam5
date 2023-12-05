@@ -17,6 +17,7 @@ public enum ConveyorType
 public class Conveyor : Entity
 {
     protected Vector2 _position;
+    protected Facing _direction;
     public override AnimatedSprite Sprite { get; set; }
     public override Vector2 Position
     {
@@ -43,9 +44,25 @@ public class Conveyor : Entity
     }
     public override Facing Direction
     {
-        get => throw new System.NotSupportedException();
-        protected set => throw new System.NotSupportedException();
+        get => _direction;
+        set
+        {
+            _direction = value;
+            switch (_direction)
+            {
+                case Facing.North:
+                    Sprite.Effect = SpriteEffects.FlipVertically;
+                    break;
+                case Facing.West:
+                    Sprite.Effect = SpriteEffects.FlipHorizontally;
+                    break;
+                default:
+                    Sprite.Effect = SpriteEffects.None;
+                    break;
+            }
+        }
     }
+    public ConveyorType ConveyorType { get; set; }
     public override string Animation
     {
         get => _animation;
@@ -60,6 +77,7 @@ public class Conveyor : Entity
 
     public override void Update(GameTime gameTime)
     {
+        Sprite.Update(gameTime.GetElapsedSeconds());
     }
 
     public override void Draw(SpriteBatch spriteBatch, bool drawCollider = false)

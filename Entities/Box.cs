@@ -36,7 +36,7 @@ public class Box : Entity
     public override Facing Direction
     {
         get => throw new System.NotSupportedException();
-        protected set => throw new System.NotSupportedException();
+        set => throw new System.NotSupportedException();
     }
     public override string Animation
     {
