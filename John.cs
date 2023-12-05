@@ -132,7 +132,8 @@ public class John : Game
                             Position = tiledObject.Position,
                             Sprite = new AnimatedSprite(_spriteSheet),
                             Animation = tiledObject.Properties["animation"],
-                            Direction = (Facing)Convert.ToInt32(tiledObject.Properties["facing"])
+                            Direction = (Facing)Convert.ToInt32(tiledObject.Properties["facing"]),
+                            ConveyorType = (ConveyorType)Convert.ToInt32(tiledObject.Properties["conveyorType"])
                         });
                         break;
                     case "box":
