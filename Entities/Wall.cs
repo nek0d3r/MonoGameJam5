@@ -23,8 +23,8 @@ public class Wall : Entity
     protected override Vector2 ColliderPosition
     {
         get => new Vector2(
-            Position.X,
-            Position.Y - ColliderSize.Height
+            Position.X - TileRender.TILE_SIZE / 2,
+            Position.Y - ColliderSize.Height + TileRender.TILE_SIZE / 2
         );
     }
     public Size2 ColliderSize

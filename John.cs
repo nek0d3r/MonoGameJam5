@@ -111,15 +111,21 @@ public class John : Game
             // For every object in the layer
             foreach(TiledMapObject tiledObject in layer.Objects)
             {
+                // Tiled game objects have the bottom left corner as an origin point
+                // This offsets it to MonoGame's default origin of center
+                Vector2 position = tiledObject.Position;
+                position.X += TileRender.TILE_SIZE / 2;
+                position.Y -= TileRender.TILE_SIZE / 2;
+
                 switch (tiledObject.Type)
                 {
                     case "player":
                         _entities.Add(new Player()
                         {
                             Speed = Convert.ToInt32(tiledObject.Properties["speed"]),
-                            Position = tiledObject.Position,
                             Sprite = new AnimatedSprite(_spriteSheet),
                             Animation = tiledObject.Properties["animation"],
+                            Position = position,
                             DrawPriority = 2
                         });
                         break;
@@ -130,27 +136,28 @@ public class John : Game
                     case "conveyor":
                         _entities.Add(new Conveyor()
                         {
-                            Position = tiledObject.Position,
                             Sprite = new AnimatedSprite(_spriteSheet),
                             Animation = tiledObject.Properties["animation"],
                             Direction = (Facing)Convert.ToInt32(tiledObject.Properties["facing"]),
                             ConveyorType = (ConveyorType)Convert.ToInt32(tiledObject.Properties["conveyorType"]),
+                            Position = position,
                             DrawPriority = 1
                         });
                         break;
                     case "box":
                         _entities.Add(new Box()
                         {
-                            Position = tiledObject.Position,
                             Sprite = new AnimatedSprite(_spriteSheet),
-                            Animation = tiledObject.Properties["animation"]
+                            Animation = tiledObject.Properties["animation"],
+                            Position = position,
+                            DrawPriority = 2
                         });
                         break;
                     case "wall":
                         _entities.Add(new Wall()
                         {
                             ColliderSize = tiledObject.Size,
-                            Position = tiledObject.Position
+                            Position = position
                         });
                         break;
                     default:
@@ -247,9 +254,11 @@ public class John : Game
         // Start point clamped drawing based on camera view
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Camera.ViewMatrix);
 
-        // Sort objects in the layer by Y position
+        // Sort objects in the layer by draw priority, then Y position
         // This allows sprites to draw over each other based on which one "looks" in front
-        _entities.Sort(new DrawComparer());
+        _entities = _entities.OrderBy(entity => entity.DrawPriority)
+                             .ThenBy(entity => entity.Position.Y)
+                             .ToList();
 
         // Draw each entity
         _entities.ForEach(entity => { entity.Draw(_spriteBatch, true); });

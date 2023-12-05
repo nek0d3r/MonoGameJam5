@@ -30,17 +30,63 @@ public class Conveyor : Entity
     }
     protected override Vector2 ColliderPosition
     {
-        get => new Vector2(
-            Position.X - ColliderSize.Width / 2,
-            Position.Y - ColliderSize.Height / 2
-        );
+        get
+        {
+            // Default to top left
+            float x = _position.X - ColliderSize.Width / 2;
+            float y = _position.Y - ColliderSize.Height / 2;
+
+            // North/south only needs y adjustments
+            if (_direction == Facing.North)
+            {
+                if (ConveyorType == ConveyorType.End)
+                {
+                }
+            }
+            else if (_direction == Facing.South)
+            {
+                if (ConveyorType == ConveyorType.End)
+                {
+                    y = _position.Y;
+                }
+            }
+            // East/west only needs x adjustments
+            else
+            {
+            }
+
+            return new Vector2(x, y);
+        }
     }
     protected Size2 ColliderSize
     {
-        get => new Size2(
-            TileRender.TILE_SIZE,
-            TileRender.TILE_SIZE
-        );
+        // x values are centered, y values are not
+        get
+        {
+            // Default to full tile size
+            float x = TileRender.TILE_SIZE;
+            float y = TileRender.TILE_SIZE;
+
+            // North/south conveyors are always fixed width
+            if (_direction == Facing.North ||
+                _direction == Facing.South)
+            {
+                x *= 0.7f;
+                // Start/end pieces are always a fixed height
+                if (ConveyorType == ConveyorType.Start ||
+                    ConveyorType == ConveyorType.End)
+                {
+                    y *= 0.25f;
+                }
+            }
+            // East/west conveyors are always fixed height
+            else
+            {
+                y *= 0.4f;
+            }
+
+            return new Size2(x, y);
+        }
     }
     public override Facing Direction
     {
@@ -85,7 +131,7 @@ public class Conveyor : Entity
         spriteBatch.Draw(Sprite, Position);
         if (drawCollider)
         {
-            spriteBatch.DrawRectangle((RectangleF)Bounds, Color.Red, 2);
+            spriteBatch.DrawRectangle((RectangleF)Bounds, Color.Red, 1);
         }
     }
 
