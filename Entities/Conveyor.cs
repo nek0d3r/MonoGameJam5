@@ -18,6 +18,7 @@ public class Conveyor : Entity
 {
     protected Vector2 _position;
     protected Facing _direction;
+    public float Speed { get; set; } = 50f;
     public override AnimatedSprite Sprite { get; set; }
     public override Vector2 Position
     {

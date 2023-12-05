@@ -122,7 +122,7 @@ public class John : Game
                     case "player":
                         _entities.Add(new Player()
                         {
-                            Speed = Convert.ToInt32(tiledObject.Properties["speed"]),
+                            Speed = Convert.ToSingle(tiledObject.Properties["speed"]),
                             Sprite = new AnimatedSprite(_spriteSheet),
                             Animation = tiledObject.Properties["animation"],
                             Position = position,
@@ -136,6 +136,7 @@ public class John : Game
                     case "conveyor":
                         _entities.Add(new Conveyor()
                         {
+                            Speed = 50f,
                             Sprite = new AnimatedSprite(_spriteSheet),
                             Animation = tiledObject.Properties["animation"],
                             Direction = (Facing)Convert.ToInt32(tiledObject.Properties["facing"]),
