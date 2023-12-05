@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <tileset firstgid="1" source="../spritesheets/spritesheet.tsx"/>
+ <object name="Conveyor South Path" type="conveyor" gid="79" width="24" height="24">
+  <properties>
+   <property name="animation" value="conveyorSouthPath"/>
+   <property name="conveyorType" type="int" value="3"/>
+   <property name="facing" type="int" value="1"/>
+  </properties>
+ </object>
+</template>

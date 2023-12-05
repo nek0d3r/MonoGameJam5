@@ -6,10 +6,10 @@ using MonoGame.Extended.Sprites;
 
 public enum Facing
 {
-    Up = 0,
-    Down = 1,
-    Left = 2,
-    Right = 3
+    North = 0,
+    South = 1,
+    West = 2,
+    East = 3
 }
 public abstract class Entity : ICollisionActor
 {
