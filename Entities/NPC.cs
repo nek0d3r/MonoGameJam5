@@ -145,7 +145,7 @@ public class NPC : Entity
     }
     public override void Draw(SpriteBatch spriteBatch, bool drawCollider = false)
     {
-        Vector2 drawPos = new Vector2((int)Math.Round(Position.X), (int)Math.Round(Position.X));
+        Vector2 drawPos = new Vector2((int)Math.Round(Position.X), (int)Math.Round(Position.Y));
         spriteBatch.Draw(Sprite, drawPos);
         if (drawCollider)
         {
