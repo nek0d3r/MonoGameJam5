@@ -341,7 +341,8 @@ public class John : Game
             _spriteBatch.FillRectangle(new RectangleF(upperLeftRectX, upperLeftRectY, width, height), Color.Black);
         }
         else if (_gameState == GameState.GameOver) {
-
+            // TODO: Not null for the font
+            //_spriteBatch.DrawString(null, "YOU DIED", new Vector2(TileRender.currentWindowSize.X / 2, TileRender.currentWindowSize.Y / 2), Color.LightSalmon);
         }
         else
         {
