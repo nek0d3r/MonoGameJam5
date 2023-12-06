@@ -307,7 +307,8 @@ public class John : Game
         // Start point clamped drawing based on camera view
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Camera.ViewMatrix);
 
-        if (_gameState == GameState.MainMenu) {
+        if (_gameState == GameState.MainMenu)
+        {
             Camera._camera.LookAt(new Vector2(TileRender.DEFAULT_WINDOW_SIZE.X / 2, TileRender.DEFAULT_WINDOW_SIZE.Y / 2));
             _spriteBatch.Draw(_mainMenuScreen, Vector2.Zero, Color.White);
         }
@@ -329,9 +330,22 @@ public class John : Game
             int height = TileRender.DEFAULT_WINDOW_SIZE.Y * (_fadeFrames - FadeFrame) / (_fadeFrames - 10);
             _spriteBatch.FillRectangle(new RectangleF(upperLeftRectX, upperLeftRectY, width, height), Color.Black);
         }
-        else if (_gameState == GameState.GameOver) {
-            // TODO: Not null for the font
-            //_spriteBatch.DrawString(null, "YOU DIED", new Vector2(TileRender.DEFAULT_WINDOW_SIZE.X / 2, TileRender.DEFAULT_WINDOW_SIZE.Y / 2), Color.LightSalmon);
+        else if (_gameState == GameState.GameOver)
+        {
+            _spriteBatch.DrawString(
+                _bitmapFont,                                // The bitmap font
+                "YOU DIED",                                 // Text to display
+                new Vector2(                                // Position
+                    TileRender.DEFAULT_WINDOW_SIZE.X / 2,
+                    TileRender.DEFAULT_WINDOW_SIZE.Y / 2
+                ),
+                Color.LightSalmon,                          // Text color/alpha
+                0,                                          // Rotation
+                Vector2.Zero,                               // Origin
+                1f,                                         // Scale
+                SpriteEffects.None,                         // Sprite effects
+                0                                           // Layer depth
+            );
         }
         else
         {
@@ -347,8 +361,6 @@ public class John : Game
             // Draw each entity
             _entities.ForEach(entity => { entity.Draw(_spriteBatch, true); });
         }
-
-        _spriteBatch.DrawString(_bitmapFont, "Skibidi toilet", Vector2.Zero, Color.White, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
 
         // End drawing
         _spriteBatch.End();
