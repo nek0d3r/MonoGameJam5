@@ -154,6 +154,25 @@ public class John : Game
             )
         );
 
+        // Create game objects
+        _entities = Entity.CreateEntities(_tiledMap, _spriteSheet);
+
+        _entities.ForEach(entity =>
+        {
+            // Look for NPC/Enemy actions and populate entity with properties
+            Entity.ParseActions(_tiledMap, entity);
+
+            // Force the first frame of the animation to play.
+            // Without this, idling at the game start will only draw the first sprite in the sheet.
+            if (entity.Sprite != null)
+            {
+                entity.Sprite.Update(0);
+            }
+            
+            // Add entity as a collider
+            _collisionComponent.Insert(entity);
+        });
+
         // Load music
         _titleMusic = Content.Load<Song>("Music/Escape");
         _backgroundMusic = Content.Load<Song>("Music/Sneak");
