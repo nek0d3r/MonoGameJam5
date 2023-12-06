@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended;
+using MonoGame.Extended.BitmapFonts;
 using MonoGame.Extended.Collisions;
 using MonoGame.Extended.Content;
 using MonoGame.Extended.Particles;
@@ -54,6 +55,9 @@ public class John : Game
 
     // Collision component for collider handling
     private CollisionComponent _collisionComponent;
+
+    // Dogica font
+    BitmapFont _bitmapFont;
 
     // Main constructor, called when program starts
     public John()
@@ -147,7 +151,9 @@ public class John : Game
 
         // Load the main menu screen.
         _mainMenuScreen = Content.Load<Texture2D>("pixel/title");
-
+        
+        // Load the bitmap font
+        _bitmapFont = Content.Load<BitmapFont>("fonts/dogica");
     }
 
     // Called repeatedly until game ends, handles logic updates (e.g. object positions, game state)
@@ -244,6 +250,9 @@ public class John : Game
         else {
             _spriteBatch.Draw(_mainMenuScreen, Vector2.Zero, Color.White);
         }
+
+        _spriteBatch.DrawString(_bitmapFont, "Skibidi toilet", Vector2.Zero, Color.White, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+
         // End drawing
         _spriteBatch.End();
 
