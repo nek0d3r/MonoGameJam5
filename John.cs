@@ -143,6 +143,15 @@ public class John : Game
                         });
                         break;
                     case "employee":
+                        _entities.Add(new NPC()
+                        {
+                            Speed = Convert.ToSingle(tiledObject.Properties["speed"]),
+                            Sprite = new AnimatedSprite(_spriteSheet),
+                            Animation = tiledObject.Properties["animation"],
+                            Position = position,
+                            DrawPriority = 2,
+                            IdleActions = new LinkedList<Action>()
+                        });
                         break;
                     case "manager":
                         break;
