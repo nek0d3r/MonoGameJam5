@@ -5,10 +5,10 @@ public class Action
 {
     public enum ActionType
     {
-        Move,
-        Interact,
-        Pause,
-        Wander
+        Move = 0,
+        Interact = 1,
+        Pause = 2,
+        Wander = 3
     }
 
     public ActionType ThisAction { get; protected set; }
