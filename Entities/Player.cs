@@ -190,7 +190,8 @@ public class Player : Entity
     public override void OnCollision(CollisionEventArgs collisionInfo)
     {
         if (collisionInfo.Other is Box ||
-            collisionInfo.Other is Wall)
+            collisionInfo.Other is Wall ||
+            collisionInfo.Other is NPC)
         {
             ActualPosition -= collisionInfo.PenetrationVector;
         }
