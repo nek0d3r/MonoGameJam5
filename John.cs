@@ -63,13 +63,14 @@ public class John : Game
 
         // Allow user to resize window, add event handler
         Window.AllowUserResizing = true;
-        Window.Title = "Under Pressure";
         Window.ClientSizeChanged += TileRender.WindowChanged;
     }
 
     // Called once after main constructor finishes
     protected override void Initialize()
     {
+        Window.Title = "Under Pressure";
+
         // Start at the main menu
         _gameState = GameState.MainMenu;
 
