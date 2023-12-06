@@ -43,7 +43,7 @@ public class John : Game
     private Camera _staticCamera;
 
     // Once we have menus and stuff, this should probably go to it's own class.
-    private Song _backgroundMusic, _titleMusic;
+    private Song _backgroundMusic, _titleMusic, _gameOverMusic;
 
     // Game state variable.
     private GameState _gameState;
@@ -188,6 +188,7 @@ public class John : Game
         // Load music
         _titleMusic = Content.Load<Song>("Music/Escape");
         _backgroundMusic = Content.Load<Song>("Music/Sneak");
+        _gameOverMusic = Content.Load<Song>("Music/Ded");
 
         // Load the main menu screen.
         _mainMenuScreen = Content.Load<Texture2D>("pixel/title");
@@ -298,7 +299,8 @@ public class John : Game
             if (pl.LostGame)
             {
                 _gameState = GameState.GameOverBegin;
-                // TODO: Switch to game over music
+                MediaPlayer.Play(_gameOverMusic);
+                MediaPlayer.IsRepeating = false;
             }
         }
         base.Update(gameTime);
