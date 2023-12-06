@@ -219,15 +219,80 @@ public class John : Game
                 {
                     int actionObjectId = Convert.ToInt32(gameObject.Properties["actions"]);
 
-                    while (actions.Count(action => action.GameObjectIdentifier == actionObjectId) == 0)
+                    while (!actions.Any(action => action.GameObjectIdentifier == actionObjectId))
                     {
                         TiledMapObject actionObject = Entity.GetGameObjectById(_tiledMap, actionObjectId);
 
-                        actions.AddLast(new LinkedListNode<Action>(new Action()
+                        Action idleAction = new Action()
                         {
                             GameObjectIdentifier = actionObjectId,
                             ThisAction = (Action.ActionType)Convert.ToInt32(actionObject.Properties["actionType"])
-                        }));
+                        };
+
+                        switch (idleAction.ThisAction)
+                        {
+                            case Action.ActionType.Move:
+                                if (actionObject is TiledMapPolygonObject)
+                                {
+                                    idleAction.Destinations = new List<Vector2>();
+                                    ((TiledMapPolygonObject)actionObject).Points
+                                        .ToList()
+                                        .ForEach(point =>
+                                            idleAction.Destinations.Add(
+                                                new Vector2(
+                                                    point.X + actionObject.Position.X,
+                                                    point.Y + actionObject.Position.Y
+                                                )
+                                            )
+                                        );
+                                }
+                                else if (actionObject is TiledMapPolylineObject)
+                                {
+                                    idleAction.Destinations = new List<Vector2>();
+                                    ((TiledMapPolylineObject)actionObject).Points
+                                        .ToList()
+                                        .ForEach(point =>
+                                            idleAction.Destinations.Add(
+                                                new Vector2(
+                                                    point.X + actionObject.Position.X,
+                                                    point.Y + actionObject.Position.Y
+                                                )
+                                            )
+                                        );
+                                }
+                                break;
+                            case Action.ActionType.Pause:
+                                idleAction.Duration = Convert.ToSingle(actionObject.Properties["time"]);
+                                break;
+                            case Action.ActionType.Wander:
+                                if (actionObject.Properties.ContainsKey("time"))
+                                {
+                                    idleAction.Duration = Convert.ToSingle(actionObject.Properties["time"]);
+                                }
+
+                                if (actionObject is TiledMapEllipseObject)
+                                {
+                                    idleAction.WanderArea = new EllipseF(
+                                        ((TiledMapEllipseObject)actionObject).Center,
+                                        ((TiledMapEllipseObject)actionObject).Radius.X,
+                                        ((TiledMapEllipseObject)actionObject).Radius.Y
+                                    );
+                                }
+                                else if (actionObject is TiledMapRectangleObject)
+                                {
+                                    idleAction.WanderArea = new RectangleF(
+                                        ((TiledMapRectangleObject)actionObject).Position,
+                                        ((TiledMapRectangleObject)actionObject).Size
+                                    );
+                                }
+                                break;
+                            case Action.ActionType.Interact:
+                                break;
+                            default:
+                                break;
+                        }
+
+                        actions.AddLast(new LinkedListNode<Action>(idleAction));
 
                         if (!actionObject.Properties.ContainsKey("actions"))
                         {
