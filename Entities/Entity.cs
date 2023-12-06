@@ -1,8 +1,11 @@
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using MonoGame.Extended.Collisions;
 using MonoGame.Extended.Sprites;
+using MonoGame.Extended.Tiled;
 
 public enum Facing
 {
@@ -14,6 +17,7 @@ public enum Facing
 public abstract class Entity : ICollisionActor
 {
     protected string _animation;
+    public abstract int Identifier { get; set; }
     public abstract Vector2 Position { get; set; }
     protected abstract Vector2 ColliderPosition { get; }
     public abstract AnimatedSprite Sprite { get; set; }
@@ -25,4 +29,10 @@ public abstract class Entity : ICollisionActor
     public abstract void Update(GameTime gameTime);
     public abstract void Draw(SpriteBatch spriteBatch, bool drawCollider = false);
     public abstract void OnCollision(CollisionEventArgs collisionInfo);
+
+    public static TiledMapObject GetGameObjectById(TiledMap tiledMap, int id)
+    {
+        IEnumerable<TiledMapObject> gameObjects = tiledMap.ObjectLayers.SelectMany(layer => layer.Objects);
+        return gameObjects.First(gameObject => gameObject.Identifier == id);
+    }
 }

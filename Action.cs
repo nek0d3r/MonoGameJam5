@@ -11,14 +11,15 @@ public class Action
         Wander = 3
     }
 
-    public ActionType ThisAction { get; protected set; }
+    public int GameObjectIdentifier { get; set; }
+    public ActionType ThisAction { get; set; }
 
     // I would have used a union for these. IF C# HAD UNIONS.
 
     // Move uses destination
-    public Vector2 Destination { get; protected set; }
+    public Vector2 Destination { get; set; }
     // Wander and pause use a duration.
-    public float Duration { get; protected set; }
+    public float Duration { get; set; }
     // NaN is our sentinel to denote unstarted timer.
     private float _durationLeft = float.NaN;
     // TODO: Figure out interacting with an item.

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -135,6 +136,7 @@ public class John : Game
                     case "player":
                         _entities.Add(new Player()
                         {
+                            Identifier = tiledObject.Identifier,
                             Speed = Convert.ToSingle(tiledObject.Properties["speed"]),
                             Sprite = new AnimatedSprite(_spriteSheet),
                             Animation = tiledObject.Properties["animation"],
@@ -145,6 +147,7 @@ public class John : Game
                     case "employee":
                         _entities.Add(new NPC()
                         {
+                            Identifier = tiledObject.Identifier,
                             Speed = Convert.ToSingle(tiledObject.Properties["speed"]),
                             Sprite = new AnimatedSprite(_spriteSheet),
                             Animation = tiledObject.Properties["animation"],
@@ -154,7 +157,9 @@ public class John : Game
                         });
                         break;
                     case "manager":
-                        _entities.Add(new Enemy() {
+                        _entities.Add(new Enemy()
+                        {
+                            Identifier = tiledObject.Identifier,
                             Speed = Convert.ToSingle(tiledObject.Properties["speed"]),
                             Sprite = new AnimatedSprite(_spriteSheet),
                             Animation = tiledObject.Properties["animation"],
@@ -167,6 +172,7 @@ public class John : Game
                     case "conveyor":
                         _entities.Add(new Conveyor()
                         {
+                            Identifier = tiledObject.Identifier,
                             Speed = Convert.ToSingle(tiledObject.Properties["speed"]),
                             Sprite = new AnimatedSprite(_spriteSheet),
                             Animation = tiledObject.Properties["animation"],
@@ -179,6 +185,7 @@ public class John : Game
                     case "box":
                         _entities.Add(new Box()
                         {
+                            Identifier = tiledObject.Identifier,
                             Sprite = new AnimatedSprite(_spriteSheet),
                             Animation = tiledObject.Properties["animation"],
                             Position = position,
@@ -188,6 +195,7 @@ public class John : Game
                     case "wall":
                         _entities.Add(new Wall()
                         {
+                            Identifier = tiledObject.Identifier,
                             ColliderSize = tiledObject.Size,
                             Position = position
                         });
@@ -200,6 +208,43 @@ public class John : Game
 
         _entities.ForEach(entity =>
         {
+            if (entity is NPC || entity is Enemy)
+            {
+                TiledMapObject gameObject = Entity.GetGameObjectById(_tiledMap, entity.Identifier);
+                LinkedList<Action> actions = new LinkedList<Action>();
+
+                if (gameObject.Properties.ContainsKey("actions"))
+                {
+                    int actionObjectId = Convert.ToInt32(gameObject.Properties["actions"]);
+
+                    while (actions.Count(action => action.GameObjectIdentifier == actionObjectId) == 0)
+                    {
+                        TiledMapObject actionObject = Entity.GetGameObjectById(_tiledMap, actionObjectId);
+
+                        actions.AddLast(new LinkedListNode<Action>(new Action()
+                        {
+                            GameObjectIdentifier = actionObjectId,
+                            ThisAction = (Action.ActionType)Convert.ToInt32(actionObject.Properties["actionType"])
+                        }));
+
+                        if (!actionObject.Properties.ContainsKey("actions"))
+                        {
+                            break;
+                        }
+                        actionObjectId = Convert.ToInt32(actionObject.Properties["actions"]);
+                    }
+                }
+
+                if (entity is NPC)
+                {
+                    ((NPC)entity).IdleActions = actions;
+                }
+                else
+                {
+                    ((Enemy)entity).IdleActions = actions;
+                }
+            }
+
             // Force the first frame of the animation to play.
             // Without this, idling at the game start will only draw the first sprite in the sheet.
             if (entity.Sprite != null)
