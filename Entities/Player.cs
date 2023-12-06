@@ -66,6 +66,7 @@ public class Player : Entity
     }
     public override IShapeF Bounds { get; protected set; }
     public override int DrawPriority { get; set; } = 0;
+    public override int Identifier { get; set; }
 
     // Determines input for movement
     private Vector2 GetMovementDirection()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -124,90 +125,13 @@ public class John : Game
         );
 
         // Create game objects
-        _entities = new List<Entity>();
-
-        // For every object layer in the map
-        foreach(TiledMapObjectLayer layer in _tiledMap.ObjectLayers)
-        {
-            // For every object in the layer
-            foreach(TiledMapObject tiledObject in layer.Objects)
-            {
-                // Tiled game objects have the bottom left corner as an origin point
-                // This offsets it to MonoGame's default origin of center
-                Vector2 position = tiledObject.Position;
-                position.X += TileRender.TILE_SIZE / 2;
-                position.Y -= TileRender.TILE_SIZE / 2;
-
-                switch (tiledObject.Type)
-                {
-                    case "player":
-                        _entities.Add(new Player()
-                        {
-                            Speed = Convert.ToSingle(tiledObject.Properties["speed"]),
-                            Sprite = new AnimatedSprite(_spriteSheet),
-                            Animation = tiledObject.Properties["animation"],
-                            Position = position,
-                            DrawPriority = 2
-                        });
-                        break;
-                    case "employee":
-                        _entities.Add(new NPC()
-                        {
-                            Speed = Convert.ToSingle(tiledObject.Properties["speed"]),
-                            Sprite = new AnimatedSprite(_spriteSheet),
-                            Animation = tiledObject.Properties["animation"],
-                            Position = position,
-                            DrawPriority = 2,
-                            IdleActions = new LinkedList<Action>()
-                        });
-                        break;
-                    case "manager":
-                        _entities.Add(new Enemy() {
-                            Speed = Convert.ToSingle(tiledObject.Properties["speed"]),
-                            Sprite = new AnimatedSprite(_spriteSheet),
-                            Animation = tiledObject.Properties["animation"],
-                            Position = position,
-                            DrawPriority = 2,
-                            IdleActions = new LinkedList<Action>(),
-                            SoundsToParse = new List<Point>()
-                        });
-                        break;
-                    case "conveyor":
-                        _entities.Add(new Conveyor()
-                        {
-                            Speed = Convert.ToSingle(tiledObject.Properties["speed"]),
-                            Sprite = new AnimatedSprite(_spriteSheet),
-                            Animation = tiledObject.Properties["animation"],
-                            Direction = (Facing)Convert.ToInt32(tiledObject.Properties["facing"]),
-                            ConveyorType = (ConveyorType)Convert.ToInt32(tiledObject.Properties["conveyorType"]),
-                            Position = position,
-                            DrawPriority = 1
-                        });
-                        break;
-                    case "box":
-                        _entities.Add(new Box()
-                        {
-                            Sprite = new AnimatedSprite(_spriteSheet),
-                            Animation = tiledObject.Properties["animation"],
-                            Position = position,
-                            DrawPriority = 2
-                        });
-                        break;
-                    case "wall":
-                        _entities.Add(new Wall()
-                        {
-                            ColliderSize = tiledObject.Size,
-                            Position = position
-                        });
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
+        _entities = Entity.CreateEntities(_tiledMap, _spriteSheet);
 
         _entities.ForEach(entity =>
         {
+            // Look for NPC/Enemy actions and populate entity with properties
+            Entity.ParseActions(_tiledMap, entity);
+
             // Force the first frame of the animation to play.
             // Without this, idling at the game start will only draw the first sprite in the sheet.
             if (entity.Sprite != null)
