@@ -36,6 +36,12 @@
 /processor:TiledMapProcessor
 /build:maps/map.tmx
 
+#begin Music/Ded.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/Ded.ogg
+
 #begin Music/Escape.ogg
 /importer:OggImporter
 /processor:SongProcessor
