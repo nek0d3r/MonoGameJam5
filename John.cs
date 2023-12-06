@@ -69,6 +69,8 @@ public class John : Game
     // Called once after main constructor finishes
     protected override void Initialize()
     {
+        Window.Title = "Under Pressure";
+
         // Start at the main menu
         _gameState = GameState.MainMenu;
 
