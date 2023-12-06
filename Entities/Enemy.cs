@@ -175,9 +175,5 @@ public class Enemy : Entity
     }
     public override void OnCollision(CollisionEventArgs collisionInfo)
     {
-        if (collisionInfo.Other is Player) {
-            // TODO: Coyote Time would go here.
-            // TODO: Initiate lose sequence here.
-        }
     }
 }

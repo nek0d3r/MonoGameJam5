@@ -15,6 +15,11 @@ public class Player : Entity
     public Vector2 influence = Vector2.Zero;
     protected float maxInfluence = 0;
     public override AnimatedSprite Sprite { get; set; }
+
+    private float _coyoteTimeThresh = 0.6f; // 0.6 seconds of collision before you're defeated.
+    private float _thisUpdateTime = 0f; // Needed to have Coyote Time
+    private bool _collidedWithEnemy = false;
+    public float CoyoteTimeUsed { get; set; } = 0f;
     public override Vector2 Position
     {
         get => _position;
@@ -129,6 +134,12 @@ public class Player : Entity
         float runMult = 1;
         KeyboardState key = Keyboard.GetState();
 
+        // Reset Coyote time if you escape.
+        if (_collidedWithEnemy == false)
+        {
+            CoyoteTimeUsed = 0f;
+        }
+        _collidedWithEnemy = false;
         if (key.IsKeyDown(Keybindings.Run)) 
         {
             runMult = 3;
@@ -176,6 +187,7 @@ public class Player : Entity
         {
             Sprite.Update(seconds*runMult);
         }
+        _thisUpdateTime = seconds;
     }
 
     public override void Draw(SpriteBatch spriteBatch, bool drawCollider = false)
@@ -219,6 +231,16 @@ public class Player : Entity
             if (conveyor.Speed > maxInfluence)
             {
                 maxInfluence = conveyor.Speed;
+            }
+        }
+        else if (collisionInfo.Other is Enemy) 
+        {
+            _collidedWithEnemy = true;
+            // Coyote Time goes here.
+            CoyoteTimeUsed += _thisUpdateTime;
+            if (CoyoteTimeUsed >= _coyoteTimeThresh)
+            {
+                // TODO: Initiate lose sequence here.
             }
         }
     }
