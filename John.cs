@@ -23,6 +23,7 @@ public class John : Game
 {
     protected enum GameState {
         MainMenu,
+        GameBegin,
         Playing,
         Paused,
         GameOverBegin, // For animating to a game over screen.
@@ -202,8 +203,18 @@ public class John : Game
             // TODO: Tell the player to press any key to begin.
             if (currentKey.GetPressedKeyCount() > 0)
             {
-                _gameState = GameState.Playing;
+                _gameState = GameState.GameBegin;
+            }
+        }
+        else if (_gameState == GameState.GameBegin)
+        {
+            --FadeFrame;
+            if (FadeFrame <= 0)
+            {
                 MediaPlayer.Play(_backgroundMusic);
+                _gameState = GameState.Playing;
+                // Reset the animation counter
+                FadeFrame = _fadeFrames;
             }
         }
         else if (_gameState == GameState.GameOverBegin)
@@ -212,6 +223,17 @@ public class John : Game
             if (FadeFrame <= 0)
             {
                 _gameState = GameState.GameOver;
+                // Reset the animation counter
+                FadeFrame = _fadeFrames;
+            }
+        }
+        else if (_gameState == GameState.GameOver)
+        {
+            // TODO: Have some sort of animation effect before returning to the main menu
+            if (currentKey.GetPressedKeyCount() > 0)
+            {
+                // TODO: Properly reset game state.
+                _gameState = GameState.MainMenu;
             }
         }
         else
@@ -253,10 +275,17 @@ public class John : Game
         if (_gameState == GameState.MainMenu) {
             _spriteBatch.Draw(_mainMenuScreen, Vector2.Zero, Color.White);
         }
-        else if (_gameState == GameState.GameOverBegin)
+        else if (_gameState == GameState.GameOverBegin || _gameState == GameState.GameBegin)
         {           
-            // Handles drawing map based on camera's view
-            _tiledMapRenderer.Draw(Camera.ViewMatrix);
+            if (_gameState == GameState.GameOverBegin)
+            {
+                // Handles drawing map based on camera's view
+                _tiledMapRenderer.Draw(Camera.ViewMatrix);
+            }
+            else if (_gameState == GameState.GameBegin)
+            {
+                _spriteBatch.Draw(_mainMenuScreen, Vector2.Zero, Color.White);
+            }
 
             int upperLeftRectX = TileRender.currentWindowSize.X / 2 - TileRender.currentWindowSize.X / 2 * (_fadeFrames - FadeFrame) / _fadeFrames;
             int upperLeftRectY = TileRender.currentWindowSize.Y / 2 - TileRender.currentWindowSize.Y / 2 * (_fadeFrames - FadeFrame) / _fadeFrames;
