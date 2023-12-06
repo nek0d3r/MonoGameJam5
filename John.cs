@@ -63,6 +63,7 @@ public class John : Game
 
         // Allow user to resize window, add event handler
         Window.AllowUserResizing = true;
+        Window.Title = "Under Pressure";
         Window.ClientSizeChanged += TileRender.WindowChanged;
     }
 
