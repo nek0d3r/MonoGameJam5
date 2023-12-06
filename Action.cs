@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 
@@ -5,22 +6,24 @@ public class Action
 {
     public enum ActionType
     {
-        Move,
-        Interact,
-        Pause,
-        Wander
+        Move = 0,
+        Interact = 1,
+        Pause = 2,
+        Wander = 3
     }
 
-    public ActionType ThisAction { get; protected set; }
+    public int GameObjectIdentifier { get; set; }
+    public ActionType ThisAction { get; set; }
 
     // I would have used a union for these. IF C# HAD UNIONS.
 
     // Move uses destination
-    public Vector2 Destination { get; protected set; }
+    public List<Vector2> Destinations { get; set; }
     // Wander and pause use a duration.
-    public float Duration { get; protected set; }
+    public float Duration { get; set; }
     // NaN is our sentinel to denote unstarted timer.
     private float _durationLeft = float.NaN;
+    public IShapeF WanderArea { get; set; }
     // TODO: Figure out interacting with an item.
 
     // Actor is the entity whom this action is for.
