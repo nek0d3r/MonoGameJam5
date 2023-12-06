@@ -5,15 +5,15 @@ using MonoGame.Extended.Tiled;
 using MonoGame.Extended.ViewportAdapters;
 using MonoGameJam5;
 
-public static class Camera
+public class Camera
 {
     // Camera object and position, calculated property of camera view
-    public static OrthographicCamera _camera;
-    public static Vector2 Position { get; private set; }
-    public static Matrix ViewMatrix { get => _camera.GetViewMatrix(); }
+    public OrthographicCamera _camera;
+    public Vector2 Position { get; private set; }
+    public Matrix ViewMatrix { get => _camera.GetViewMatrix(); }
 
     // Creates a new camera based on provided graphics
-    public static void Initialize(BoxingViewportAdapter boxingViewportAdapter)
+    public Camera(BoxingViewportAdapter boxingViewportAdapter)
     {
         _camera = new OrthographicCamera(boxingViewportAdapter);
         Position = new Vector2(
@@ -22,41 +22,8 @@ public static class Camera
         );
     }
 
-    // Determines input for movement
-    private static Vector2 GetMovementDirection()
-    {
-        // Get inputs and add to direction vector
-        Vector2 movementDirection = Vector2.Zero;
-        KeyboardState state = Keyboard.GetState();
-        if (state.IsKeyDown(Keybindings.Down))
-        {
-            movementDirection += Vector2.UnitY;
-        }
-        if (state.IsKeyDown(Keybindings.Up))
-        {
-            movementDirection -= Vector2.UnitY;
-        }
-        if (state.IsKeyDown(Keybindings.Left))
-        {
-            movementDirection -= Vector2.UnitX;
-        }
-        if (state.IsKeyDown(Keybindings.Right))
-        {
-            movementDirection += Vector2.UnitX;
-        }
-        
-        // Can't normalize the zero vector so test for it before normalizing
-        if (movementDirection != Vector2.Zero)
-        {
-            // Normalize the vector. This prevents issues like diagonal movement having more input than a single direction
-            movementDirection.Normalize(); 
-        }
-        
-        return movementDirection;
-    }
-
     // Handle camera movement based on user input
-    public static void MoveCamera(GameTime gameTime, Player player)
+    public void MoveCamera(GameTime gameTime, Player player)
     {
         Position = player.Position;
         TiledMap map = John._tiledMap;
