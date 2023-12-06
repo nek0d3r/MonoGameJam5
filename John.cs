@@ -101,6 +101,35 @@ public class John : Game
         base.Initialize();
     }
 
+    // Called on inital load and after every loss
+    // in order to reset the map.
+    private void Reset()
+    {
+        // Create game objects
+        _entities = Entity.CreateEntities(_tiledMap, _spriteSheet);
+
+        _entities.ForEach(entity =>
+        {
+            // Look for NPC/Enemy actions and populate entity with properties
+            Entity.ParseActions(_tiledMap, entity);
+
+            // Force the first frame of the animation to play.
+            // Without this, idling at the game start will only draw the first sprite in the sheet.
+            if (entity.Sprite != null)
+            {
+                entity.Sprite.Update(0);
+            }
+            
+            // Add entity as a collider
+            _collisionComponent.Insert(entity);
+        });
+
+        MediaPlayer.Play(_titleMusic);
+        // This should be a setting in an options menu eventually.
+        MediaPlayer.Volume = 0.1f;
+        MediaPlayer.IsRepeating = true;
+    }
+
     // Called once after initialization
     protected override void LoadContent()
     {
@@ -125,35 +154,14 @@ public class John : Game
             )
         );
 
-        // Create game objects
-        _entities = Entity.CreateEntities(_tiledMap, _spriteSheet);
-
-        _entities.ForEach(entity =>
-        {
-            // Look for NPC/Enemy actions and populate entity with properties
-            Entity.ParseActions(_tiledMap, entity);
-
-            // Force the first frame of the animation to play.
-            // Without this, idling at the game start will only draw the first sprite in the sheet.
-            if (entity.Sprite != null)
-            {
-                entity.Sprite.Update(0);
-            }
-            
-            // Add entity as a collider
-            _collisionComponent.Insert(entity);
-        });
-
         // Load music
         _titleMusic = Content.Load<Song>("Music/Escape");
         _backgroundMusic = Content.Load<Song>("Music/Sneak");
-        MediaPlayer.Play(_titleMusic);
-        // This should be a setting in an options menu eventually.
-        MediaPlayer.Volume = 0.1f;
-        MediaPlayer.IsRepeating = true;
 
         // Load the main menu screen.
         _mainMenuScreen = Content.Load<Texture2D>("pixel/title");
+
+        Reset();
 
     }
 
@@ -199,10 +207,10 @@ public class John : Game
         
         if (_gameState == GameState.MainMenu) 
         {
-            // TODO: Have some sort of animation effect before entering the game.
             // TODO: Tell the player to press any key to begin.
             if (currentKey.GetPressedKeyCount() > 0)
             {
+                // GameBegin is an animation over the title screen before the game begins.
                 _gameState = GameState.GameBegin;
             }
         }
@@ -232,7 +240,8 @@ public class John : Game
             // TODO: Have some sort of animation effect before returning to the main menu
             if (currentKey.GetPressedKeyCount() > 0)
             {
-                // TODO: Properly reset game state.
+                // Reset game state
+                Reset();
                 _gameState = GameState.MainMenu;
             }
         }
@@ -273,6 +282,7 @@ public class John : Game
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Camera.ViewMatrix);
 
         if (_gameState == GameState.MainMenu) {
+            Camera._camera.LookAt(new Vector2(TileRender.DEFAULT_WINDOW_SIZE.X / 2, TileRender.DEFAULT_WINDOW_SIZE.Y / 2));
             _spriteBatch.Draw(_mainMenuScreen, Vector2.Zero, Color.White);
         }
         else if (_gameState == GameState.GameOverBegin || _gameState == GameState.GameBegin)
