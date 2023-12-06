@@ -8,20 +8,68 @@ using MonoGame.Extended.Collisions;
 
 public class NPC : Entity
 {
-    protected LinkedList<Action> idleActions { get; private set; }
+    public LinkedList<Action> IdleActions { get; set; }
     // Regular NPCs are slower than you
-    protected float moveSpeed = 60f;
+    private const float _defaultSpeed = 60f;
 
+    public float Speed { get; set; }
     public override AnimatedSprite Sprite { get; set; }
-    protected override Vector2 ColliderPosition { get; }
+    protected override Vector2 ColliderPosition
+    {
+        get => new Vector2(
+            Position.X,
+            Position.Y + TileRender.TILE_SIZE / 2 - ColliderRadius
+        );
+    }
+    protected float ColliderRadius
+    {
+        get => TileRender.TILE_SIZE * 0.25f;
+    }
     private Facing _lastDir;
     public override Facing Direction { get; set; }
     public override string Animation { get; set; }
     private Vector2 _lastPos;
-    public override Vector2 Position { get; set; }
+    private Vector2 _thisPos;
+    public override Vector2 Position
+    { 
+        get => _thisPos;
+        set
+        {
+            _thisPos = value;
+            Bounds = new CircleF(ColliderPosition, ColliderRadius);
+        }
+    }
     public override IShapeF Bounds { get; protected set; }
     public override int DrawPriority { get; set; } = 0;
-    private void DetermineMovementDirection()
+
+    private void doAnim(bool always) {
+        if (always || _lastDir != Direction)
+        {
+            Sprite.Effect = SpriteEffects.None;
+            switch (Direction)
+            {
+                case Facing.North:
+                    Sprite.Play("employeeUp");
+                    break;
+                case Facing.East:
+                    Sprite.Effect = SpriteEffects.FlipHorizontally;
+                    Sprite.Play("employeeSide");
+                    break;
+                case Facing.West:
+                    Sprite.Play("employeeSide");
+                    break;
+                case Facing.South:
+                default:
+                    Sprite.Play("employeeDown");
+                    break;
+            }
+        }
+    }
+
+    // Returns true if movement occurred, regardless of whether it was
+    // A new facing or not.
+    // Returns false if stationary.
+    private bool DetermineMovementDirection()
     {
         // Based on movement direction, determine a direction to face the sprite.
         Vector2 PosDiff = Position - _lastPos;
@@ -29,7 +77,7 @@ public class NPC : Entity
         if (PosDiff.Length() == 0)
         {
             Direction = _lastDir;
-            return;
+            return false;
         }
         PosDiff.Normalize();
         // Determine the largest magnitude of direction.
@@ -58,47 +106,34 @@ public class NPC : Entity
             }
         }
         // Now we update the animation if we've changed directions.
-        if (_lastDir != Direction)
-        {
-            Sprite.Effect = SpriteEffects.None;
-            switch (Direction)
-            {
-                case Facing.North:
-                    Sprite.Play("employeeUp");
-                    break;
-                case Facing.East:
-                    Sprite.Effect = SpriteEffects.FlipHorizontally;
-                    Sprite.Play("employeeSide");
-                    break;
-                case Facing.West:
-                    Sprite.Play("employeeSide");
-                    break;
-                case Facing.South:
-                default:
-                    Sprite.Play("employeeDown");
-                    break;
-            }
-        }
-
+        doAnim(false);
+        return true;
     }
     public override void Update(GameTime tm)
     {
         _lastPos = Position;
         _lastDir = Direction;
-        if (idleActions.First != null)
+        if (IdleActions.First != null)
         {
             // Handle idleActions
-            Action current = idleActions.First.Value;
+            Action current = IdleActions.First.Value;
             bool isDone = current.PerformAction(this, tm);
             if (isDone) {
                 // Rotate the action to the end of the list.
-                idleActions.RemoveFirst();
+                IdleActions.RemoveFirst();
                 current.Reset();
-                idleActions.AddLast(current);
+                IdleActions.AddLast(current);
             }
         }
         // After this point, we should be able to determine any position change.
-        DetermineMovementDirection();
+        bool didMove = DetermineMovementDirection();
+
+        // Update sprite animation
+        if (didMove)
+        {
+            // Employees lack a run.
+            Sprite.Update(tm.GetElapsedSeconds()*Speed/_defaultSpeed);
+        }
     }
     public override void Draw(SpriteBatch spriteBatch, bool drawCollider = false)
     {
