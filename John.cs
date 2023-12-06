@@ -297,10 +297,10 @@ public class John : Game
                 _spriteBatch.Draw(_mainMenuScreen, Vector2.Zero, Color.White);
             }
 
-            int upperLeftRectX = (int)Camera.Position.X - TileRender.DEFAULT_WINDOW_SIZE.X / 2 * (_fadeFrames - FadeFrame) / _fadeFrames;
-            int upperLeftRectY = (int)Camera.Position.Y - TileRender.DEFAULT_WINDOW_SIZE.Y / 2 * (_fadeFrames - FadeFrame) / _fadeFrames;
-            int width = TileRender.DEFAULT_WINDOW_SIZE.X * (_fadeFrames - FadeFrame) / _fadeFrames;
-            int height = TileRender.DEFAULT_WINDOW_SIZE.Y * (_fadeFrames - FadeFrame) / _fadeFrames;
+            int upperLeftRectX = (int)Camera.Position.X - TileRender.DEFAULT_WINDOW_SIZE.X / 2 * (_fadeFrames - FadeFrame) / (_fadeFrames - 10);
+            int upperLeftRectY = (int)Camera.Position.Y - TileRender.DEFAULT_WINDOW_SIZE.Y / 2 * (_fadeFrames - FadeFrame) / (_fadeFrames - 10);
+            int width = TileRender.DEFAULT_WINDOW_SIZE.X * (_fadeFrames - FadeFrame) / (_fadeFrames - 10);
+            int height = TileRender.DEFAULT_WINDOW_SIZE.Y * (_fadeFrames - FadeFrame) / (_fadeFrames - 10);
             _spriteBatch.FillRectangle(new RectangleF(upperLeftRectX, upperLeftRectY, width, height), Color.Black);
         }
         else if (_gameState == GameState.GameOver) {
