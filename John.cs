@@ -28,7 +28,8 @@ public class John : Game
         Playing,
         Paused,
         GameOverBegin, // For animating to a game over screen.
-        GameOver
+        GameOver,
+        GameOverEnd // For animating between game over and the menu screen.
     }
 
     // Handles some animation durations
@@ -269,6 +270,16 @@ public class John : Game
                 FadeFrame = _fadeFrames;
             }
         }
+        else if (_gameState == GameState.GameOverEnd)
+        {
+            --FadeFrame;
+            if (FadeFrame <= 0)
+            {
+                _gameState = GameState.MainMenu;
+                // Reset the animation counter
+                FadeFrame = _fadeFrames;
+            }
+        }
         else if (_gameState == GameState.GameOver)
         {
             // TODO: Have some sort of animation effect before returning to the main menu
@@ -276,7 +287,7 @@ public class John : Game
             {
                 // Reset game state
                 Reset();
-                _gameState = GameState.MainMenu;
+                _gameState = GameState.GameOverEnd;
             }
         }
         else
@@ -370,7 +381,7 @@ public class John : Game
 
             _spriteBatch.End();
         }
-        else if (_gameState == GameState.GameOver)
+        else if (_gameState == GameState.GameOver || _gameState == GameState.GameOverEnd)
         {
             // Start point clamped drawing based on static camera view
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: _staticCamera.ViewMatrix);
@@ -389,6 +400,15 @@ public class John : Game
                 SpriteEffects.None,                         // Sprite effects
                 0                                           // Layer depth
             );
+
+            if (_gameState == GameState.GameOverEnd)
+            {
+                int upperLeftRectX = (int)_staticCamera.Position.X - TileRender.BUFFER_SIZE.X / 2 * (_fadeFrames - FadeFrame) / (_fadeFrames - 10);
+                int upperLeftRectY = (int)_staticCamera.Position.Y - TileRender.BUFFER_SIZE.Y / 2 * (_fadeFrames - FadeFrame) / (_fadeFrames - 10);
+                int width = TileRender.BUFFER_SIZE.X * (_fadeFrames - FadeFrame) / (_fadeFrames - 10);
+                int height = TileRender.BUFFER_SIZE.Y * (_fadeFrames - FadeFrame) / (_fadeFrames - 10);
+                _spriteBatch.FillRectangle(new RectangleF(upperLeftRectX, upperLeftRectY, width, height), Color.Gray);
+            }
 
             _spriteBatch.End();
         }
