@@ -94,15 +94,15 @@
   <object id="141" template="objects/colliders/wall.tx" x="24" y="528" width="672" height="24"/>
   <object id="143" template="objects/colliders/wall.tx" x="24" y="72" width="672" height="24"/>
  </objectgroup>
- <objectgroup id="10" name="Paths">
-  <object id="168" x="227" y="126">
+ <objectgroup id="10" name="Employee Actions">
+  <object id="168" name="Action 1: Walk" x="227" y="126">
    <properties>
     <property name="actionType" type="int" value="0"/>
     <property name="actions" type="object" value="169"/>
    </properties>
    <polyline points="0,0 314,4 287,126 217,173"/>
   </object>
-  <object id="169" x="443" y="299">
+  <object id="169" name="Action 2: Pause" x="443" y="299">
    <properties>
     <property name="actionType" type="int" value="2"/>
     <property name="actions" type="object" value="170"/>
@@ -110,7 +110,7 @@
    </properties>
    <point/>
   </object>
-  <object id="170" x="406" y="343" width="76" height="76">
+  <object id="170" name="Action 3: Wander" x="406" y="343" width="76" height="76">
    <properties>
     <property name="actionType" type="int" value="3"/>
     <property name="actions" type="object" value="171"/>
@@ -118,7 +118,7 @@
    </properties>
    <ellipse/>
   </object>
-  <object id="171" x="399" y="394">
+  <object id="171" name="Action 4: Walk" x="399" y="394">
    <properties>
     <property name="actionType" type="int" value="0"/>
     <property name="actions" type="object" value="168"/>
