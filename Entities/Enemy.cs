@@ -59,6 +59,7 @@ public class Enemy : Entity
 
     public List<Point> SoundsToParse { get; set; }
     public override int DrawPriority { get; set; } = 0;
+    public override int Identifier { get; set; }
 
     private void doAnim(bool always) {
         if (always || _lastDir != Direction)
