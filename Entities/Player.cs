@@ -20,6 +20,7 @@ public class Player : Entity
     private float _thisUpdateTime = 0f; // Needed to have Coyote Time
     private bool _collidedWithEnemy = false;
     public float CoyoteTimeUsed { get; set; } = 0f;
+    public bool LostGame { get; set; } = false;
     public override Vector2 Position
     {
         get => _position;
@@ -240,7 +241,8 @@ public class Player : Entity
             CoyoteTimeUsed += _thisUpdateTime;
             if (CoyoteTimeUsed >= _coyoteTimeThresh)
             {
-                // TODO: Initiate lose sequence here.
+                // Initiate lose sequence here.
+                LostGame = true;
             }
         }
     }

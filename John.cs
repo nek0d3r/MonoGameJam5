@@ -23,8 +23,14 @@ public class John : Game
     protected enum GameState {
         MainMenu,
         Playing,
-        Paused
+        Paused,
+        GameOverBegin, // For animating to a game over screen.
+        GameOver
     }
+
+    // Handles some animation durations
+    private const int _fadeFrames = 90;
+    protected int FadeFrame { get; set; } = _fadeFrames;
 
     // Handles graphics, drawing, and rendering
     private GraphicsDeviceManager _graphics;
@@ -265,7 +271,26 @@ public class John : Game
             TileRender.WindowChanged(Window, null);
         }
 
-        if (_gameState != GameState.MainMenu) 
+        
+        if (_gameState == GameState.MainMenu) 
+        {
+            // TODO: Have some sort of animation effect before entering the game.
+            // TODO: Tell the player to press any key to begin.
+            if (currentKey.GetPressedKeyCount() > 0)
+            {
+                _gameState = GameState.Playing;
+                MediaPlayer.Play(_backgroundMusic);
+            }
+        }
+        else if (_gameState == GameState.GameOverBegin)
+        {
+            --FadeFrame;
+            if (FadeFrame <= 0)
+            {
+                _gameState = GameState.GameOver;
+            }
+        }
+        else
         {
             // Handles any animated tiles in Tiled map
             _tiledMapRenderer.Update(gameTime);
@@ -276,17 +301,16 @@ public class John : Game
             // Update collisions
             _collisionComponent.Update(gameTime);
 
+            Player pl = (Player)_entities.Where(entity => entity.GetType() == typeof(Player)).FirstOrDefault();
+
             // Updates camera to player position
-            Camera.MoveCamera(gameTime, (Player)_entities.Where(entity => entity.GetType() == typeof(Player)).FirstOrDefault());
-        }
-        else
-        {
-            // TODO: Have some sort of animation effect before entering the game.
-            // TODO: Tell the player to press any key to begin.
-            if (currentKey.GetPressedKeyCount() > 0)
+            Camera.MoveCamera(gameTime, pl);
+
+            // Check player for game loss. If yes, change game state.
+            if (pl.LostGame)
             {
-                _gameState = GameState.Playing;
-                MediaPlayer.Play(_backgroundMusic);
+                _gameState = GameState.GameOverBegin;
+                // TODO: Switch to game over music
             }
         }
         base.Update(gameTime);
@@ -299,14 +323,31 @@ public class John : Game
         GraphicsDevice.SetRenderTarget(_render);
         GraphicsDevice.Clear(Color.Black);
 
-        // Handles drawing map based on camera's view
-        _tiledMapRenderer.Draw(Camera.ViewMatrix);
-
         // Start point clamped drawing based on camera view
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Camera.ViewMatrix);
 
-        if (_gameState != GameState.MainMenu)
+        if (_gameState == GameState.MainMenu) {
+            _spriteBatch.Draw(_mainMenuScreen, Vector2.Zero, Color.White);
+        }
+        else if (_gameState == GameState.GameOverBegin)
+        {           
+            // Handles drawing map based on camera's view
+            _tiledMapRenderer.Draw(Camera.ViewMatrix);
+
+            int upperLeftRectX = TileRender.currentWindowSize.X / 2 - TileRender.currentWindowSize.X / 2 * (_fadeFrames - FadeFrame) / _fadeFrames;
+            int upperLeftRectY = TileRender.currentWindowSize.Y / 2 - TileRender.currentWindowSize.Y / 2 * (_fadeFrames - FadeFrame) / _fadeFrames;
+            int width = TileRender.currentWindowSize.X * (_fadeFrames - FadeFrame) / _fadeFrames;
+            int height = TileRender.currentWindowSize.Y * (_fadeFrames - FadeFrame) / _fadeFrames;
+            _spriteBatch.FillRectangle(new RectangleF(upperLeftRectX, upperLeftRectY, width, height), Color.Black);
+        }
+        else if (_gameState == GameState.GameOver) {
+
+        }
+        else
         {
+            // Handles drawing map based on camera's view
+            _tiledMapRenderer.Draw(Camera.ViewMatrix);
+            
             // Sort objects in the layer by draw priority, then Y position
             // This allows sprites to draw over each other based on which one "looks" in front
             _entities = _entities.OrderBy(entity => entity.DrawPriority)
@@ -316,9 +357,6 @@ public class John : Game
             // Draw each entity
             _entities.ForEach(entity => { entity.Draw(_spriteBatch, true); });
 
-        }
-        else {
-            _spriteBatch.Draw(_mainMenuScreen, Vector2.Zero, Color.White);
         }
         // End drawing
         _spriteBatch.End();
