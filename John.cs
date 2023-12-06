@@ -297,15 +297,15 @@ public class John : Game
                 _spriteBatch.Draw(_mainMenuScreen, Vector2.Zero, Color.White);
             }
 
-            int upperLeftRectX = TileRender.currentWindowSize.X / 2 - TileRender.currentWindowSize.X / 2 * (_fadeFrames - FadeFrame) / _fadeFrames;
-            int upperLeftRectY = TileRender.currentWindowSize.Y / 2 - TileRender.currentWindowSize.Y / 2 * (_fadeFrames - FadeFrame) / _fadeFrames;
-            int width = TileRender.currentWindowSize.X * (_fadeFrames - FadeFrame) / _fadeFrames;
-            int height = TileRender.currentWindowSize.Y * (_fadeFrames - FadeFrame) / _fadeFrames;
+            int upperLeftRectX = (int)Camera.Position.X - TileRender.DEFAULT_WINDOW_SIZE.X / 2 * (_fadeFrames - FadeFrame) / _fadeFrames;
+            int upperLeftRectY = (int)Camera.Position.Y - TileRender.DEFAULT_WINDOW_SIZE.Y / 2 * (_fadeFrames - FadeFrame) / _fadeFrames;
+            int width = TileRender.DEFAULT_WINDOW_SIZE.X * (_fadeFrames - FadeFrame) / _fadeFrames;
+            int height = TileRender.DEFAULT_WINDOW_SIZE.Y * (_fadeFrames - FadeFrame) / _fadeFrames;
             _spriteBatch.FillRectangle(new RectangleF(upperLeftRectX, upperLeftRectY, width, height), Color.Black);
         }
         else if (_gameState == GameState.GameOver) {
             // TODO: Not null for the font
-            //_spriteBatch.DrawString(null, "YOU DIED", new Vector2(TileRender.currentWindowSize.X / 2, TileRender.currentWindowSize.Y / 2), Color.LightSalmon);
+            //_spriteBatch.DrawString(null, "YOU DIED", new Vector2(TileRender.DEFAULT_WINDOW_SIZE.X / 2, TileRender.DEFAULT_WINDOW_SIZE.Y / 2), Color.LightSalmon);
         }
         else
         {
