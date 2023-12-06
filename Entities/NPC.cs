@@ -26,8 +26,16 @@ public class NPC : Entity
         get => TileRender.TILE_SIZE * 0.25f;
     }
     private Facing _lastDir;
-    public override Facing Direction { get; set; }
-    public override string Animation { get; set; }
+    public override Facing Direction { get; set; } = Facing.South;
+    public override string Animation
+    {
+        get => _animation;
+        set
+        {
+            _animation = value;
+            Sprite.Play(_animation);
+        }
+    }
     private Vector2 _lastPos;
     private Vector2 _thisPos;
     public override Vector2 Position
@@ -67,7 +75,7 @@ public class NPC : Entity
     }
 
     // Returns true if movement occurred, regardless of whether it was
-    // A new facing or not.
+    // a new facing or not.
     // Returns false if stationary.
     private bool DetermineMovementDirection()
     {
