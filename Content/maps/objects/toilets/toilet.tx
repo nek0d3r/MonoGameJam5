@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <template>
  <tileset firstgid="1" source="../../spritesheets/spritesheet.tsx"/>
- <object name="" type="toilet" gid="91" width="48" height="48">
+ <object name="" type="toilet" gid="91" width="24" height="24">
   <properties>
    <property name="animation" value="toiletnw"/>
   </properties>
