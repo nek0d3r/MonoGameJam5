@@ -293,6 +293,16 @@ public class John : Game
                 FadeFrame = _fadeFrames;
             }
         }
+        else if (_gameState == GameState.Victory) 
+        {
+            if (currentKey.GetPressedKeyCount() > 0)
+            {
+                // Reset game state
+                Reset();
+                // Start the animation before returning to the main menu.
+                _gameState = GameState.VictoryEnd;
+            }
+        }
         else if (_gameState == GameState.GameOver)
         {
             if (currentKey.GetPressedKeyCount() > 0)
