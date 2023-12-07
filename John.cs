@@ -193,6 +193,7 @@ public class John : Game
         _titleMusic = Content.Load<Song>("Music/Escape");
         _backgroundMusic = Content.Load<Song>("Music/Sneak");
         _gameOverMusic = Content.Load<Song>("Music/Ded");
+        _victoryMusic = Content.Load<Song>("Music/YoureWinner");
 
         // Load the main menu screen.
         _mainMenuScreen = Content.Load<Texture2D>("pixel/title");
@@ -333,7 +334,7 @@ public class John : Game
             if (pl.WonGame)
             {
                 _gameState = GameState.VictoryBegin;
-                //MediaPlayer.Play(_victoryMusic);
+                MediaPlayer.Play(_victoryMusic);
                 MediaPlayer.IsRepeating = false;
             }
             // Check player for game loss. If yes, change game state.
