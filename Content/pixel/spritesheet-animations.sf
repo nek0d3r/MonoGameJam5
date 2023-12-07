@@ -114,6 +114,26 @@
       "frames": [84,85,86,87,88,89],
       "isLooping": true,
       "frameDuration": 0.0333
+    },
+    "toiletnw": {
+      "frames": [91],
+      "isLooping": false,
+      "frameDuration": 0.1
+    },
+    "toiletne": {
+      "frames": [92],
+      "isLooping": false,
+      "frameDuration": 0.1
+    },
+    "toiletsw": {
+      "frames": [98],
+      "isLooping": false,
+      "frameDuration": 0.1
+    },
+    "toiletse": {
+      "frames": [99],
+      "isLooping": false,
+      "frameDuration": 0.1
     }
   }
 }

@@ -54,6 +54,12 @@
 /processorParam:Quality=Best
 /build:Music/Sneak.ogg
 
+#begin Music/YoureWinner.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/YoureWinner.ogg
+
 #begin pixel/boxdednarrow.png
 /importer:TextureImporter
 /processor:TextureProcessor
