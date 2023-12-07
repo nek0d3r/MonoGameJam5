@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="22" tilewidth="24" tileheight="24" infinite="0" nextlayerid="11" nextobjectid="172">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="22" tilewidth="24" tileheight="24" infinite="0" nextlayerid="11" nextobjectid="173">
  <tileset firstgid="1" source="spritesheets/spritesheet.tsx"/>
- <tileset firstgid="92" source="spritesheets/gameobjects.tsx"/>
+ <tileset firstgid="106" source="spritesheets/gameobjects.tsx"/>
  <layer id="4" name="Floor" width="30" height="22">
   <data encoding="csv">
 30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,30,
@@ -87,6 +87,7 @@
   <object id="164" template="objects/conveyors/north/conveyor-north-start.tx" type="conveyor" x="408" y="360"/>
   <object id="165" template="objects/conveyors/north/conveyor-north-end.tx" x="456" y="312"/>
   <object id="166" template="objects/conveyors/east/conveyor-east-end.tx" x="528" y="312"/>
+  <object id="172" template="objects/toilets/toilet.tx" name="Skibidi" x="24.9485" y="503.016"/>
  </objectgroup>
  <objectgroup id="9" name="Walls">
   <object id="139" template="objects/colliders/wall.tx" x="0" y="528" width="24" height="480"/>
