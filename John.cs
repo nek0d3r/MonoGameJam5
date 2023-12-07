@@ -29,7 +29,10 @@ public class John : Game
         Paused,
         GameOverBegin, // For animating to a game over screen.
         GameOver,
-        GameOverEnd // For animating between game over and the menu screen.
+        GameOverEnd, // For animating between game over and the menu screen.
+        VictoryBegin, // Animating to a victory screen
+        Victory, // Explaining how your work isn't done from stealing one CEO-only toilet
+        VictoryEnd // Animating back to the main menu.
     }
 
     // Handles some animation durations
@@ -44,7 +47,7 @@ public class John : Game
     private Camera _staticCamera;
 
     // Once we have menus and stuff, this should probably go to it's own class.
-    private Song _backgroundMusic, _titleMusic, _gameOverMusic;
+    private Song _backgroundMusic, _titleMusic, _gameOverMusic, _victoryMusic;
 
     // Game state variable.
     private GameState _gameState;
@@ -190,6 +193,7 @@ public class John : Game
         _titleMusic = Content.Load<Song>("Music/Escape");
         _backgroundMusic = Content.Load<Song>("Music/Sneak");
         _gameOverMusic = Content.Load<Song>("Music/Ded");
+        _victoryMusic = Content.Load<Song>("Music/YoureWinner");
 
         // Load the main menu screen.
         _mainMenuScreen = Content.Load<Texture2D>("pixel/title");
@@ -270,7 +274,7 @@ public class John : Game
                 FadeFrame = _fadeFrames;
             }
         }
-        else if (_gameState == GameState.GameOverEnd)
+        else if (_gameState == GameState.GameOverEnd || _gameState == GameState.VictoryEnd)
         {
             --FadeFrame;
             if (FadeFrame <= 0)
@@ -280,13 +284,33 @@ public class John : Game
                 FadeFrame = _fadeFrames;
             }
         }
-        else if (_gameState == GameState.GameOver)
+        else if (_gameState == GameState.VictoryBegin)
         {
-            // TODO: Have some sort of animation effect before returning to the main menu
+            --FadeFrame;
+            if (FadeFrame <= 0)
+            {
+                _gameState = GameState.Victory;
+                // Reset the animation counter
+                FadeFrame = _fadeFrames;
+            }
+        }
+        else if (_gameState == GameState.Victory) 
+        {
             if (currentKey.GetPressedKeyCount() > 0)
             {
                 // Reset game state
                 Reset();
+                // Start the animation before returning to the main menu.
+                _gameState = GameState.VictoryEnd;
+            }
+        }
+        else if (_gameState == GameState.GameOver)
+        {
+            if (currentKey.GetPressedKeyCount() > 0)
+            {
+                // Reset game state
+                Reset();
+                // Start the animation before returning to the main menu.
                 _gameState = GameState.GameOverEnd;
             }
         }
@@ -306,8 +330,15 @@ public class John : Game
             // Updates camera to player position
             _gameCamera.MoveCamera(gameTime, pl);
 
+            // Prioritize winning over losing
+            if (pl.WonGame)
+            {
+                _gameState = GameState.VictoryBegin;
+                MediaPlayer.Play(_victoryMusic);
+                MediaPlayer.IsRepeating = false;
+            }
             // Check player for game loss. If yes, change game state.
-            if (pl.LostGame)
+            else if (pl.LostGame)
             {
                 _gameState = GameState.GameOverBegin;
                 MediaPlayer.Play(_gameOverMusic);
@@ -347,9 +378,9 @@ public class John : Game
 
             _spriteBatch.End();
         }
-        else if (_gameState == GameState.GameOverBegin || _gameState == GameState.GameBegin)
+        else if (_gameState == GameState.GameOverBegin || _gameState == GameState.GameBegin || _gameState == GameState.VictoryBegin)
         {           
-            if (_gameState == GameState.GameOverBegin)
+            if (_gameState == GameState.GameOverBegin || _gameState == GameState.VictoryBegin)
             {
                 // Start point clamped drawing based on game camera view
                 _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: _gameCamera.ViewMatrix);
@@ -408,6 +439,52 @@ public class John : Game
                 int width = TileRender.BUFFER_SIZE.X * (_fadeFrames - FadeFrame) / (_fadeFrames - 10);
                 int height = TileRender.BUFFER_SIZE.Y * (_fadeFrames - FadeFrame) / (_fadeFrames - 10);
                 _spriteBatch.FillRectangle(new RectangleF(upperLeftRectX, upperLeftRectY, width, height), Color.Gray);
+            }
+
+            _spriteBatch.End();
+        }
+        else if (_gameState == GameState.Victory || _gameState == GameState.VictoryEnd)
+        {
+            string exposition = "But alas, simply taking\n" +
+                                "John Bozos's toilet is not enough.\n" +
+                                "The Gammazon employees'\n" +
+                                "productivity quotas still\n" +
+                                "prevent them from having\n" +
+                                "the chance to go to the\n" + 
+                                "bathroom. To stop this,\n" +
+                                "you must find John Bozos\n" +
+                                "himself and stop him from\n" + 
+                                "encouraging such brutality.\n" + 
+                                "Maybe the next warehouse\n" + 
+                                "will hold clues as to\n"+
+                                "his whereabouts...";
+            Size2 sz = _bitmapFont.MeasureString(exposition);
+            float scale = 0.5f;
+            // Start point clamped drawing based on static camera view
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: _staticCamera.ViewMatrix);
+
+            _spriteBatch.DrawString(
+                _bitmapFont,                                // The bitmap font
+                exposition,                                 // Text to display
+                new Vector2(                                // Position
+                    TileRender.BUFFER_SIZE.X / 2 - sz.Width * scale / 2,
+                    TileRender.BUFFER_SIZE.Y / 2 - sz.Height * scale / 2
+                ),
+                Color.LightGreen,                           // Text color/alpha
+                0,                                          // Rotation
+                Vector2.Zero,                               // Origin
+                scale,                                       // Scale
+                SpriteEffects.None,                         // Sprite effects
+                0                                           // Layer depth
+            );
+
+            if (_gameState == GameState.VictoryEnd)
+            {
+                int upperLeftRectX = (int)_staticCamera.Position.X - TileRender.BUFFER_SIZE.X / 2 * (_fadeFrames - FadeFrame) / (_fadeFrames - 10);
+                int upperLeftRectY = (int)_staticCamera.Position.Y - TileRender.BUFFER_SIZE.Y / 2 * (_fadeFrames - FadeFrame) / (_fadeFrames - 10);
+                int width = TileRender.BUFFER_SIZE.X * (_fadeFrames - FadeFrame) / (_fadeFrames - 10);
+                int height = TileRender.BUFFER_SIZE.Y * (_fadeFrames - FadeFrame) / (_fadeFrames - 10);
+                _spriteBatch.FillRectangle(new RectangleF(upperLeftRectX, upperLeftRectY, width, height), Color.LightGray);
             }
 
             _spriteBatch.End();
