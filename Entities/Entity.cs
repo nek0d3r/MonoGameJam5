@@ -122,6 +122,16 @@ public abstract class Entity : ICollisionActor
                             Position = position
                         });
                         break;
+                    case "toilet":
+                        entities.Add(new Toilet()
+                        {
+                            Identifier = tiledObject.Identifier,
+                            Sprite = new AnimatedSprite(spriteSheet),
+                            Animation = tiledObject.Properties["animation"],
+                            Position = position,
+                            DrawPriority = 2
+                        });
+                        break;
                     default:
                         break;
                 }

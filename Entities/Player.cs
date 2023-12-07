@@ -21,6 +21,7 @@ public class Player : Entity
     private bool _collidedWithEnemy = false;
     public float CoyoteTimeUsed { get; set; } = 0f;
     public bool LostGame { get; set; } = false;
+    public bool WonGame { get; set; } = false;
     public override Vector2 Position
     {
         get => _position;
@@ -225,6 +226,10 @@ public class Player : Entity
                 // Initiate lose sequence here.
                 LostGame = true;
             }
+        }
+        else if (collisionInfo.Other is Toilet)
+        {
+            WonGame = true;
         }
     }
 }
