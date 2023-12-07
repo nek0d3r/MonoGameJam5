@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using MonoGame.Extended.Collisions;
@@ -23,6 +24,9 @@ public class Conveyor : Entity
     private const float _defaultSpeed = 30f;
     public float Speed { get; set; } = _defaultSpeed;
     public override AnimatedSprite Sprite { get; set; }
+
+    public SoundEffect IdleSound { get; set; }
+    private bool _isPlayingSound = false;
     public override Vector2 Position
     {
         get => _position;
@@ -160,6 +164,13 @@ public class Conveyor : Entity
     {
         // Make sure if we've set a conveyor to be faster, it automatically animates faster.
         Sprite.Update(gameTime.GetElapsedSeconds()*Speed/_defaultSpeed);
+        if (!_isPlayingSound) {
+            SoundEffectInstance inst = IdleSound.CreateInstance();
+            inst.IsLooped = true;
+            inst.Volume = 0.12f / John.NumConveyors;
+            inst.Play();
+            _isPlayingSound = true;
+        }
     }
 
     public override void Draw(SpriteBatch spriteBatch, bool drawCollider = false)

@@ -52,7 +52,11 @@ public class John : Game
     // Once we have menus and stuff, this should probably go to it's own class.
     private Song _backgroundMusic, _titleMusic, _gameOverMusic, _victoryMusic;
 
-    private SoundEffect _flush;
+    private SoundEffect _flush, _conveyor, _footstep1, _footstep2;
+
+    // A public variable so we can correctly scale down conveyor sounds until
+    // we get positional sound working.
+    public static int NumConveyors { get; set; }
 
     private string _creditsText;
     private Size2 _creditsTextSize;
@@ -131,6 +135,8 @@ public class John : Game
     // in order to reset the map.
     private void Reset()
     {
+        NumConveyors = 0;
+
         // Create game objects
         _entities = Entity.CreateEntities(_tiledMap, _spriteSheet);
 
@@ -148,6 +154,13 @@ public class John : Game
             
             // Add entity as a collider
             _collisionComponent.Insert(entity);
+
+            // If a conveyor, add the conveyor sound
+            if (entity is Conveyor)
+            {
+                ((Conveyor)entity).IdleSound = _conveyor;
+                NumConveyors++;
+            }
         });
 
         MediaPlayer.Play(_titleMusic);
@@ -179,6 +192,8 @@ public class John : Game
                 _tiledMap.HeightInPixels
             )
         );
+        _flush = Content.Load<SoundEffect>("sfx/ToiletFlush");
+        _conveyor = Content.Load<SoundEffect>("sfx/Conveyor");
 
         // Create game objects
         _entities = Entity.CreateEntities(_tiledMap, _spriteSheet);
@@ -218,8 +233,6 @@ public class John : Game
         _creditsText = File.ReadAllText("CREDITS");
         _creditsTextSize = _bitmapFont.MeasureString(_creditsText);
         _creditsScale = 0.8f;
-
-        _flush = Content.Load<SoundEffect>("sfx/ToiletFlush");
 
         Reset();
 

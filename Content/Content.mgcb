@@ -103,3 +103,8 @@
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /build:sfx/ToiletFlush.wav
+
+# begin sfx/Conveyor
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:sfx/Conveyor.wav
