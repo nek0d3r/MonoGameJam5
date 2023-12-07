@@ -323,7 +323,7 @@ public class John : Game
             if (pl.WonGame)
             {
                 _gameState = GameState.VictoryBegin;
-                MediaPlayer.Play(_victoryMusic);
+                //MediaPlayer.Play(_victoryMusic);
                 MediaPlayer.IsRepeating = false;
             }
             // Check player for game loss. If yes, change game state.
