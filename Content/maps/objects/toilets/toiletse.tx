@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <template>
  <tileset firstgid="1" source="../../spritesheets/spritesheet.tsx"/>
- <object name="Toilet NW" type="toilet" gid="91" width="24" height="24">
+ <object name="Toilet SE" type="toilet" gid="99" width="24" height="24">
   <properties>
-   <property name="animation" value="toiletnw"/>
+   <property name="animation" value="toiletse"/>
   </properties>
  </object>
 </template>
