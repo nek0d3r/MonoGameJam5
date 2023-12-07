@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="22" tilewidth="24" tileheight="24" infinite="0" nextlayerid="11" nextobjectid="372">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="22" tilewidth="24" tileheight="24" infinite="0" nextlayerid="11" nextobjectid="374">
  <tileset firstgid="1" source="spritesheets/spritesheet.tsx"/>
  <tileset firstgid="106" source="spritesheets/gameobjects.tsx"/>
  <layer id="4" name="Floor" width="30" height="22">
@@ -55,11 +55,9 @@
 </data>
  </layer>
  <objectgroup id="7" name="Entities">
-  <object id="173" template="objects/conveyors/east/conveyor-east-end.tx" x="186.5" y="190.5"/>
   <object id="174" template="objects/conveyors/east/conveyor-west-east.tx" x="162.5" y="190.5"/>
   <object id="175" template="objects/conveyors/east/conveyor-west-east.tx" x="138.5" y="190.5"/>
   <object id="176" template="objects/conveyors/east/conveyor-west-east.tx" x="114.5" y="190.5"/>
-  <object id="177" template="objects/conveyors/east/conveyor-east-start.tx" x="90.5" y="190.5"/>
   <object id="6" template="objects/boxes/dedbox.tx" type="box" x="627.721" y="99.5705" visible="1"/>
   <object id="12" template="objects/boxes/sadbox.tx" type="box" x="291.456" y="110.222" visible="1"/>
   <object id="15" template="objects/boxes/helpbox.tx" type="box" x="249.033" y="355.956" visible="1"/>
@@ -201,6 +199,8 @@
   <object id="369" template="objects/toilets/toiletsw.tx" x="24" y="504"/>
   <object id="370" template="objects/toilets/toiletnw.tx" x="24" y="480"/>
   <object id="371" template="objects/toilets/toiletne.tx" x="48" y="480"/>
+  <object id="372" template="objects/conveyors/west/conveyor-west-end.tx" x="90.5" y="190.5"/>
+  <object id="373" template="objects/conveyors/west/conveyor-west-start.tx" x="186.5" y="190.5"/>
  </objectgroup>
  <objectgroup id="9" name="Walls">
   <object id="139" template="objects/colliders/wall.tx" x="0" y="528" width="24" height="480"/>
