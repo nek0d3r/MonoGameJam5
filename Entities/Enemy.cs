@@ -20,7 +20,7 @@ public class Enemy : Entity
     // Managers are intentionally faster than you,
     // so that you cannot cheese their speed easily.
     private float _defaultSpeed = 75f;
-    public float Speed { get; set; }
+    public override float Speed { get; set; }
     public override AnimatedSprite Sprite { get; set; }
     protected override Vector2 ColliderPosition
     {

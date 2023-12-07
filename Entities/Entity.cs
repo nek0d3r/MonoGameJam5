@@ -26,6 +26,7 @@ public abstract class Entity : ICollisionActor
     public abstract string Animation { get; set; }
     public abstract IShapeF Bounds { get; protected set; }
     public abstract int DrawPriority { get; set; }
+    public abstract float Speed { get; set; }
 
     public abstract void Update(GameTime gameTime);
     public abstract void Draw(SpriteBatch spriteBatch, bool drawCollider = false);

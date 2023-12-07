@@ -53,7 +53,7 @@ public class Player : Entity
     {
         get => TileRender.TILE_SIZE * 0.25f;
     }
-    public float Speed { get; set; } = 70f;
+    public override float Speed { get; set; } = 70f;
     public override Facing Direction { get; set; } = Facing.South;
     public override string Animation
     {

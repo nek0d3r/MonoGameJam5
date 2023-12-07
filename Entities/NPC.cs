@@ -9,10 +9,11 @@ using MonoGame.Extended.Collisions;
 public class NPC : Entity
 {
     public LinkedList<Action> IdleActions { get; set; }
+    private LinkedListNode<Action> _actionCursor;
     // Regular NPCs are slower than you
     private const float _defaultSpeed = 60f;
 
-    public float Speed { get; set; }
+    public override float Speed { get; set; }
     public override AnimatedSprite Sprite { get; set; }
     protected override Vector2 ColliderPosition
     {
@@ -105,7 +106,7 @@ public class NPC : Entity
         // Otherwise, we're goin N/S
         else
         {
-            if (PosDiff.Y > 0)
+            if (PosDiff.Y < 0)
             {
                 Direction = Facing.North;
             }
@@ -125,13 +126,22 @@ public class NPC : Entity
         if (IdleActions.First != null)
         {
             // Handle idleActions
-            Action current = IdleActions.First.Value;
-            bool isDone = current.PerformAction(this, tm);
-            if (isDone) {
-                // Rotate the action to the end of the list.
-                IdleActions.RemoveFirst();
-                current.Reset();
-                IdleActions.AddLast(current);
+            if (_actionCursor == null)
+            {
+                _actionCursor = IdleActions.First;
+            }
+
+            bool isDone = _actionCursor.Value.PerformAction(this, tm);
+            if (isDone)
+            {
+                if (_actionCursor.Next == null)
+                {
+                    IdleActions = new LinkedList<Action>();
+                }
+                else
+                {
+                    _actionCursor = _actionCursor.Next;
+                }
             }
         }
         // After this point, we should be able to determine any position change.
