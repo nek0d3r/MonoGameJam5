@@ -99,3 +99,7 @@
 /processorParam:TextureFormat=Color
 /build:pixel/title.png
 
+# begin sfx/ToiletFlush
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:sfx/ToiletFlush.wav

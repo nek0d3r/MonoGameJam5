@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
@@ -50,6 +51,8 @@ public class John : Game
 
     // Once we have menus and stuff, this should probably go to it's own class.
     private Song _backgroundMusic, _titleMusic, _gameOverMusic, _victoryMusic;
+
+    private SoundEffect _flush;
 
     private string _creditsText;
     private Size2 _creditsTextSize;
@@ -216,6 +219,8 @@ public class John : Game
         _creditsTextSize = _bitmapFont.MeasureString(_creditsText);
         _creditsScale = 0.8f;
 
+        _flush = Content.Load<SoundEffect>("sfx/ToiletFlush");
+
         Reset();
 
     }
@@ -266,6 +271,11 @@ public class John : Game
             {
                 // GameBegin is an animation over the title screen before the game begins.
                 _gameState = GameState.GameBegin;
+                // Play a flushing sound when the game starts.
+                SoundEffectInstance inst = _flush.CreateInstance();
+                inst.Volume = 0.1f;
+                inst.Pitch = 1f;
+                inst.Play();
             }
         }
         else if (_gameState == GameState.GameBegin)
