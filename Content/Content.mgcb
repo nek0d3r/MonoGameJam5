@@ -14,10 +14,45 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin fonts/dogica_0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:fonts/dogica_0.png
+
+#begin fonts/dogica.fnt
+/importer:BitmapFontImporter
+/processor:BitmapFontProcessor
+/build:fonts/dogica.fnt
+
 #begin maps/map.tmx
 /importer:TiledMapImporter
 /processor:TiledMapProcessor
 /build:maps/map.tmx
+
+#begin Music/Ded.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/Ded.ogg
+
+#begin Music/Escape.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/Escape.ogg
+
+#begin Music/Sneak.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/Sneak.ogg
 
 #begin pixel/boxdednarrow.png
 /importer:TextureImporter
@@ -30,11 +65,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:pixel/boxdednarrow.png
-
-#begin Music/Sneak.ogg
-/importer:OggImporter
-/processor:SongProcessor
-/build:Music/Escape.ogg
 
 #begin pixel/spritesheet-animations.sf
 /copy:pixel/spritesheet-animations.sf
@@ -51,11 +81,6 @@
 /processorParam:TextureFormat=Color
 /build:pixel/spritesheet.png
 
-#begin Music/Sneak.ogg
-/importer:OggImporter
-/processor:SongProcessor
-/build:Music/Sneak.ogg
-
 #begin pixel/title.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -67,3 +92,4 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:pixel/title.png
+

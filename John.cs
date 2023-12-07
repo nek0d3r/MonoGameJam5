@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended;
+using MonoGame.Extended.BitmapFonts;
 using MonoGame.Extended.Collisions;
 using MonoGame.Extended.Content;
 using MonoGame.Extended.Particles;
@@ -23,17 +24,27 @@ public class John : Game
 {
     protected enum GameState {
         MainMenu,
+        GameBegin,
         Playing,
-        Paused
+        Paused,
+        GameOverBegin, // For animating to a game over screen.
+        GameOver,
+        GameOverEnd // For animating between game over and the menu screen.
     }
+
+    // Handles some animation durations
+    private const int _fadeFrames = 90;
+    protected int FadeFrame { get; set; } = _fadeFrames;
 
     // Handles graphics, drawing, and rendering
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private RenderTarget2D _render;
+    private Camera _gameCamera;
+    private Camera _staticCamera;
 
     // Once we have menus and stuff, this should probably go to it's own class.
-    private Song _backgroundMusic, _titleMusic;
+    private Song _backgroundMusic, _titleMusic, _gameOverMusic;
 
     // Game state variable.
     private GameState _gameState;
@@ -54,6 +65,9 @@ public class John : Game
 
     // Collision component for collider handling
     private CollisionComponent _collisionComponent;
+
+    // Dogica font
+    BitmapFont _bitmapFont;
 
     // Main constructor, called when program starts
     public John()
@@ -84,7 +98,13 @@ public class John : Game
         TileRender.WindowChanged(Window, null);
 
         // Create new camera
-        Camera.Initialize(new BoxingViewportAdapter(
+        _gameCamera = new Camera(new BoxingViewportAdapter(
+            Window,
+            GraphicsDevice,
+            TileRender.DEFAULT_WINDOW_SIZE.X,
+            TileRender.DEFAULT_WINDOW_SIZE.Y
+        ));
+        _staticCamera = new Camera(new BoxingViewportAdapter(
             Window,
             GraphicsDevice,
             TileRender.DEFAULT_WINDOW_SIZE.X,
@@ -92,6 +112,35 @@ public class John : Game
         ));
         
         base.Initialize();
+    }
+
+    // Called on inital load and after every loss
+    // in order to reset the map.
+    private void Reset()
+    {
+        // Create game objects
+        _entities = Entity.CreateEntities(_tiledMap, _spriteSheet);
+
+        _entities.ForEach(entity =>
+        {
+            // Look for NPC/Enemy actions and populate entity with properties
+            Entity.ParseActions(_tiledMap, entity);
+
+            // Force the first frame of the animation to play.
+            // Without this, idling at the game start will only draw the first sprite in the sheet.
+            if (entity.Sprite != null)
+            {
+                entity.Sprite.Update(0);
+            }
+            
+            // Add entity as a collider
+            _collisionComponent.Insert(entity);
+        });
+
+        MediaPlayer.Play(_titleMusic);
+        // This should be a setting in an options menu eventually.
+        MediaPlayer.Volume = 0.1f;
+        MediaPlayer.IsRepeating = true;
     }
 
     // Called once after initialization
@@ -140,13 +189,15 @@ public class John : Game
         // Load music
         _titleMusic = Content.Load<Song>("Music/Escape");
         _backgroundMusic = Content.Load<Song>("Music/Sneak");
-        MediaPlayer.Play(_titleMusic);
-        // This should be a setting in an options menu eventually.
-        MediaPlayer.Volume = 0.1f;
-        MediaPlayer.IsRepeating = true;
+        _gameOverMusic = Content.Load<Song>("Music/Ded");
 
         // Load the main menu screen.
         _mainMenuScreen = Content.Load<Texture2D>("pixel/title");
+        
+        // Load the bitmap font
+        _bitmapFont = Content.Load<BitmapFont>("fonts/dogica");
+
+        Reset();
 
     }
 
@@ -189,7 +240,57 @@ public class John : Game
             TileRender.WindowChanged(Window, null);
         }
 
-        if (_gameState != GameState.MainMenu) 
+        
+        if (_gameState == GameState.MainMenu) 
+        {
+            if (currentKey.GetPressedKeyCount() > 0)
+            {
+                // GameBegin is an animation over the title screen before the game begins.
+                _gameState = GameState.GameBegin;
+            }
+        }
+        else if (_gameState == GameState.GameBegin)
+        {
+            --FadeFrame;
+            if (FadeFrame <= 0)
+            {
+                MediaPlayer.Play(_backgroundMusic);
+                _gameState = GameState.Playing;
+                // Reset the animation counter
+                FadeFrame = _fadeFrames;
+            }
+        }
+        else if (_gameState == GameState.GameOverBegin)
+        {
+            --FadeFrame;
+            if (FadeFrame <= 0)
+            {
+                _gameState = GameState.GameOver;
+                // Reset the animation counter
+                FadeFrame = _fadeFrames;
+            }
+        }
+        else if (_gameState == GameState.GameOverEnd)
+        {
+            --FadeFrame;
+            if (FadeFrame <= 0)
+            {
+                _gameState = GameState.MainMenu;
+                // Reset the animation counter
+                FadeFrame = _fadeFrames;
+            }
+        }
+        else if (_gameState == GameState.GameOver)
+        {
+            // TODO: Have some sort of animation effect before returning to the main menu
+            if (currentKey.GetPressedKeyCount() > 0)
+            {
+                // Reset game state
+                Reset();
+                _gameState = GameState.GameOverEnd;
+            }
+        }
+        else
         {
             // Handles any animated tiles in Tiled map
             _tiledMapRenderer.Update(gameTime);
@@ -200,17 +301,17 @@ public class John : Game
             // Update collisions
             _collisionComponent.Update(gameTime);
 
+            Player pl = (Player)_entities.Where(entity => entity.GetType() == typeof(Player)).FirstOrDefault();
+
             // Updates camera to player position
-            Camera.MoveCamera(gameTime, (Player)_entities.Where(entity => entity.GetType() == typeof(Player)).FirstOrDefault());
-        }
-        else
-        {
-            // TODO: Have some sort of animation effect before entering the game.
-            // TODO: Tell the player to press any key to begin.
-            if (currentKey.GetPressedKeyCount() > 0)
+            _gameCamera.MoveCamera(gameTime, pl);
+
+            // Check player for game loss. If yes, change game state.
+            if (pl.LostGame)
             {
-                _gameState = GameState.Playing;
-                MediaPlayer.Play(_backgroundMusic);
+                _gameState = GameState.GameOverBegin;
+                MediaPlayer.Play(_gameOverMusic);
+                MediaPlayer.IsRepeating = false;
             }
         }
         base.Update(gameTime);
@@ -223,14 +324,102 @@ public class John : Game
         GraphicsDevice.SetRenderTarget(_render);
         GraphicsDevice.Clear(Color.Black);
 
-        // Handles drawing map based on camera's view
-        _tiledMapRenderer.Draw(Camera.ViewMatrix);
-
-        // Start point clamped drawing based on camera view
-        _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Camera.ViewMatrix);
-
-        if (_gameState != GameState.MainMenu)
+        if (_gameState == GameState.MainMenu)
         {
+            // Start point clamped drawing based on game camera view
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: _staticCamera.ViewMatrix);
+
+            _spriteBatch.Draw(_mainMenuScreen, Vector2.Zero, Color.White);
+            _spriteBatch.DrawString(
+                _bitmapFont,                                // The bitmap font
+                "Press any key to begin",                   // Text to display
+                new Vector2(                                // Position
+                    TileRender.BUFFER_SIZE.X / 2 - _bitmapFont.MeasureString("Press any key to begin").Width * 0.3f / 2,
+                    TileRender.BUFFER_SIZE.Y - _bitmapFont.MeasureString("Press any key to begin").Height * 0.3f - 12
+                ),
+                Color.LightSalmon,                          // Text color/alpha
+                0,                                          // Rotation
+                Vector2.Zero,                               // Origin
+                0.3f,                                       // Scale
+                SpriteEffects.None,                         // Sprite effects
+                0                                           // Layer depth
+            );
+
+            _spriteBatch.End();
+        }
+        else if (_gameState == GameState.GameOverBegin || _gameState == GameState.GameBegin)
+        {           
+            if (_gameState == GameState.GameOverBegin)
+            {
+                // Start point clamped drawing based on game camera view
+                _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: _gameCamera.ViewMatrix);
+
+                // Handles drawing map based on camera's view
+                _tiledMapRenderer.Draw(_gameCamera.ViewMatrix);
+
+                _spriteBatch.End();
+            }
+            else if (_gameState == GameState.GameBegin)
+            {
+                // Start point clamped drawing based on game camera view
+                _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: _staticCamera.ViewMatrix);
+
+                _spriteBatch.Draw(_mainMenuScreen, Vector2.Zero, Color.White);
+
+                _spriteBatch.End();
+            }
+
+            
+            // Start point clamped drawing based on game camera view
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: _staticCamera.ViewMatrix);
+
+            int upperLeftRectX = (int)_staticCamera.Position.X - TileRender.BUFFER_SIZE.X / 2 * (_fadeFrames - FadeFrame) / (_fadeFrames - 10);
+            int upperLeftRectY = (int)_staticCamera.Position.Y - TileRender.BUFFER_SIZE.Y / 2 * (_fadeFrames - FadeFrame) / (_fadeFrames - 10);
+            int width = TileRender.BUFFER_SIZE.X * (_fadeFrames - FadeFrame) / (_fadeFrames - 10);
+            int height = TileRender.BUFFER_SIZE.Y * (_fadeFrames - FadeFrame) / (_fadeFrames - 10);
+            _spriteBatch.FillRectangle(new RectangleF(upperLeftRectX, upperLeftRectY, width, height), Color.Black);
+
+            _spriteBatch.End();
+        }
+        else if (_gameState == GameState.GameOver || _gameState == GameState.GameOverEnd)
+        {
+            // Start point clamped drawing based on static camera view
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: _staticCamera.ViewMatrix);
+
+            _spriteBatch.DrawString(
+                _bitmapFont,                                // The bitmap font
+                "YOU DIED",                                 // Text to display
+                new Vector2(                                // Position
+                    TileRender.BUFFER_SIZE.X / 2 - _bitmapFont.MeasureString("YOU DIED").Width / 2,
+                    TileRender.BUFFER_SIZE.Y / 2 - _bitmapFont.MeasureString("YOU DIED").Height / 2
+                ),
+                Color.LightSalmon,                          // Text color/alpha
+                0,                                          // Rotation
+                Vector2.Zero,                               // Origin
+                1f,                                         // Scale
+                SpriteEffects.None,                         // Sprite effects
+                0                                           // Layer depth
+            );
+
+            if (_gameState == GameState.GameOverEnd)
+            {
+                int upperLeftRectX = (int)_staticCamera.Position.X - TileRender.BUFFER_SIZE.X / 2 * (_fadeFrames - FadeFrame) / (_fadeFrames - 10);
+                int upperLeftRectY = (int)_staticCamera.Position.Y - TileRender.BUFFER_SIZE.Y / 2 * (_fadeFrames - FadeFrame) / (_fadeFrames - 10);
+                int width = TileRender.BUFFER_SIZE.X * (_fadeFrames - FadeFrame) / (_fadeFrames - 10);
+                int height = TileRender.BUFFER_SIZE.Y * (_fadeFrames - FadeFrame) / (_fadeFrames - 10);
+                _spriteBatch.FillRectangle(new RectangleF(upperLeftRectX, upperLeftRectY, width, height), Color.Gray);
+            }
+
+            _spriteBatch.End();
+        }
+        else
+        {
+            // Start point clamped drawing based on game camera view
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: _gameCamera.ViewMatrix);
+
+            // Handles drawing map based on camera's view
+            _tiledMapRenderer.Draw(_gameCamera.ViewMatrix);
+            
             // Sort objects in the layer by draw priority, then Y position
             // This allows sprites to draw over each other based on which one "looks" in front
             _entities = _entities.OrderBy(entity => entity.DrawPriority)
@@ -240,12 +429,10 @@ public class John : Game
             // Draw each entity
             _entities.ForEach(entity => { entity.Draw(_spriteBatch, true); });
 
+            // End drawing
+            _spriteBatch.End();
         }
-        else {
-            _spriteBatch.Draw(_mainMenuScreen, Vector2.Zero, Color.White);
-        }
-        // End drawing
-        _spriteBatch.End();
+
 
         // Set render target to device back buffer and clear
         GraphicsDevice.SetRenderTarget(null);
