@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -32,6 +33,7 @@ public class John : Game
         GameOverEnd, // For animating between game over and the menu screen.
         VictoryBegin, // Animating to a victory screen
         Victory, // Explaining how your work isn't done from stealing one CEO-only toilet
+        VictoryCredits, // Roll the credits.
         VictoryEnd // Animating back to the main menu.
     }
 
@@ -48,6 +50,11 @@ public class John : Game
 
     // Once we have menus and stuff, this should probably go to it's own class.
     private Song _backgroundMusic, _titleMusic, _gameOverMusic, _victoryMusic;
+
+    private string _creditsText;
+    private Size2 _creditsTextSize;
+    private int _creditsScroll;
+    private float _creditsScale;
 
     // Game state variable.
     private GameState _gameState;
@@ -201,6 +208,14 @@ public class John : Game
         // Load the bitmap font
         _bitmapFont = Content.Load<BitmapFont>("fonts/dogica");
 
+        // Load the credits information.
+        // Despite the potential for people to make the game say silly things
+        // by loading a raw text file, I *really* don't feel like running
+        // it through the content pipeline.
+        _creditsText = File.ReadAllText("CREDITS");
+        _creditsTextSize = _bitmapFont.MeasureString(_creditsText);
+        _creditsScale = 0.8f;
+
         Reset();
 
     }
@@ -301,7 +316,8 @@ public class John : Game
                 // Reset game state
                 Reset();
                 // Start the animation before returning to the main menu.
-                _gameState = GameState.VictoryEnd;
+                _gameState = GameState.VictoryCredits;
+                _creditsScroll = 0;
             }
         }
         else if (_gameState == GameState.GameOver)
@@ -312,6 +328,14 @@ public class John : Game
                 Reset();
                 // Start the animation before returning to the main menu.
                 _gameState = GameState.GameOverEnd;
+            }
+        }
+        else if (_gameState == GameState.VictoryCredits)
+        {
+            _creditsScroll++;
+            if (_creditsScroll > (TileRender.BUFFER_SIZE.Y + _creditsTextSize.Height) * _creditsScale + 100)
+            {
+                _gameState = GameState.VictoryEnd;
             }
         }
         else
@@ -443,7 +467,7 @@ public class John : Game
 
             _spriteBatch.End();
         }
-        else if (_gameState == GameState.Victory || _gameState == GameState.VictoryEnd)
+        else if (_gameState == GameState.Victory)
         {
             string exposition = "But alas, simply taking\n" +
                                 "John Bozos's toilet is not enough.\n" +
@@ -474,6 +498,29 @@ public class John : Game
                 0,                                          // Rotation
                 Vector2.Zero,                               // Origin
                 scale,                                       // Scale
+                SpriteEffects.None,                         // Sprite effects
+                0                                           // Layer depth
+            );
+
+            _spriteBatch.End();
+        }
+        else if (_gameState == GameState.VictoryCredits || _gameState == GameState.VictoryEnd)
+        {
+            float scale = 0.8f;
+            // Start point clamped drawing based on static camera view
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: _staticCamera.ViewMatrix);
+
+            _spriteBatch.DrawString(
+                _bitmapFont,                                // The bitmap font
+                _creditsText,                               // Text to display
+                new Vector2(                                // Position
+                    TileRender.BUFFER_SIZE.X / 2 - _creditsTextSize.Width * scale / 2,
+                    TileRender.BUFFER_SIZE.Y - _creditsScroll
+                ),
+                Color.LightSteelBlue,                       // Text color/alpha
+                0,                                          // Rotation
+                Vector2.Zero,                               // Origin
+                scale,                                      // Scale
                 SpriteEffects.None,                         // Sprite effects
                 0                                           // Layer depth
             );

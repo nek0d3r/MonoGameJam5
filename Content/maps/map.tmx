@@ -126,12 +126,12 @@
     <property name="actions" type="object" value="172"/>
    </properties>
   </object>
-  <object id="147" template="objects/conveyors/west/conveyor-east-west.tx" type="conveyor" x="192" y="384" rotation="0"/>
-  <object id="149" template="objects/conveyors/east/conveyor-east-start.tx" type="conveyor" x="168" y="384" rotation="0"/>
-  <object id="150" template="objects/conveyors/east/conveyor-east-end.tx" x="216" y="384" rotation="0"/>
-  <object id="151" template="objects/conveyors/south/conveyor-north-south.tx" type="conveyor" x="476.09" y="256.59" rotation="359.568"/>
-  <object id="152" template="objects/conveyors/south/conveyor-south-end.tx" type="conveyor" x="476.272" y="280.59" rotation="359.568" visible="1"/>
-  <object id="153" template="objects/conveyors/south/conveyor-south-path.tx" type="conveyor" x="475.91" y="232.59" rotation="359.568" visible="1"/>
+  <object id="147" template="objects/conveyors/west/conveyor-east-west.tx" type="conveyor" x="192" y="384"/>
+  <object id="149" template="objects/conveyors/east/conveyor-east-start.tx" type="conveyor" x="168" y="384"/>
+  <object id="150" template="objects/conveyors/east/conveyor-east-end.tx" x="216" y="384"/>
+  <object id="151" template="objects/conveyors/south/conveyor-north-south.tx" type="conveyor" x="476.09" y="256.59"/>
+  <object id="152" template="objects/conveyors/south/conveyor-south-end.tx" type="conveyor" x="476.272" y="280.59" visible="1"/>
+  <object id="153" template="objects/conveyors/south/conveyor-south-path.tx" type="conveyor" x="475.91" y="232.59" visible="1"/>
   <object id="156" template="objects/conveyors/west/conveyor-west-end.tx" type="conveyor" x="504" y="408"/>
   <object id="157" template="objects/conveyors/west/conveyor-west-path.tx" type="conveyor" x="528" y="408"/>
   <object id="158" template="objects/conveyors/west/conveyor-west-start.tx" type="conveyor" x="623.5" y="130.5"/>
