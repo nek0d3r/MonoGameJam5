@@ -107,9 +107,9 @@
 </data>
  </layer>
  <objectgroup id="7" name="Entities">
-  <object id="174" template="objects/conveyors/east/conveyor-west-east.tx" x="162.5" y="190.5"/>
-  <object id="175" template="objects/conveyors/east/conveyor-west-east.tx" x="138.5" y="190.5"/>
-  <object id="176" template="objects/conveyors/east/conveyor-west-east.tx" x="114.5" y="190.5"/>
+  <object id="174" template="objects/conveyors/east/conveyor-west-east.tx" x="162.5" y="190.55"/>
+  <object id="175" template="objects/conveyors/east/conveyor-west-east.tx" x="138.5" y="190.55"/>
+  <object id="176" template="objects/conveyors/east/conveyor-west-east.tx" x="114.5" y="190.55"/>
   <object id="6" template="objects/boxes/dedbox.tx" type="box" x="627.721" y="99.5705" visible="1"/>
   <object id="12" template="objects/boxes/sadbox.tx" type="box" x="291.456" y="110.222" visible="1"/>
   <object id="15" template="objects/boxes/helpbox.tx" type="box" x="249.033" y="355.956" visible="1"/>
@@ -243,7 +243,7 @@
   <object id="364" template="objects/conveyors/north/conveyor-south-north.tx" x="312" y="336"/>
   <object id="365" template="objects/characters/manager.tx" x="644.5" y="230.5"/>
   <object id="366" template="objects/characters/employee.tx" x="470" y="306"/>
-  <object id="372" template="objects/conveyors/west/conveyor-west-end.tx" x="90.5" y="190.5"/>
+  <object id="372" template="objects/conveyors/west/conveyor-west-end.tx" x="90.5" y="190.55"/>
   <object id="373" template="objects/conveyors/west/conveyor-west-start.tx" x="186.5" y="190.5"/>
   <object id="374" template="objects/toilets/toiletne.tx" x="672" y="384"/>
   <object id="375" template="objects/toilets/toiletnw.tx" x="648" y="384"/>
