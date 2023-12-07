@@ -161,6 +161,30 @@ public class John : Game
                 ((Conveyor)entity).IdleSound = _conveyor;
                 NumConveyors++;
             }
+            // I don't believe these can be combined, despite looking the same,
+            // due to the fact we cannot cast to all three at once, and the symbol
+            // is positioned in a different spot in each class, so
+            // we can't miscast, either.
+            // Footsteps should probably be a part of some walker
+            // abstract class to remedy this.
+            else if (entity is Player) 
+            {
+                Player pl = (Player)entity;
+                pl.Footsteps[0] = _footstep1;
+                pl.Footsteps[1] = _footstep2;
+            }
+            else if (entity is NPC)
+            {
+                NPC npc = (NPC)entity;
+                npc.Footsteps[0] = _footstep1;
+                npc.Footsteps[1] = _footstep2;
+            }
+            else if (entity is Enemy)
+            {
+                Enemy en = (Enemy)entity;
+                en.Footsteps[0] = _footstep1;
+                en.Footsteps[1] = _footstep2;
+            }
         });
 
         MediaPlayer.Play(_titleMusic);
@@ -194,6 +218,8 @@ public class John : Game
         );
         _flush = Content.Load<SoundEffect>("sfx/ToiletFlush");
         _conveyor = Content.Load<SoundEffect>("sfx/Conveyor");
+        _footstep1 = Content.Load<SoundEffect>("sfx/Footstep1");
+        _footstep2 = Content.Load<SoundEffect>("sfx/Footstep2");
 
         // Create game objects
         _entities = Entity.CreateEntities(_tiledMap, _spriteSheet);

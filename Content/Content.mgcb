@@ -108,3 +108,13 @@
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /build:sfx/Conveyor.wav
+
+# begin sfx/Footstep1
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:sfx/Footstep1.wav
+
+# begin sfx/Footstep2
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:sfx/Footstep2.wav

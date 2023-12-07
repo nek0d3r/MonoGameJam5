@@ -2,6 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 using MonoGame.Extended;
 using MonoGame.Extended.Collisions;
 using MonoGame.Extended.Sprites;
@@ -54,6 +55,8 @@ public class Player : Entity
     {
         get => TileRender.TILE_SIZE * 0.25f;
     }
+    private float _lastStepSound = 0f;
+    public SoundEffect[] Footsteps { get; set; } = new SoundEffect[2];
     public float Speed { get; set; } = 70f;
     public override Facing Direction { get; set; } = Facing.South;
     public override string Animation
@@ -191,6 +194,17 @@ public class Player : Entity
             Sprite.Update(seconds*runMult);
         }
         _thisUpdateTime = seconds;
+        
+        // Handle sound processing
+        _lastStepSound += seconds * runMult;
+        // I couldn't find a way to handle this programmatically,
+        // to get the animation duration from the AnimatedSprite.
+        // So I'll hardcode it.
+        if (_lastStepSound > 0.6f)
+        {
+            Footsteps[Random.Shared.Next() % 2].Play(0.05f, Random.Shared.NextSingle() - 0.5f, 0f);
+            _lastStepSound = 0f;
+        }
     }
 
     public override void Draw(SpriteBatch spriteBatch, bool drawCollider = false)
