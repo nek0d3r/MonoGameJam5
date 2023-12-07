@@ -8,8 +8,8 @@ using MonoGame.Extended.Sprites;
 
 public class Enemy : Entity
 {
-    public LinkedList<Action> IdleActions { get; set; }
-    private LinkedListNode<Action> _actionCursor;
+    public SingleLinkedList<Action> IdleActions { get; set; }
+    private SingleLinkedListNode<Action> _actionCursor;
     public bool detectedPlayer { get; private set; }
     private Vector2 lastSpotted { get; set; }
     private float sightRange { get; }
@@ -116,7 +116,7 @@ public class Enemy : Entity
         // Otherwise, we're goin N/S
         else
         {
-            if (PosDiff.Y > 0)
+            if (PosDiff.Y < 0)
             {
                 Direction = Facing.North;
             }
@@ -146,7 +146,7 @@ public class Enemy : Entity
             {
                 if (_actionCursor.Next == null)
                 {
-                    IdleActions = new LinkedList<Action>();
+                    IdleActions = new SingleLinkedList<Action>();
                 }
                 else
                 {

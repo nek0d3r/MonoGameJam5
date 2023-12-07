@@ -8,8 +8,8 @@ using MonoGame.Extended.Collisions;
 
 public class NPC : Entity
 {
-    public LinkedList<Action> IdleActions { get; set; }
-    private LinkedListNode<Action> _actionCursor;
+    public SingleLinkedList<Action> IdleActions { get; set; }
+    private SingleLinkedListNode<Action> _actionCursor;
     // Regular NPCs are slower than you
     private const float _defaultSpeed = 60f;
 
@@ -48,6 +48,8 @@ public class NPC : Entity
             Bounds = new CircleF(ColliderPosition, ColliderRadius);
         }
     }
+    public Vector2 influence = Vector2.Zero;
+    protected float maxInfluence = 0;
     public override IShapeF Bounds { get; protected set; }
     public override int DrawPriority { get; set; } = 0;
     public override int Identifier { get; set; }
@@ -106,7 +108,7 @@ public class NPC : Entity
         // Otherwise, we're goin N/S
         else
         {
-            if (PosDiff.Y > 0)
+            if (PosDiff.Y < 0)
             {
                 Direction = Facing.North;
             }
@@ -136,7 +138,7 @@ public class NPC : Entity
             {
                 if (_actionCursor.Next == null)
                 {
-                    IdleActions = new LinkedList<Action>();
+                    IdleActions = new SingleLinkedList<Action>();
                 }
                 else
                 {
@@ -153,6 +155,18 @@ public class NPC : Entity
             // Employees lack a run.
             Sprite.Update(tm.GetElapsedSeconds()*Speed/_defaultSpeed);
         }
+
+        // Can't normalize the zero vector so test for it before normalizing
+        if (influence != Vector2.Zero)
+        {
+            influence.Normalize();
+        }
+
+        // Now add outside influences if they exist
+        Position += maxInfluence * influence * tm.GetElapsedSeconds();
+
+        influence = Vector2.Zero;
+        maxInfluence = 0;
     }
     public override void Draw(SpriteBatch spriteBatch, bool drawCollider = false)
     {
@@ -165,6 +179,31 @@ public class NPC : Entity
     }
     public override void OnCollision(CollisionEventArgs collisionInfo)
     {
+        if (collisionInfo.Other is Conveyor)
+        {
+            Conveyor conveyor = (Conveyor)collisionInfo.Other;
+            Vector2 force;
+            switch (conveyor.Direction)
+            {
+                case Facing.North:
+                    force = -Vector2.UnitY;
+                    break;
+                case Facing.South:
+                    force = Vector2.UnitY;
+                    break;
+                case Facing.West:
+                    force = -Vector2.UnitX;
+                    break;
+                default:
+                    force = Vector2.UnitX;
+                    break;
+            }
+            influence += force;
 
+            if (conveyor.Speed > maxInfluence)
+            {
+                maxInfluence = conveyor.Speed;
+            }
+        }
     }
 }

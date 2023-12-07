@@ -164,26 +164,6 @@ public class Player : Entity
         influence = Vector2.Zero;
         maxInfluence = 0;
 
-        // Prevent moving beyond the map limits
-        float X = ActualPosition.X, Y = ActualPosition.Y;
-        if (X < TileRender.TILE_SIZE / 2)
-        {
-            X = TileRender.TILE_SIZE / 2;
-        }
-        if (Y < TileRender.TILE_SIZE / 2)
-        {
-            Y = TileRender.TILE_SIZE / 2;
-        }
-        if (X > map.WidthInPixels - TileRender.TILE_SIZE / 2)
-        {
-            X = map.WidthInPixels - TileRender.TILE_SIZE / 2;
-        }
-        if (Y > map.HeightInPixels - TileRender.TILE_SIZE / 2)
-        {
-            Y = map.HeightInPixels - TileRender.TILE_SIZE / 2;
-        }
-        ActualPosition = new Vector2(X, Y);
-
         // Update sprite animation
         if (movementDirection != Vector2.Zero)
         {

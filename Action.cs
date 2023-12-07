@@ -92,6 +92,7 @@ public class Action
                 {
                     totalDistance = 0;
                     isDone = true;
+                    _destination = 0;
                 }
                 // Otherwise, start moving to next destination
                 else
@@ -114,7 +115,15 @@ public class Action
             _durationLeft = Duration;
         }
         _durationLeft -= tm.GetElapsedSeconds();
-        return _durationLeft <= 0f;
+        if (_durationLeft > 0f)
+        {
+            return false;
+        }
+        else
+        {
+            _durationLeft = float.NaN;
+        }
+        return true;
     }
 
     private bool doWander(Entity actor, GameTime tm) {
