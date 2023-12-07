@@ -9,6 +9,7 @@ using MonoGame.Extended.Sprites;
 public class Enemy : Entity
 {
     public LinkedList<Action> IdleActions { get; set; }
+    private LinkedListNode<Action> _actionCursor;
     public bool detectedPlayer { get; private set; }
     private Vector2 lastSpotted { get; set; }
     private float sightRange { get; }
@@ -135,13 +136,22 @@ public class Enemy : Entity
         if (!detectedPlayer && IdleActions.First != null)
         {
             // Handle idleActions
-            Action current = IdleActions.First.Value;
-            bool isDone = current.PerformAction(this, tm);
-            if (isDone) {
-                // Rotate the action to the end of the list.
-                IdleActions.RemoveFirst();
-                current.Reset();
-                IdleActions.AddLast(current);
+            if (_actionCursor == null)
+            {
+                _actionCursor = IdleActions.First;
+            }
+
+            bool isDone = _actionCursor.Value.PerformAction(this, tm);
+            if (isDone)
+            {
+                if (_actionCursor.Next == null)
+                {
+                    IdleActions = new LinkedList<Action>();
+                }
+                else
+                {
+                    _actionCursor = _actionCursor.Next;
+                }
             }
         }
         // TODO: Figure out if how to get map contents in here.

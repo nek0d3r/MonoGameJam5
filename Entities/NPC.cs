@@ -106,7 +106,7 @@ public class NPC : Entity
         // Otherwise, we're goin N/S
         else
         {
-            if (PosDiff.Y < 0)
+            if (PosDiff.Y > 0)
             {
                 Direction = Facing.North;
             }
