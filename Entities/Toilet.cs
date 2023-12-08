@@ -46,7 +46,7 @@ public class Toilet : Entity
     public override IShapeF Bounds { get; protected set; }
     public override int DrawPriority { get; set; } = 0;
     public override int Identifier { get; set; }
-    public override float Speed { get; set; } = 0f;
+    public override float Speed { get; set; }
 
     public override void Update(GameTime gameTime)
     {
