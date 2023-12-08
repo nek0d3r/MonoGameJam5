@@ -56,6 +56,8 @@ public class Enemy : Entity
             Bounds = new CircleF(ColliderPosition, ColliderRadius);
         }
     }
+    public Vector2 influence = Vector2.Zero;
+    protected float maxInfluence = 0;
     public override IShapeF Bounds { get; protected set; }
 
     public List<Point> SoundsToParse { get; set; }
@@ -174,6 +176,18 @@ public class Enemy : Entity
             // Employees lack a run.
             Sprite.Update(tm.GetElapsedSeconds()*Speed/_defaultSpeed);
         }
+
+        // Can't normalize the zero vector so test for it before normalizing
+        if (influence != Vector2.Zero)
+        {
+            influence.Normalize();
+        }
+
+        // Now add outside influences if they exist
+        Position += maxInfluence * influence * tm.GetElapsedSeconds();
+
+        influence = Vector2.Zero;
+        maxInfluence = 0;
     }
     public override void Draw(SpriteBatch spriteBatch, bool drawCollider = false)
     {
@@ -186,5 +200,31 @@ public class Enemy : Entity
     }
     public override void OnCollision(CollisionEventArgs collisionInfo)
     {
+        if (collisionInfo.Other is Conveyor)
+        {
+            Conveyor conveyor = (Conveyor)collisionInfo.Other;
+            Vector2 force;
+            switch (conveyor.Direction)
+            {
+                case Facing.North:
+                    force = -Vector2.UnitY;
+                    break;
+                case Facing.South:
+                    force = Vector2.UnitY;
+                    break;
+                case Facing.West:
+                    force = -Vector2.UnitX;
+                    break;
+                default:
+                    force = Vector2.UnitX;
+                    break;
+            }
+            influence += force;
+
+            if (conveyor.Speed > maxInfluence)
+            {
+                maxInfluence = conveyor.Speed;
+            }
+        }
     }
 }
