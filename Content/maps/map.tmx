@@ -276,14 +276,14 @@
   <object id="379" template="objects/colliders/wall.tx" x="96" y="456" width="24" height="72"/>
  </objectgroup>
  <objectgroup id="10" name="Employee Actions">
-  <object id="168" name="Action 1: Walk" x="22.5" y="95.5">
+  <object id="168" name="Action 1: Walk" x="153.5" y="134.833">
    <properties>
     <property name="actionType" type="int" value="0"/>
     <property name="actions" type="object" value="169"/>
    </properties>
-   <polyline points="0,0 333,5.54913 304.366,174.798 230.131,240"/>
+   <polyline points="65.5,-24.5 34,29.6667 111.333,72.2158 176.033,-51.5353 -63.869,-56.3333"/>
   </object>
-  <object id="169" name="Action 2: Pause" x="443" y="299">
+  <object id="169" name="Action 2: Pause" x="377.333" y="231.333">
    <properties>
     <property name="actionType" type="int" value="2"/>
     <property name="actions" type="object" value="170"/>
@@ -291,7 +291,7 @@
    </properties>
    <point/>
   </object>
-  <object id="170" name="Action 3: Wander" x="355" y="106.5" width="76" height="76">
+  <object id="170" name="Action 3: Wander" x="19.6667" y="76.5" width="76" height="76">
    <properties>
     <property name="actionType" type="int" value="3"/>
     <property name="actions" type="object" value="171"/>
@@ -299,12 +299,12 @@
    </properties>
    <ellipse/>
   </object>
-  <object id="171" name="Action 4: Walk" x="328.5" y="377.5">
+  <object id="171" name="Action 4: Walk" x="298.167" y="390.833">
    <properties>
     <property name="actionType" type="int" value="0"/>
     <property name="actions" type="object" value="168"/>
    </properties>
-   <polyline points="0,0 -204,-43 -204,-215 -172,-268"/>
+   <polyline points="-235.667,-272.667 -208.667,-205.667 -96,-208 -96.6667,-285.333 -77.5,-281.167"/>
   </object>
  </objectgroup>
 </map>
