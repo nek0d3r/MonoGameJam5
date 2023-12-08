@@ -8,11 +8,12 @@ using MonoGame.Extended.Collisions;
 
 public class NPC : Entity
 {
-    public LinkedList<Action> IdleActions { get; set; }
+    public SingleLinkedList<Action> IdleActions { get; set; }
+    private SingleLinkedListNode<Action> _actionCursor;
     // Regular NPCs are slower than you
     private const float _defaultSpeed = 60f;
 
-    public float Speed { get; set; }
+    public override float Speed { get; set; }
     public override AnimatedSprite Sprite { get; set; }
     protected override Vector2 ColliderPosition
     {
@@ -47,6 +48,8 @@ public class NPC : Entity
             Bounds = new CircleF(ColliderPosition, ColliderRadius);
         }
     }
+    public Vector2 influence = Vector2.Zero;
+    protected float maxInfluence = 0;
     public override IShapeF Bounds { get; protected set; }
     public override int DrawPriority { get; set; } = 0;
     public override int Identifier { get; set; }
@@ -105,7 +108,7 @@ public class NPC : Entity
         // Otherwise, we're goin N/S
         else
         {
-            if (PosDiff.Y > 0)
+            if (PosDiff.Y < 0)
             {
                 Direction = Facing.North;
             }
@@ -125,13 +128,22 @@ public class NPC : Entity
         if (IdleActions.First != null)
         {
             // Handle idleActions
-            Action current = IdleActions.First.Value;
-            bool isDone = current.PerformAction(this, tm);
-            if (isDone) {
-                // Rotate the action to the end of the list.
-                IdleActions.RemoveFirst();
-                current.Reset();
-                IdleActions.AddLast(current);
+            if (_actionCursor == null)
+            {
+                _actionCursor = IdleActions.First;
+            }
+
+            bool isDone = _actionCursor.Value.PerformAction(this, tm);
+            if (isDone)
+            {
+                if (_actionCursor.Next == null)
+                {
+                    IdleActions = new SingleLinkedList<Action>();
+                }
+                else
+                {
+                    _actionCursor = _actionCursor.Next;
+                }
             }
         }
         // After this point, we should be able to determine any position change.
@@ -143,6 +155,18 @@ public class NPC : Entity
             // Employees lack a run.
             Sprite.Update(tm.GetElapsedSeconds()*Speed/_defaultSpeed);
         }
+
+        // Can't normalize the zero vector so test for it before normalizing
+        if (influence != Vector2.Zero)
+        {
+            influence.Normalize();
+        }
+
+        // Now add outside influences if they exist
+        Position += maxInfluence * influence * tm.GetElapsedSeconds();
+
+        influence = Vector2.Zero;
+        maxInfluence = 0;
     }
     public override void Draw(SpriteBatch spriteBatch, bool drawCollider = false)
     {
@@ -155,6 +179,31 @@ public class NPC : Entity
     }
     public override void OnCollision(CollisionEventArgs collisionInfo)
     {
+        if (collisionInfo.Other is Conveyor)
+        {
+            Conveyor conveyor = (Conveyor)collisionInfo.Other;
+            Vector2 force;
+            switch (conveyor.Direction)
+            {
+                case Facing.North:
+                    force = -Vector2.UnitY;
+                    break;
+                case Facing.South:
+                    force = Vector2.UnitY;
+                    break;
+                case Facing.West:
+                    force = -Vector2.UnitX;
+                    break;
+                default:
+                    force = Vector2.UnitX;
+                    break;
+            }
+            influence += force;
 
+            if (conveyor.Speed > maxInfluence)
+            {
+                maxInfluence = conveyor.Speed;
+            }
+        }
     }
 }

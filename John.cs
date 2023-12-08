@@ -38,6 +38,7 @@ public class John : Game
     }
 
     // Handles some animation durations
+    // TODO: use time instead of frames
     private const int _fadeFrames = 90;
     protected int FadeFrame { get; set; } = _fadeFrames;
 

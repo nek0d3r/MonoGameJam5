@@ -20,6 +20,7 @@ public class Wall : Entity
             Bounds = new RectangleF(ColliderPosition.ToPoint(), ColliderSize);
         }
     }
+    public override float Speed { get; set; }
     protected override Vector2 ColliderPosition
     {
         get => new Vector2(
