@@ -11,7 +11,7 @@ using MonoGame.Extended.Collections;
 
 public struct Line
 {
-    public Vector2 a, b;
+    public Point2 a, b;
 }
 
 public class Enemy : Entity
@@ -146,8 +146,10 @@ public class Enemy : Entity
         return true;
     }
 
-    private Vector2? LineIntersection(Line line1, Line line2)
+    private bool LineIntersects(Line line1, Line line2, out Point2 point)
     {
+        point = new Point2();
+
         float a1 = line1.b.Y - line1.a.Y;
         float b1 = line1.b.X - line1.a.X;
         float c1 = a1 * line1.a.X + b1 * line1.a.Y;
@@ -158,11 +160,12 @@ public class Enemy : Entity
 
         float det = a1 * b2 - a2 * b1;
 
-        if (Math.Abs(det) < 0.01) return null;
+        if (Math.Abs(det) < 0.001) return false;
 
         float x = (b2 * c1 - b1 * c2) / det;
         float y = (a1 * c2 - a2 * c1) / det;
-        return new Vector2(x, y);
+        point = new Point2(x, y);
+        return true;
     }
 
     public override void Update(GameTime tm)
@@ -209,13 +212,53 @@ public class Enemy : Entity
         float rayIncrement = sightAngle / _sightRays;
         for (int i = 0; i < _sightRays; i++)
         {
-            _sightState.Add(Vector2.Transform(-Vector2.UnitX, Matrix.CreateRotationZ(leftRay + i * rayIncrement)));
+            _sightState.Add(Vector2.Transform(-Vector2.UnitX * sightRange, Matrix.CreateRotationZ(leftRay + i * rayIncrement)));
         }
 
         foreach (Entity entity in John.Entities)
         {
-            foreach (Vector2 ray in _sightState)
+            RectangleF bounds;
+            if (entity.Bounds is CircleF)
             {
+                CircleF circle = (CircleF)entity.Bounds;
+                bounds = new RectangleF(
+                    new Point2(
+                        circle.Center.X - circle.Radius,
+                        circle.Center.Y - circle.Radius
+                    ),
+                    new Size2(circle.Radius, circle.Radius)
+                );
+            }
+            else
+            {
+                bounds = (RectangleF)entity.Bounds;
+            }
+            Line[] lines = {
+                new Line() { a = bounds.TopLeft, b = bounds.TopRight },
+                new Line() { a = bounds.TopRight, b = bounds.BottomRight },
+                new Line() { a = bounds.BottomRight, b = bounds.BottomLeft },
+                new Line() { a = bounds.BottomLeft, b = bounds.TopLeft }
+            };
+
+            for (int ray = 0; ray < _sightState.Count; ray++)
+            {
+                Line rayLine = new Line() { a = Position, b = Position + _sightState[ray] };
+                foreach (Line line in lines)
+                {
+                    Point2 intersection;
+                    if (LineIntersects(rayLine, line, out intersection))
+                    {
+                        if (entity is Player)
+                        {
+                            // TODO: Chase player
+                        }
+                        else if (entity is Box)
+                        {
+                            _sightState[ray].Normalize();
+                            _sightState[ray] *= Vector2.Distance(Position, intersection);
+                        }
+                    }
+                }
             }
         }
 
