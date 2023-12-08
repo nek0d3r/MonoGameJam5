@@ -601,7 +601,7 @@ public class John : Game
                                 .ToList();
 
             // Draw each entity
-            _entities.ForEach(entity => { entity.Draw(_spriteBatch, true); });
+            _entities.ForEach(entity => { entity.Draw(_spriteBatch, false); });
 
             // End drawing
             _spriteBatch.End();
