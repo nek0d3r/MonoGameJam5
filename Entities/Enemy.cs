@@ -193,9 +193,14 @@ public class Enemy : Entity
                 }
             }
         }
+        else if (detectedPlayer)
+        {
+            Vector2 toPlayer = lastSpotted - Position;
+            toPlayer.Normalize();
+            toPlayer *= this.Speed*tm.GetElapsedSeconds();
+            Position += toPlayer;
+        }
         // TODO: Figure out if how to get map contents in here.
-
-        // TODO: Check line of sight
 
         // For each sound within range, discern if it is audible enough for them to pay heed.
         foreach (Point snd in SoundsToParse)
@@ -207,6 +212,7 @@ public class Enemy : Entity
         // TODO: Do a full determination of movement.
         bool didMove = DetermineMovementDirection();
 
+        // Check line of sight
         _sightState = new List<Vector2>();
         float leftRay = ActualDirection.ToAngle() - sightAngle / 2;
         float rayIncrement = sightAngle / _sightRays;
@@ -251,6 +257,8 @@ public class Enemy : Entity
                         if (entity is Player)
                         {
                             // TODO: Chase player
+                            detectedPlayer = true;
+                            lastSpotted = entity.Position;
                         }
                         else if (entity is Box)
                         {
