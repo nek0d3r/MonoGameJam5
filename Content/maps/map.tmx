@@ -244,7 +244,7 @@
   <object id="365" template="objects/characters/manager.tx" x="644.5" y="230.5"/>
   <object id="366" template="objects/characters/employee.tx" x="470" y="306"/>
   <object id="372" template="objects/conveyors/west/conveyor-west-end.tx" x="90.5" y="190.55"/>
-  <object id="373" template="objects/conveyors/west/conveyor-west-start.tx" x="186.5" y="190.5"/>
+  <object id="373" template="objects/conveyors/west/conveyor-west-start.tx" x="186.5" y="190.55"/>
   <object id="374" template="objects/toilets/toiletne.tx" x="672" y="384"/>
   <object id="375" template="objects/toilets/toiletnw.tx" x="648" y="384"/>
   <object id="376" template="objects/toilets/toiletse.tx" x="672" y="408"/>
