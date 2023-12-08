@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="22" tilewidth="24" tileheight="24" infinite="0" nextlayerid="11" nextobjectid="177">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="22" tilewidth="24" tileheight="24" infinite="0" nextlayerid="13" nextobjectid="395">
  <tileset firstgid="1" source="spritesheets/spritesheet.tsx"/>
  <tileset firstgid="106" source="spritesheets/gameobjects.tsx"/>
  <layer id="4" name="Floor" width="30" height="22">
   <data encoding="csv">
 30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,30,
 30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,30,
-30,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,30,
-30,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,30,
-30,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,30,
-30,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,38,37,37,37,37,37,37,37,37,37,30,
-30,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,38,37,37,37,37,37,37,37,37,37,37,37,37,30,
-30,37,37,37,38,37,37,37,37,37,37,37,37,37,39,37,37,37,37,37,37,37,37,37,37,37,37,37,37,30,
-30,37,37,37,37,37,37,37,39,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,30,
-30,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,39,37,37,37,37,37,37,37,37,37,37,37,30,
-30,37,37,37,37,37,37,37,37,37,37,37,37,37,40,37,37,37,37,37,37,39,37,37,37,37,37,37,37,30,
-30,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,30,
-30,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,39,37,37,37,37,30,
-30,37,37,37,37,37,37,37,37,37,38,37,37,37,37,38,37,37,37,37,37,37,37,37,37,37,37,37,37,30,
-30,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,30,
-30,37,37,37,37,37,37,38,37,37,37,37,37,37,37,37,37,37,37,40,37,37,37,37,37,37,37,37,37,30,
-30,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,38,37,37,37,37,37,37,37,37,37,37,37,30,
-30,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,39,37,37,37,37,37,30,
-30,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,30,
-30,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,30,
-30,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,30,
+30,37,37,37,37,37,37,37,37,37,37,37,39,39,39,39,39,37,37,37,37,37,37,37,37,37,37,37,37,30,
+30,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,38,39,30,
+30,39,39,38,39,40,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,30,
+30,39,39,39,38,39,39,39,39,39,39,39,39,39,39,39,39,39,39,38,39,39,39,39,39,39,39,39,40,30,
+30,39,39,39,39,39,39,38,39,39,39,39,39,39,39,39,38,39,39,40,39,39,39,39,39,38,39,39,39,30,
+30,39,39,39,38,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,30,
+30,39,39,39,39,39,39,39,39,39,39,38,38,38,39,39,39,39,39,39,39,39,39,39,38,39,39,39,39,30,
+30,39,39,39,39,39,39,39,39,39,38,38,38,39,38,39,39,39,38,39,39,39,39,38,39,38,39,39,39,30,
+30,39,39,39,39,39,39,39,39,39,39,39,39,39,40,39,39,39,39,39,39,39,39,39,39,39,38,39,39,30,
+30,38,39,38,39,39,39,38,38,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,30,
+30,39,38,39,39,39,38,38,38,39,39,39,39,39,39,39,39,39,39,39,39,39,39,41,41,41,41,41,41,30,
+30,39,39,39,39,39,39,39,39,39,38,39,39,39,39,38,39,39,39,39,39,39,39,41,41,41,41,41,41,30,
+30,39,39,39,40,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,41,37,37,37,37,37,30,
+30,39,39,39,39,39,39,38,39,39,39,39,39,39,39,39,39,39,39,40,39,39,39,41,37,37,37,37,37,30,
+30,39,39,39,39,39,39,39,39,39,39,38,39,39,39,39,39,38,39,39,39,39,39,41,37,37,37,37,37,30,
+30,39,39,39,39,39,39,39,39,39,39,39,38,38,39,39,38,39,39,39,39,39,39,41,37,37,37,37,37,30,
+30,39,39,39,39,39,39,39,39,39,38,39,39,39,39,39,39,39,38,39,39,39,35,35,37,37,37,37,37,30,
+30,39,39,39,38,39,40,39,39,39,39,39,39,38,39,39,39,38,39,39,39,39,35,35,37,37,37,37,37,30,
+30,39,39,39,39,39,39,39,39,39,39,39,39,39,38,39,39,39,38,39,39,39,39,41,37,37,37,37,37,30,
 30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30
 </data>
  </layer>
@@ -40,71 +40,248 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,91,91,91,91,91,91,91,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,91,7,7,7,7,7,7,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,91,7,7,7,7,7,7,0,
+0,91,91,91,91,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,91,0,0,0,0,0,0,0,
+0,7,7,7,91,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,91,0,0,0,0,0,0,0,
+0,7,7,7,91,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,91,0,0,0,0,0,0,0,
+0,0,0,0,91,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,
+0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,
+0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,91,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="11" name="Decor" width="30" height="22">
+  <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,14,14,14,14,14,28,0,
+0,21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,28,0,0,0,0,0,0,0,0,
+0,21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,28,0,0,0,0,0,0,0,0,
+0,21,14,14,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,28,0,0,0,0,0,0,0,0,
+0,21,0,0,0,21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,28,0,21,42,42,42,42,28,0,
+0,21,0,0,0,21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,28,0,21,0,0,0,0,28,0,
+0,21,0,0,0,21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,28,0,21,0,0,0,0,28,0,
+0,42,42,28,0,21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,28,0,21,0,0,0,0,28,0,
+0,21,0,28,0,21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,28,0,21,0,0,0,0,28,0,
+0,21,0,28,0,21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,0,0,0,0,0,28,0,
+0,21,0,0,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,0,0,0,0,0,28,0,
+0,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,28,0,21,0,0,0,0,28,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="12" name="Decor2" width="30" height="22">
+  <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,28,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,28,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,28,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,28,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,28,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,28,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,0,0,0,0,42,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,0,14,14,14,14,14,14,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <objectgroup id="7" name="Entities">
-  <object id="6" template="objects/boxes/dedbox.tx" type="box" x="240" y="262" visible="1"/>
-  <object id="12" template="objects/boxes/sadbox.tx" type="box" x="266" y="278" visible="1"/>
-  <object id="15" template="objects/boxes/helpbox.tx" type="box" x="216" y="291" visible="1"/>
-  <object id="17" template="objects/boxes/madbox.tx" type="box" x="246" y="311" visible="1"/>
-  <object id="18" template="objects/boxes/starebox.tx" type="box" x="219" y="321" visible="1"/>
-  <object id="19" template="objects/characters/player.tx" type="player" x="346" y="274"/>
-  <object id="21" template="objects/characters/employee.tx" type="employee" x="215" y="136">
+  <object id="174" template="objects/conveyors/east/conveyor-west-east.tx" x="162.5" y="190.55"/>
+  <object id="175" template="objects/conveyors/east/conveyor-west-east.tx" x="138.5" y="190.55"/>
+  <object id="176" template="objects/conveyors/east/conveyor-west-east.tx" x="114.5" y="190.55"/>
+  <object id="6" template="objects/boxes/dedbox.tx" type="box" x="627.721" y="99.5705" visible="1"/>
+  <object id="12" template="objects/boxes/sadbox.tx" type="box" x="291.456" y="110.222" visible="1"/>
+  <object id="15" template="objects/boxes/helpbox.tx" type="box" x="464.033" y="490.956" visible="1"/>
+  <object id="17" template="objects/boxes/madbox.tx" type="box" x="445.321" y="502.935" visible="1"/>
+  <object id="18" template="objects/boxes/starebox.tx" type="box" x="89.9843" y="111.566" visible="1"/>
+  <object id="19" template="objects/characters/player.tx" type="player" x="28.1141" y="98.9574"/>
+  <object id="21" template="objects/characters/employee.tx" type="employee" x="207.5" y="114.5">
    <properties>
     <property name="actions" type="object" value="168"/>
    </properties>
   </object>
-  <object id="22" template="objects/characters/manager.tx" type="manager" x="491" y="165"/>
-  <object id="146" template="objects/conveyors/east/conveyor-east-path.tx" type="conveyor" x="504" y="312"/>
-  <object id="147" template="objects/conveyors/west/conveyor-east-west.tx" type="conveyor" x="504" y="360"/>
-  <object id="149" template="objects/conveyors/east/conveyor-east-start.tx" type="conveyor" x="480" y="360"/>
-  <object id="150" template="objects/conveyors/east/conveyor-east-end.tx" x="528" y="360"/>
-  <object id="151" template="objects/conveyors/south/conveyor-north-south.tx" type="conveyor" x="432" y="336"/>
-  <object id="152" template="objects/conveyors/south/conveyor-south-end.tx" type="conveyor" x="432" y="360"/>
-  <object id="153" template="objects/conveyors/south/conveyor-south-path.tx" type="conveyor" x="432" y="312"/>
-  <object id="154" template="objects/conveyors/south/conveyor-south-start.tx" type="conveyor" x="384" y="312"/>
-  <object id="155" template="objects/conveyors/south/conveyor-south-end.tx" gid="73" x="384" y="336"/>
-  <object id="156" template="objects/conveyors/west/conveyor-west-end.tx" type="conveyor" x="504" y="408"/>
-  <object id="157" template="objects/conveyors/west/conveyor-west-path.tx" type="conveyor" x="528" y="408"/>
-  <object id="158" template="objects/conveyors/west/conveyor-west-start.tx" type="conveyor" x="528" y="432"/>
-  <object id="159" template="objects/conveyors/east/conveyor-west-east.tx" type="conveyor" x="504" y="432"/>
-  <object id="160" template="objects/conveyors/west/conveyor-west-end.tx" x="480" y="432"/>
-  <object id="161" template="objects/conveyors/north/conveyor-south-north.tx" type="conveyor" x="408" y="336"/>
-  <object id="162" template="objects/conveyors/north/conveyor-north-end.tx" type="conveyor" x="408" y="312"/>
-  <object id="163" template="objects/conveyors/north/conveyor-north-path.tx" type="conveyor" x="456" y="336"/>
-  <object id="164" template="objects/conveyors/north/conveyor-north-start.tx" type="conveyor" x="408" y="360"/>
-  <object id="165" template="objects/conveyors/north/conveyor-north-end.tx" x="456" y="312"/>
-  <object id="166" template="objects/conveyors/east/conveyor-east-end.tx" x="528" y="312"/>
-  <object id="173" template="objects/toilets/toiletse.tx" x="48" y="504"/>
-  <object id="174" template="objects/toilets/toiletsw.tx" x="24" y="504"/>
-  <object id="175" template="objects/toilets/toiletnw.tx" x="24" y="480"/>
-  <object id="176" template="objects/toilets/toiletne.tx" x="48" y="480"/>
+  <object id="22" template="objects/characters/manager.tx" type="manager" x="372.667" y="207.333">
+   <properties>
+    <property name="actions" type="object" value="172"/>
+   </properties>
+  </object>
+  <object id="147" template="objects/conveyors/west/conveyor-east-west.tx" type="conveyor" x="192" y="384"/>
+  <object id="149" template="objects/conveyors/east/conveyor-east-start.tx" type="conveyor" x="168" y="384"/>
+  <object id="150" template="objects/conveyors/east/conveyor-east-end.tx" x="216" y="384"/>
+  <object id="151" template="objects/conveyors/south/conveyor-north-south.tx" type="conveyor" x="476.09" y="256.59"/>
+  <object id="152" template="objects/conveyors/south/conveyor-south-end.tx" type="conveyor" x="476.272" y="280.59" visible="1"/>
+  <object id="153" template="objects/conveyors/south/conveyor-south-path.tx" type="conveyor" x="475.91" y="232.59" visible="1"/>
+  <object id="156" template="objects/conveyors/west/conveyor-west-end.tx" type="conveyor" x="480" y="408"/>
+  <object id="157" template="objects/conveyors/west/conveyor-west-path.tx" type="conveyor" x="504" y="408"/>
+  <object id="158" template="objects/conveyors/west/conveyor-west-start.tx" type="conveyor" x="623.5" y="130.5"/>
+  <object id="159" template="objects/conveyors/east/conveyor-west-east.tx" type="conveyor" x="599.5" y="130.5"/>
+  <object id="160" template="objects/conveyors/west/conveyor-west-end.tx" x="575.5" y="130.5"/>
+  <object id="163" template="objects/conveyors/north/conveyor-north-path.tx" type="conveyor" x="312" y="432"/>
+  <object id="165" template="objects/conveyors/north/conveyor-north-end.tx" x="312" y="312"/>
+  <object id="166" template="objects/conveyors/east/conveyor-east-end.tx" x="555.5" y="158" visible="1"/>
+  <object id="146" template="objects/conveyors/east/conveyor-east-path.tx" type="conveyor" x="531.5" y="158" visible="1"/>
+  <object id="172" x="452.492" y="110.138">
+   <properties>
+    <property name="actionType" type="int" value="0"/>
+   </properties>
+   <polyline points="0,0 137.115,0.578546 82.1535,111.659 49.7549,156.207 -17.9349,162.571 -64.7971,91.9888"/>
+  </object>
+  <object id="258" template="objects/boxes/madbox.tx" x="53.8047" y="394.568"/>
+  <object id="259" template="objects/boxes/madbox.tx" x="234.23" y="484.576"/>
+  <object id="260" template="objects/boxes/madbox.tx" x="116.678" y="457.722"/>
+  <object id="261" template="objects/boxes/madbox.tx" x="320.92" y="465.293"/>
+  <object id="262" template="objects/boxes/madbox.tx" x="144.636" y="347.127"/>
+  <object id="263" template="objects/boxes/madbox.tx" x="148.686" y="312.993"/>
+  <object id="264" template="objects/boxes/madbox.tx" x="162.571" y="332.085"/>
+  <object id="265" template="objects/boxes/madbox.tx" x="204.227" y="274.231"/>
+  <object id="266" template="objects/boxes/madbox.tx" x="189.184" y="285.223"/>
+  <object id="267" template="objects/boxes/madbox.tx" x="162.571" y="355.806"/>
+  <object id="268" template="objects/boxes/sadbox.tx" x="275.388" y="124.387"/>
+  <object id="269" template="objects/boxes/sadbox.tx" x="329.771" y="154.472"/>
+  <object id="270" template="objects/boxes/sadbox.tx" x="306.051" y="188.606"/>
+  <object id="271" template="objects/boxes/sadbox.tx" x="258.031" y="141.744"/>
+  <object id="272" template="objects/boxes/sadbox.tx" x="222.74" y="174.721"/>
+  <object id="273" template="objects/boxes/sadbox.tx" x="292.166" y="214.062"/>
+  <object id="274" template="objects/boxes/sadbox.tx" x="347.127" y="148.108"/>
+  <object id="275" template="objects/boxes/sadbox.tx" x="309.522" y="205.962"/>
+  <object id="276" template="objects/boxes/sadbox.tx" x="241.254" y="153.893"/>
+  <object id="277" template="objects/boxes/sadbox.tx" x="206.541" y="168.935"/>
+  <object id="278" template="objects/boxes/starebox.tx" x="104.138" y="127.28"/>
+  <object id="279" template="objects/boxes/starebox.tx" x="91.9888" y="146.372"/>
+  <object id="280" template="objects/boxes/starebox.tx" x="117.445" y="155.629"/>
+  <object id="281" template="objects/boxes/starebox.tx" x="26.0346" y="191.499"/>
+  <object id="282" template="objects/boxes/starebox.tx" x="41.0767" y="208.276"/>
+  <object id="283" template="objects/boxes/starebox.tx" x="59.0117" y="200.755"/>
+  <object id="288" template="objects/boxes/starebox.tx" x="74.6324" y="223.319"/>
+  <object id="289" template="objects/characters/employee.tx" x="145.694" y="195.663"/>
+  <object id="290" template="objects/characters/manager.tx" x="60.7473" y="419.446"/>
+  <object id="295" template="objects/boxes/madbox.tx" x="241" y="461.167"/>
+  <object id="296" template="objects/boxes/madbox.tx" x="129.5" y="417.5"/>
+  <object id="297" template="objects/boxes/madbox.tx" x="195.667" y="428.667"/>
+  <object id="298" template="objects/boxes/madbox.tx" x="435.5" y="436.167"/>
+  <object id="299" template="objects/boxes/madbox.tx" x="232.167" y="422.167"/>
+  <object id="300" template="objects/boxes/dedbox.tx" x="645.333" y="114"/>
+  <object id="301" template="objects/boxes/dedbox.tx" x="622.667" y="162"/>
+  <object id="302" template="objects/boxes/dedbox.tx" x="579.667" y="170.333"/>
+  <object id="303" template="objects/boxes/dedbox.tx" x="594.667" y="161.667"/>
+  <object id="304" template="objects/boxes/dedbox.tx" x="637" y="175.333"/>
+  <object id="305" template="objects/boxes/dedbox.tx" x="643.667" y="197.667"/>
+  <object id="306" template="objects/boxes/dedbox.tx" x="532.667" y="110"/>
+  <object id="307" template="objects/boxes/dedbox.tx" x="546.333" y="88.6667"/>
+  <object id="308" template="objects/boxes/helpbox.tx" x="175" y="428"/>
+  <object id="309" template="objects/boxes/helpbox.tx" x="22.1667" y="437.167"/>
+  <object id="310" template="objects/boxes/helpbox.tx" x="266" y="377"/>
+  <object id="311" template="objects/boxes/helpbox.tx" x="216" y="431"/>
+  <object id="312" template="objects/boxes/helpbox.tx" x="277" y="397"/>
+  <object id="313" template="objects/boxes/helpbox.tx" x="74.6667" y="455.5"/>
+  <object id="314" template="objects/boxes/helpbox.tx" x="260" y="415"/>
+  <object id="315" template="objects/boxes/sadbox.tx" x="56" y="244"/>
+  <object id="316" template="objects/boxes/sadbox.tx" x="130.5" y="280"/>
+  <object id="319" template="objects/boxes/sadbox.tx" x="89" y="241.5"/>
+  <object id="320" template="objects/boxes/sadbox.tx" x="121" y="267"/>
+  <object id="321" template="objects/boxes/sadbox.tx" x="76" y="259"/>
+  <object id="323" template="objects/boxes/sadbox.tx" x="32" y="306"/>
+  <object id="324" template="objects/boxes/sadbox.tx" x="63.5" y="297.5"/>
+  <object id="325" template="objects/characters/employee.tx" x="282" y="344"/>
+  <object id="326" template="objects/boxes/starebox.tx" x="467.5" y="398"/>
+  <object id="327" template="objects/boxes/starebox.tx" x="450.5" y="386"/>
+  <object id="328" template="objects/boxes/starebox.tx" x="433.5" y="372.5"/>
+  <object id="329" template="objects/boxes/starebox.tx" x="166.5" y="104.5"/>
+  <object id="330" template="objects/boxes/starebox.tx" x="150" y="124.5"/>
+  <object id="331" template="objects/boxes/dedbox.tx" x="348" y="251"/>
+  <object id="332" template="objects/boxes/dedbox.tx" x="329" y="264.5"/>
+  <object id="333" template="objects/boxes/dedbox.tx" x="318" y="284"/>
+  <object id="334" template="objects/boxes/dedbox.tx" x="299.5" y="267"/>
+  <object id="335" template="objects/boxes/dedbox.tx" x="344" y="288"/>
+  <object id="336" template="objects/boxes/starebox.tx" x="413" y="378.5"/>
+  <object id="337" template="objects/boxes/starebox.tx" x="399" y="363.5"/>
+  <object id="338" template="objects/boxes/starebox.tx" x="399" y="385.5"/>
+  <object id="339" template="objects/boxes/starebox.tx" x="439.5" y="399"/>
+  <object id="340" template="objects/boxes/starebox.tx" x="458" y="414"/>
+  <object id="341" template="objects/boxes/starebox.tx" x="348.333" y="434"/>
+  <object id="342" template="objects/boxes/starebox.tx" x="423.5" y="450.5"/>
+  <object id="343" template="objects/boxes/starebox.tx" x="436" y="462.5"/>
+  <object id="344" template="objects/boxes/starebox.tx" x="406.5" y="478.5"/>
+  <object id="345" template="objects/boxes/starebox.tx" x="450" y="479.5"/>
+  <object id="346" template="objects/boxes/starebox.tx" x="253.5" y="359.5"/>
+  <object id="347" template="objects/boxes/starebox.tx" x="261" y="445.667"/>
+  <object id="348" template="objects/boxes/helpbox.tx" x="248.833" y="432.833"/>
+  <object id="349" template="objects/boxes/helpbox.tx" x="220" y="449.5"/>
+  <object id="350" template="objects/boxes/madbox.tx" x="464" y="178"/>
+  <object id="351" template="objects/boxes/madbox.tx" x="447.5" y="192.5"/>
+  <object id="352" template="objects/boxes/madbox.tx" x="425" y="216.5"/>
+  <object id="353" template="objects/boxes/madbox.tx" x="495.5" y="211.5"/>
+  <object id="354" template="objects/boxes/madbox.tx" x="511.5" y="227.5"/>
+  <object id="355" template="objects/boxes/madbox.tx" x="528" y="237.5"/>
+  <object id="356" template="objects/boxes/madbox.tx" x="404" y="218"/>
+  <object id="357" template="objects/boxes/madbox.tx" x="434" y="202"/>
+  <object id="358" template="objects/characters/employee.tx" x="410" y="414.5"/>
+  <object id="361" template="objects/conveyors/north/conveyor-south-north.tx" x="312" y="408"/>
+  <object id="362" template="objects/conveyors/north/conveyor-south-north.tx" x="312" y="384"/>
+  <object id="363" template="objects/conveyors/north/conveyor-south-north.tx" x="312" y="360"/>
+  <object id="364" template="objects/conveyors/north/conveyor-south-north.tx" x="312" y="336"/>
+  <object id="365" template="objects/characters/manager.tx" x="644.5" y="230.5"/>
+  <object id="366" template="objects/characters/employee.tx" x="470" y="306"/>
+  <object id="372" template="objects/conveyors/west/conveyor-west-end.tx" x="90.5" y="190.55"/>
+  <object id="373" template="objects/conveyors/west/conveyor-west-start.tx" x="186.5" y="190.55"/>
+  <object id="374" template="objects/toilets/toiletne.tx" x="672" y="384"/>
+  <object id="375" template="objects/toilets/toiletnw.tx" x="648" y="384"/>
+  <object id="376" template="objects/toilets/toiletse.tx" x="672" y="408"/>
+  <object id="377" template="objects/toilets/toiletsw.tx" x="648" y="408"/>
+  <object id="380" template="objects/boxes/starebox.tx" x="299.667" y="249.333"/>
+  <object id="381" template="objects/boxes/helpbox.tx" x="392.667" y="228"/>
+  <object id="382" template="objects/boxes/dedbox.tx" x="476.333" y="161.333"/>
+  <object id="383" template="objects/boxes/sadbox.tx" x="455.667" y="428"/>
+  <object id="384" template="objects/boxes/helpbox.tx" x="433.667" y="87.6667"/>
+  <object id="385" template="objects/boxes/starebox.tx" x="393.667" y="350.667"/>
+  <object id="386" template="objects/boxes/dedbox.tx" x="551" y="330"/>
+  <object id="387" template="objects/boxes/sadbox.tx" x="512.333" y="128"/>
+  <object id="388" template="objects/conveyors/east/conveyor-east-path.tx" x="311" y="307.667"/>
+  <object id="390" template="objects/conveyors/west/conveyor-east-west.tx" x="335" y="307.667"/>
+  <object id="391" template="objects/conveyors/west/conveyor-east-west.tx" x="359" y="307.67"/>
+  <object id="392" template="objects/conveyors/east/conveyor-east-end.tx" x="383" y="307.67"/>
+  <object id="393" template="objects/boxes/sadbox.tx" x="379" y="328.333"/>
+  <object id="394" template="objects/boxes/madbox.tx" x="374.333" y="342"/>
  </objectgroup>
  <objectgroup id="9" name="Walls">
   <object id="139" template="objects/colliders/wall.tx" x="0" y="528" width="24" height="480"/>
   <object id="140" template="objects/colliders/wall.tx" x="696" y="528" width="24" height="480"/>
   <object id="141" template="objects/colliders/wall.tx" x="24" y="528" width="672" height="24"/>
-  <object id="143" template="objects/colliders/wall.tx" x="24" y="72" width="672" height="24"/>
+  <object id="143" template="objects/colliders/wall.tx" x="24" y="72" width="672" height="24" visible="1"/>
+  <object id="291" template="objects/colliders/wall.tx" x="528" y="312" width="168" height="72"/>
+  <object id="292" template="objects/colliders/wall.tx" x="528" y="432" width="24" height="168.25"/>
+  <object id="293" template="objects/colliders/wall.tx" x="528" y="504"/>
+  <object id="378" template="objects/colliders/wall.tx" x="24" y="384" width="96" height="72"/>
+  <object id="379" template="objects/colliders/wall.tx" x="96" y="456" width="24" height="72"/>
  </objectgroup>
  <objectgroup id="10" name="Employee Actions">
-  <object id="168" name="Action 1: Walk" x="227" y="126">
+  <object id="168" name="Action 1: Walk" x="22.5" y="95.5">
    <properties>
     <property name="actionType" type="int" value="0"/>
     <property name="actions" type="object" value="169"/>
    </properties>
-   <polyline points="0,0 314,4 287,126 217,173"/>
+   <polyline points="0,0 333,5.54913 304.366,174.798 230.131,240"/>
   </object>
   <object id="169" name="Action 2: Pause" x="443" y="299">
    <properties>
@@ -114,7 +291,7 @@
    </properties>
    <point/>
   </object>
-  <object id="170" name="Action 3: Wander" x="406" y="343" width="76" height="76">
+  <object id="170" name="Action 3: Wander" x="355" y="106.5" width="76" height="76">
    <properties>
     <property name="actionType" type="int" value="3"/>
     <property name="actions" type="object" value="171"/>
@@ -122,7 +299,7 @@
    </properties>
    <ellipse/>
   </object>
-  <object id="171" name="Action 4: Walk" x="399" y="394">
+  <object id="171" name="Action 4: Walk" x="328.5" y="377.5">
    <properties>
     <property name="actionType" type="int" value="0"/>
     <property name="actions" type="object" value="168"/>

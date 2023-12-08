@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Specialized;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -175,7 +176,9 @@ public class Conveyor : Entity
 
     public override void Draw(SpriteBatch spriteBatch, bool drawCollider = false)
     {
-        spriteBatch.Draw(Sprite, Position);
+        // Make an integer-rounded rendering position to avoid graphical glitchiness from our renderer.
+        Vector2 DrawPos = new Vector2((int)Math.Round(Position.X), (int)Math.Round(Position.Y));
+        spriteBatch.Draw(Sprite, DrawPos);
         if (drawCollider)
         {
             spriteBatch.DrawRectangle((RectangleF)Bounds, Color.Red, 1);
