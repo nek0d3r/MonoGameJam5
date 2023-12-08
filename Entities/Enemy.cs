@@ -235,6 +235,11 @@ public class Enemy : Entity
         foreach (Entity entity in John.Entities)
         {
 #if true
+            // Don't intersect with ourself.
+            if (entity is Enemy)
+            {
+                continue;
+            }
             RectangleF bounds;
             if (entity.Bounds is CircleF)
             {
@@ -277,8 +282,13 @@ public class Enemy : Entity
                         }
                         else if (entity is Box || entity is Wall)
                         {
-                            _sightState[ray] = Vector2.Normalize(_sightState[ray]);
-                            _sightState[ray] *= Vector2.Distance(Position, intersection);
+                            float lastDist = _sightState[ray].Length();
+                            // Only change if collision is closer than the last one.
+                            if (lastDist > Vector2.Distance(Position, intersection))
+                            {
+                                _sightState[ray] = Vector2.Normalize(_sightState[ray]);
+                                _sightState[ray] *= Vector2.Distance(Position, intersection);
+                            }
                         }
                     }
                 }
