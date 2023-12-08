@@ -85,6 +85,7 @@ public abstract class Entity : ICollisionActor
                             Speed = Convert.ToSingle(tiledObject.Properties["speed"]),
                             Sprite = new AnimatedSprite(spriteSheet),
                             Animation = tiledObject.Properties["animation"],
+                            ActualDirection = Vector2.UnitY,
                             Position = position,
                             DrawPriority = 2,
                             IdleActions = new SingleLinkedList<Action>(),

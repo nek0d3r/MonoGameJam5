@@ -6,6 +6,13 @@ using Microsoft.Xna.Framework.Audio;
 using MonoGame.Extended;
 using MonoGame.Extended.Collisions;
 using MonoGame.Extended.Sprites;
+using MonoGameJam5;
+using MonoGame.Extended.Collections;
+
+public struct Line
+{
+    public Point2 a, b;
+}
 
 public class Enemy : Entity
 {
@@ -13,8 +20,10 @@ public class Enemy : Entity
     private SingleLinkedListNode<Action> _actionCursor;
     public bool detectedPlayer { get; private set; }
     private Vector2 lastSpotted { get; set; }
-    private float sightRange { get; }
-    private float sightAngle { get; }
+    private List<Vector2> _sightState { get; set; } = new List<Vector2>();
+    private float sightRange { get; } = 50;
+    private float sightAngle { get; } = Convert.ToSingle(Math.PI / 2);
+    private int _sightRays = 10;
 
     private float hearingRange { get; }
     private float hearingSensitivity { get; }
@@ -39,6 +48,7 @@ public class Enemy : Entity
     public SoundEffect[] Footsteps { get; set; } = new SoundEffect[2];
     private Facing _lastDir;
     public override Facing Direction { get; set; }
+    public Vector2 ActualDirection { get; set; } = Vector2.Zero;
     public override string Animation
     {
         get => _animation;
@@ -105,6 +115,7 @@ public class Enemy : Entity
             return false;
         }
         PosDiff.Normalize();
+        ActualDirection = PosDiff;
         // Determine the largest magnitude of direction.
         // If the x component is larger than the Y component, we're going E/W
         if (Math.Abs(PosDiff.X) > Math.Abs(PosDiff.Y))
@@ -134,6 +145,29 @@ public class Enemy : Entity
         doAnim(false);
         return true;
     }
+
+    private bool LineIntersects(Line line1, Line line2, out Point2 point)
+    {
+        point = new Point2();
+
+        float a1 = line1.b.Y - line1.a.Y;
+        float b1 = line1.b.X - line1.a.X;
+        float c1 = a1 * line1.a.X + b1 * line1.a.Y;
+
+        float a2 = line2.b.Y - line2.a.Y;
+        float b2 = line2.b.X - line2.a.X;
+        float c2 = a2 * line2.a.X + b2 * line2.a.Y;
+
+        float det = a1 * b2 - a2 * b1;
+
+        if (Math.Abs(det) < 0.001) return false;
+
+        float x = (b2 * c1 - b1 * c2) / det;
+        float y = (a1 * c2 - a2 * c1) / det;
+        point = new Point2(x, y);
+        return true;
+    }
+
     public override void Update(GameTime tm)
     {
         _lastPos = Position;
@@ -159,9 +193,14 @@ public class Enemy : Entity
                 }
             }
         }
+        else if (detectedPlayer)
+        {
+            Vector2 toPlayer = lastSpotted - Position;
+            toPlayer.Normalize();
+            toPlayer *= this.Speed*tm.GetElapsedSeconds();
+            Position += toPlayer;
+        }
         // TODO: Figure out if how to get map contents in here.
-
-        // TODO: Check line of sight
 
         // For each sound within range, discern if it is audible enough for them to pay heed.
         foreach (Point snd in SoundsToParse)
@@ -172,6 +211,80 @@ public class Enemy : Entity
 
         // TODO: Do a full determination of movement.
         bool didMove = DetermineMovementDirection();
+
+        // Check line of sight
+        _sightState = new List<Vector2>();
+        float leftRay = ActualDirection.ToAngle() - sightAngle / 2;
+        float rayIncrement = sightAngle / _sightRays;
+        for (int i = 0; i < _sightRays; i++)
+        {
+            _sightState.Add(Vector2.Transform(-Vector2.UnitX * sightRange, Matrix.CreateRotationZ(leftRay + i * rayIncrement)));
+        }
+
+        foreach (Entity entity in John.Entities)
+        {
+            /*RectangleF bounds;
+            if (entity.Bounds is CircleF)
+            {
+                CircleF circle = (CircleF)entity.Bounds;
+                bounds = new RectangleF(
+                    new Point2(
+                        circle.Center.X - circle.Radius,
+                        circle.Center.Y - circle.Radius
+                    ),
+                    new Size2(circle.Radius, circle.Radius)
+                );
+            }
+            else
+            {
+                bounds = (RectangleF)entity.Bounds;
+            }
+            Line[] lines = {
+                new Line() { a = bounds.TopLeft, b = bounds.TopRight },
+                new Line() { a = bounds.TopRight, b = bounds.BottomRight },
+                new Line() { a = bounds.BottomRight, b = bounds.BottomLeft },
+                new Line() { a = bounds.BottomLeft, b = bounds.TopLeft }
+            };
+
+            for (int ray = 0; ray < _sightState.Count; ray++)
+            {
+                Line rayLine = new Line() { a = Position, b = Position + _sightState[ray] };
+                foreach (Line line in lines)
+                {
+                    Point2 intersection;
+                    if (LineIntersects(rayLine, line, out intersection))
+                    {
+                        if (entity is Player)
+                        {
+                            // TODO: Chase player
+                            detectedPlayer = true;
+                            lastSpotted = entity.Position;
+                        }
+                        else if (entity is Box)
+                        {
+                            _sightState[ray].Normalize();
+                            _sightState[ray] *= Vector2.Distance(Position, intersection);
+                        }
+                    }
+                }
+            }*/
+
+            if (entity is Player)
+            {
+                Vector2 diffPos = entity.Position - Position;
+                float len = diffPos.Length();
+                if (len < 75f)
+                {
+                    detectedPlayer = true;
+                    lastSpotted = entity.Position;
+                }
+                else
+                {
+                    detectedPlayer = false;
+                }
+            }
+        }
+
 
         // Update sprite animation
         if (didMove)
@@ -210,6 +323,10 @@ public class Enemy : Entity
         if (drawCollider)
         {
             spriteBatch.DrawCircle((CircleF)Bounds, 8, Color.Red, 3);
+            foreach (Vector2 line in _sightState)
+            {
+                spriteBatch.DrawLine(Position, sightRange, line.ToAngle(), Color.Red, 2);
+            }
         }
     }
     public override void OnCollision(CollisionEventArgs collisionInfo)
