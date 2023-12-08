@@ -148,24 +148,20 @@ public class Enemy : Entity
 
     private Vector2? LineIntersection(Line line1, Line line2)
     {
-        Vector2 diffX = new Vector2(line1.a.X - line1.b.X, line2.a.X - line2.b.X);
-        Vector2 diffY = new Vector2(line1.a.Y - line1.b.Y, line2.a.Y - line2.b.Y);
+        float a1 = line1.b.Y - line1.a.Y;
+        float b1 = line1.b.X - line1.a.X;
+        float c1 = a1 * line1.a.X + b1 * line1.a.Y;
 
-        var det = (Vector2 a, Vector2 b) => a.X * b.Y - a.Y * b.X;
+        float a2 = line2.b.Y - line2.a.Y;
+        float b2 = line2.b.X - line2.a.X;
+        float c2 = a2 * line2.a.X + b2 * line2.a.Y;
 
-        float div = det(diffX, diffY);
-        if (Math.Abs(div) < 0.01)
-        {
-            return null;
-        }
+        float det = a1 * b2 - a2 * b1;
 
-        Vector2 d = new Vector2(
-            det(line1.a, line1.b),
-            det(line2.a, line2.b)
-        );
-        float x = det(d, diffX) / div;
-        float y = det(d, diffY) / div;
-        
+        if (Math.Abs(det) < 0.01) return null;
+
+        float x = (b2 * c1 - b1 * c2) / det;
+        float y = (a1 * c2 - a2 * c1) / det;
         return new Vector2(x, y);
     }
 
