@@ -138,6 +138,16 @@ public class John : Game
     {
         NumConveyors = 0;
 
+        // Create fresh collider area
+        _collisionComponent = new CollisionComponent(
+            new RectangleF(
+                0,
+                0,
+                _tiledMap.WidthInPixels,
+                _tiledMap.HeightInPixels
+            )
+        );
+
         // Create game objects
         Entities = Entity.CreateEntities(_tiledMap, _spriteSheet);
 
@@ -208,38 +218,10 @@ public class John : Game
         // Load spritesheet
         _spriteSheet = Content.Load<SpriteSheet>("pixel/spritesheet-animations.sf", new JsonContentLoader());
 
-        // Create collider area
-        _collisionComponent = new CollisionComponent(
-            new RectangleF(
-                0,
-                0,
-                _tiledMap.WidthInPixels,
-                _tiledMap.HeightInPixels
-            )
-        );
         _flush = Content.Load<SoundEffect>("sfx/ToiletFlush");
         _conveyor = Content.Load<SoundEffect>("sfx/Conveyor");
         _footstep1 = Content.Load<SoundEffect>("sfx/Footstep1");
         _footstep2 = Content.Load<SoundEffect>("sfx/Footstep2");
-
-        // Create game objects
-        Entities = Entity.CreateEntities(_tiledMap, _spriteSheet);
-
-        Entities.ForEach(entity =>
-        {
-            // Look for NPC/Enemy actions and populate entity with properties
-            Entity.ParseActions(_tiledMap, entity);
-
-            // Force the first frame of the animation to play.
-            // Without this, idling at the game start will only draw the first sprite in the sheet.
-            if (entity.Sprite != null)
-            {
-                entity.Sprite.Update(0);
-            }
-            
-            // Add entity as a collider
-            _collisionComponent.Insert(entity);
-        });
 
         // Load music
         _titleMusic = Content.Load<Song>("Music/Escape");
@@ -261,6 +243,7 @@ public class John : Game
         _creditsTextSize = _bitmapFont.MeasureString(_creditsText);
         _creditsScale = 0.8f;
 
+        // Initialize everything.
         Reset();
 
     }
