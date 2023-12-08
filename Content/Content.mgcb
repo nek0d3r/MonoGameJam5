@@ -102,3 +102,22 @@
 /processorParam:TextureFormat=Color
 /build:pixel/title.png
 
+# begin sfx/ToiletFlush
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:sfx/ToiletFlush.wav
+
+# begin sfx/Conveyor
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:sfx/Conveyor.wav
+
+# begin sfx/Footstep1
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:sfx/Footstep1.wav
+
+# begin sfx/Footstep2
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:sfx/Footstep2.wav

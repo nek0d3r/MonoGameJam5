@@ -71,7 +71,9 @@ public class Box : Entity
 
     public override void Draw(SpriteBatch spriteBatch, bool drawCollider = false)
     {
-        spriteBatch.Draw(Sprite, Position);
+        // Make an integer-rounded rendering position to avoid graphical glitchiness from our renderer.
+        Vector2 DrawPos = new Vector2((int)Math.Round(Position.X), (int)Math.Round(Position.Y));
+        spriteBatch.Draw(Sprite, DrawPos);
         if (drawCollider)
         {
             spriteBatch.DrawRectangle((RectangleF)Bounds, Color.Red, 2);

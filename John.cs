@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
@@ -51,6 +52,12 @@ public class John : Game
 
     // Once we have menus and stuff, this should probably go to it's own class.
     private Song _backgroundMusic, _titleMusic, _gameOverMusic, _victoryMusic;
+
+    private SoundEffect _flush, _conveyor, _footstep1, _footstep2;
+
+    // A public variable so we can correctly scale down conveyor sounds until
+    // we get positional sound working.
+    public static int NumConveyors { get; set; }
 
     private string _creditsText;
     private Size2 _creditsTextSize;
@@ -129,6 +136,8 @@ public class John : Game
     // in order to reset the map.
     private void Reset()
     {
+        NumConveyors = 0;
+
         // Create game objects
         Entities = Entity.CreateEntities(_tiledMap, _spriteSheet);
 
@@ -146,6 +155,37 @@ public class John : Game
             
             // Add entity as a collider
             _collisionComponent.Insert(entity);
+
+            // If a conveyor, add the conveyor sound
+            if (entity is Conveyor)
+            {
+                ((Conveyor)entity).IdleSound = _conveyor;
+                NumConveyors++;
+            }
+            // I don't believe these can be combined, despite looking the same,
+            // due to the fact we cannot cast to all three at once, and the symbol
+            // is positioned in a different spot in each class, so
+            // we can't miscast, either.
+            // Footsteps should probably be a part of some walker
+            // abstract class to remedy this.
+            else if (entity is Player) 
+            {
+                Player pl = (Player)entity;
+                pl.Footsteps[0] = _footstep1;
+                pl.Footsteps[1] = _footstep2;
+            }
+            else if (entity is NPC)
+            {
+                NPC npc = (NPC)entity;
+                npc.Footsteps[0] = _footstep1;
+                npc.Footsteps[1] = _footstep2;
+            }
+            else if (entity is Enemy)
+            {
+                Enemy en = (Enemy)entity;
+                en.Footsteps[0] = _footstep1;
+                en.Footsteps[1] = _footstep2;
+            }
         });
 
         MediaPlayer.Play(_titleMusic);
@@ -177,6 +217,10 @@ public class John : Game
                 _tiledMap.HeightInPixels
             )
         );
+        _flush = Content.Load<SoundEffect>("sfx/ToiletFlush");
+        _conveyor = Content.Load<SoundEffect>("sfx/Conveyor");
+        _footstep1 = Content.Load<SoundEffect>("sfx/Footstep1");
+        _footstep2 = Content.Load<SoundEffect>("sfx/Footstep2");
 
         // Create game objects
         Entities = Entity.CreateEntities(_tiledMap, _spriteSheet);
@@ -272,6 +316,11 @@ public class John : Game
             {
                 // GameBegin is an animation over the title screen before the game begins.
                 _gameState = GameState.GameBegin;
+                // Play a flushing sound when the game starts.
+                SoundEffectInstance inst = _flush.CreateInstance();
+                inst.Volume = 0.1f;
+                inst.Pitch = 1f;
+                inst.Play();
             }
         }
         else if (_gameState == GameState.GameBegin)
