@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Collisions;
+using Microsoft.Xna.Framework.Audio;
 
 public class NPC : Entity
 {
@@ -26,6 +27,8 @@ public class NPC : Entity
     {
         get => TileRender.TILE_SIZE * 0.25f;
     }
+    private float _lastStepSound = 0f;
+    public SoundEffect[] Footsteps { get; set; } = new SoundEffect[2];
     private Facing _lastDir;
     public override Facing Direction { get; set; } = Facing.South;
     public override string Animation
@@ -154,6 +157,17 @@ public class NPC : Entity
         {
             // Employees lack a run.
             Sprite.Update(tm.GetElapsedSeconds()*Speed/_defaultSpeed);
+        
+            // Handle sound processing
+            _lastStepSound += tm.GetElapsedSeconds()*Speed/_defaultSpeed;
+            // I couldn't find a way to handle this programmatically,
+            // to get the animation duration from the AnimatedSprite.
+            // So I'll hardcode it.
+            if (_lastStepSound > 0.7f)
+            {
+                Footsteps[Random.Shared.Next() % 2].Play(0.1f, Random.Shared.NextSingle() - 0.5f, 0f);
+                _lastStepSound = 0f;
+            }
         }
 
         // Can't normalize the zero vector so test for it before normalizing
