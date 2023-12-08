@@ -21,7 +21,7 @@ public class Enemy : Entity
     public bool detectedPlayer { get; private set; }
     private Vector2 lastSpotted { get; set; }
     private List<Vector2> _sightState { get; set; } = new List<Vector2>();
-    private float sightRange { get; } = 50;
+    private float sightRange { get; } = 105.4f;
     private float sightAngle { get; } = Convert.ToSingle(Math.PI / 2);
     private int _sightRays = 10;
 
@@ -164,6 +164,18 @@ public class Enemy : Entity
 
         float x = (b2 * c1 - b1 * c2) / det;
         float y = (a1 * c2 - a2 * c1) / det;
+        // Male sure our intersection is within the segments.
+        if ((x < line1.a.X && x < line1.b.X)||
+            (x < line2.a.X && x < line2.b.X)||
+            (x > line1.a.X && x > line1.b.X)||
+            (x > line2.a.X && x > line2.b.X)||
+            (y < line1.a.Y && y < line1.b.Y)||
+            (y < line2.a.Y && y < line2.b.Y)||
+            (y > line1.a.Y && y > line1.b.Y)||
+            (y > line2.a.Y && y > line2.b.Y))
+        {
+            return false;
+        }
         point = new Point2(x, y);
         return true;
     }
@@ -200,7 +212,6 @@ public class Enemy : Entity
             toPlayer *= this.Speed*tm.GetElapsedSeconds();
             Position += toPlayer;
         }
-        // TODO: Figure out if how to get map contents in here.
 
         // For each sound within range, discern if it is audible enough for them to pay heed.
         foreach (Point snd in SoundsToParse)
@@ -223,7 +234,8 @@ public class Enemy : Entity
 
         foreach (Entity entity in John.Entities)
         {
-            /*RectangleF bounds;
+#if true
+            RectangleF bounds;
             if (entity.Bounds is CircleF)
             {
                 CircleF circle = (CircleF)entity.Bounds;
@@ -232,7 +244,7 @@ public class Enemy : Entity
                         circle.Center.X - circle.Radius,
                         circle.Center.Y - circle.Radius
                     ),
-                    new Size2(circle.Radius, circle.Radius)
+                    new Size2(circle.Diameter, circle.Diameter)
                 );
             }
             else
@@ -246,6 +258,8 @@ public class Enemy : Entity
                 new Line() { a = bounds.BottomLeft, b = bounds.TopLeft }
             };
 
+            bool intersectedPlayer = false;
+
             for (int ray = 0; ray < _sightState.Count; ray++)
             {
                 Line rayLine = new Line() { a = Position, b = Position + _sightState[ray] };
@@ -256,19 +270,25 @@ public class Enemy : Entity
                     {
                         if (entity is Player)
                         {
-                            // TODO: Chase player
+                            // Detect player
                             detectedPlayer = true;
+                            intersectedPlayer = true;
                             lastSpotted = entity.Position;
                         }
-                        else if (entity is Box)
+                        else if (entity is Box || entity is Wall)
                         {
-                            _sightState[ray].Normalize();
+                            _sightState[ray] = Vector2.Normalize(_sightState[ray]);
                             _sightState[ray] *= Vector2.Distance(Position, intersection);
                         }
                     }
                 }
-            }*/
+            }
 
+            if (!intersectedPlayer)
+            {
+                detectedPlayer = false;
+            }
+#else
             if (entity is Player)
             {
                 Vector2 diffPos = entity.Position - Position;
@@ -283,6 +303,7 @@ public class Enemy : Entity
                     detectedPlayer = false;
                 }
             }
+#endif
         }
 
 
@@ -325,7 +346,7 @@ public class Enemy : Entity
             spriteBatch.DrawCircle((CircleF)Bounds, 8, Color.Red, 3);
             foreach (Vector2 line in _sightState)
             {
-                spriteBatch.DrawLine(Position, sightRange, line.ToAngle(), Color.Red, 2);
+                spriteBatch.DrawLine(Position, line.Length(), line.ToAngle(), Color.Red, 2);
             }
         }
     }
