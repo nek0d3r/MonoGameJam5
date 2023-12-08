@@ -72,7 +72,7 @@ public class John : Game
     SpriteSheet _spriteSheet;
 
     // Entities like player, boxes, etc
-    List<Entity> _entities;
+    public static List<Entity> Entities { get; set; }
 
     // Collision component for collider handling
     private CollisionComponent _collisionComponent;
@@ -130,9 +130,9 @@ public class John : Game
     private void Reset()
     {
         // Create game objects
-        _entities = Entity.CreateEntities(_tiledMap, _spriteSheet);
+        Entities = Entity.CreateEntities(_tiledMap, _spriteSheet);
 
-        _entities.ForEach(entity =>
+        Entities.ForEach(entity =>
         {
             // Look for NPC/Enemy actions and populate entity with properties
             Entity.ParseActions(_tiledMap, entity);
@@ -179,9 +179,9 @@ public class John : Game
         );
 
         // Create game objects
-        _entities = Entity.CreateEntities(_tiledMap, _spriteSheet);
+        Entities = Entity.CreateEntities(_tiledMap, _spriteSheet);
 
-        _entities.ForEach(entity =>
+        Entities.ForEach(entity =>
         {
             // Look for NPC/Enemy actions and populate entity with properties
             Entity.ParseActions(_tiledMap, entity);
@@ -213,12 +213,17 @@ public class John : Game
         // Despite the potential for people to make the game say silly things
         // by loading a raw text file, I *really* don't feel like running
         // it through the content pipeline.
-        _creditsText = File.ReadAllText("CREDITS");
+        _creditsText = File.ReadAllText("Content/CREDITS");
         _creditsTextSize = _bitmapFont.MeasureString(_creditsText);
         _creditsScale = 0.8f;
 
         Reset();
 
+    }
+
+    public static Entity GetDefaultPlayerObject()
+    {
+        return Entities.Where(entity => entity.GetType() == typeof(Player)).FirstOrDefault();
     }
 
     // Called repeatedly until game ends, handles logic updates (e.g. object positions, game state)
@@ -345,12 +350,12 @@ public class John : Game
             _tiledMapRenderer.Update(gameTime);
 
             // Update entities
-            _entities.ForEach(entity => entity.Update(gameTime));
+            Entities.ForEach(entity => entity.Update(gameTime));
 
             // Update collisions
             _collisionComponent.Update(gameTime);
 
-            Player pl = (Player)_entities.Where(entity => entity.GetType() == typeof(Player)).FirstOrDefault();
+            Player pl = (Player)Entities.Where(entity => entity.GetType() == typeof(Player)).FirstOrDefault();
 
             // Updates camera to player position
             _gameCamera.MoveCamera(gameTime, pl);
@@ -547,12 +552,12 @@ public class John : Game
             
             // Sort objects in the layer by draw priority, then Y position
             // This allows sprites to draw over each other based on which one "looks" in front
-            _entities = _entities.OrderBy(entity => entity.DrawPriority)
+            Entities = Entities.OrderBy(entity => entity.DrawPriority)
                                 .ThenBy(entity => entity.Position.Y)
                                 .ToList();
 
             // Draw each entity
-            _entities.ForEach(entity => { entity.Draw(_spriteBatch, true); });
+            Entities.ForEach(entity => { entity.Draw(_spriteBatch, true); });
 
             // End drawing
             _spriteBatch.End();

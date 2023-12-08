@@ -12,8 +12,10 @@ public class Enemy : Entity
     private SingleLinkedListNode<Action> _actionCursor;
     public bool detectedPlayer { get; private set; }
     private Vector2 lastSpotted { get; set; }
-    private float sightRange { get; }
-    private float sightAngle { get; }
+    private List<Vector2> _sightState { get; set; } = new List<Vector2>();
+    private float sightRange { get; } = 50;
+    private float sightAngle { get; } = Convert.ToSingle(Math.PI / 2);
+    private int _sightRays = 10;
 
     private float hearingRange { get; }
     private float hearingSensitivity { get; }
@@ -36,6 +38,7 @@ public class Enemy : Entity
     }
     private Facing _lastDir;
     public override Facing Direction { get; set; }
+    public Vector2 ActualDirection { get; set; } = Vector2.Zero;
     public override string Animation
     {
         get => _animation;
@@ -102,6 +105,7 @@ public class Enemy : Entity
             return false;
         }
         PosDiff.Normalize();
+        ActualDirection = PosDiff;
         // Determine the largest magnitude of direction.
         // If the x component is larger than the Y component, we're going E/W
         if (Math.Abs(PosDiff.X) > Math.Abs(PosDiff.Y))
@@ -170,6 +174,14 @@ public class Enemy : Entity
         // TODO: Do a full determination of movement.
         bool didMove = DetermineMovementDirection();
 
+        _sightState = new List<Vector2>();
+        float leftRay = ActualDirection.ToAngle() - sightAngle / 2;
+        float rayIncrement = sightAngle / _sightRays;
+        for (int i = 0; i < _sightRays; i++)
+        {
+            _sightState.Add(Vector2.Transform(-Vector2.UnitX, Matrix.CreateRotationZ(leftRay + i * rayIncrement)));
+        }
+
         // Update sprite animation
         if (didMove)
         {
@@ -196,6 +208,10 @@ public class Enemy : Entity
         if (drawCollider)
         {
             spriteBatch.DrawCircle((CircleF)Bounds, 8, Color.Red, 3);
+            foreach (Vector2 line in _sightState)
+            {
+                spriteBatch.DrawLine(Position, sightRange, line.ToAngle(), Color.Red, 2);
+            }
         }
     }
     public override void OnCollision(CollisionEventArgs collisionInfo)

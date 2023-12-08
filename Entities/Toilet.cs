@@ -21,6 +21,7 @@ public class Toilet : Entity
             Bounds = new CircleF(ColliderPosition, ColliderRadius);
         }
     }
+    public override float Speed { get; set; }
     public override string Animation
     {
         get => _animation;
