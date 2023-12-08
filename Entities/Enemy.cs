@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 using MonoGame.Extended;
 using MonoGame.Extended.Collisions;
 using MonoGame.Extended.Sprites;
@@ -33,6 +34,8 @@ public class Enemy : Entity
     {
         get => TileRender.TILE_SIZE * 0.25f;
     }
+    private float _lastStepSound = 0f;
+    public SoundEffect[] Footsteps { get; set; } = new SoundEffect[2];
     private Facing _lastDir;
     public override Facing Direction { get; set; }
     public override string Animation
@@ -163,6 +166,17 @@ public class Enemy : Entity
         {
             // Employees lack a run.
             Sprite.Update(tm.GetElapsedSeconds()*Speed/_defaultSpeed);
+        
+            // Handle sound processing
+            _lastStepSound += tm.GetElapsedSeconds()*Speed/_defaultSpeed;
+            // I couldn't find a way to handle this programmatically,
+            // to get the animation duration from the AnimatedSprite.
+            // So I'll hardcode it.
+            if (_lastStepSound > 0.57f)
+            {
+                Footsteps[Random.Shared.Next() % 2].Play(0.13f, Random.Shared.NextSingle() - 0.5f, 0f);
+                _lastStepSound = 0f;
+            }
         }
     }
     public override void Draw(SpriteBatch spriteBatch, bool drawCollider = false)
