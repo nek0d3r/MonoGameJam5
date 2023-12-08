@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="22" tilewidth="24" tileheight="24" infinite="0" nextlayerid="13" nextobjectid="380">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="22" tilewidth="24" tileheight="24" infinite="0" nextlayerid="13" nextobjectid="395">
  <tileset firstgid="1" source="spritesheets/spritesheet.tsx"/>
  <tileset firstgid="106" source="spritesheets/gameobjects.tsx"/>
  <layer id="4" name="Floor" width="30" height="22">
@@ -112,8 +112,8 @@
   <object id="176" template="objects/conveyors/east/conveyor-west-east.tx" x="114.5" y="190.55"/>
   <object id="6" template="objects/boxes/dedbox.tx" type="box" x="627.721" y="99.5705" visible="1"/>
   <object id="12" template="objects/boxes/sadbox.tx" type="box" x="291.456" y="110.222" visible="1"/>
-  <object id="15" template="objects/boxes/helpbox.tx" type="box" x="249.033" y="355.956" visible="1"/>
-  <object id="17" template="objects/boxes/madbox.tx" type="box" x="260.321" y="448.601" visible="1"/>
+  <object id="15" template="objects/boxes/helpbox.tx" type="box" x="464.033" y="490.956" visible="1"/>
+  <object id="17" template="objects/boxes/madbox.tx" type="box" x="445.321" y="502.935" visible="1"/>
   <object id="18" template="objects/boxes/starebox.tx" type="box" x="89.9843" y="111.566" visible="1"/>
   <object id="19" template="objects/characters/player.tx" type="player" x="28.1141" y="98.9574"/>
   <object id="21" template="objects/characters/employee.tx" type="employee" x="207.5" y="114.5">
@@ -179,7 +179,7 @@
   <object id="295" template="objects/boxes/madbox.tx" x="241" y="461.167"/>
   <object id="296" template="objects/boxes/madbox.tx" x="129.5" y="417.5"/>
   <object id="297" template="objects/boxes/madbox.tx" x="195.667" y="428.667"/>
-  <object id="298" template="objects/boxes/madbox.tx" x="350.167" y="440.167"/>
+  <object id="298" template="objects/boxes/madbox.tx" x="435.5" y="436.167"/>
   <object id="299" template="objects/boxes/madbox.tx" x="232.167" y="422.167"/>
   <object id="300" template="objects/boxes/dedbox.tx" x="645.333" y="114"/>
   <object id="301" template="objects/boxes/dedbox.tx" x="622.667" y="162"/>
@@ -213,19 +213,19 @@
   <object id="332" template="objects/boxes/dedbox.tx" x="329" y="264.5"/>
   <object id="333" template="objects/boxes/dedbox.tx" x="318" y="284"/>
   <object id="334" template="objects/boxes/dedbox.tx" x="299.5" y="267"/>
-  <object id="335" template="objects/boxes/dedbox.tx" x="344" y="309"/>
+  <object id="335" template="objects/boxes/dedbox.tx" x="344" y="288"/>
   <object id="336" template="objects/boxes/starebox.tx" x="413" y="378.5"/>
   <object id="337" template="objects/boxes/starebox.tx" x="399" y="363.5"/>
   <object id="338" template="objects/boxes/starebox.tx" x="399" y="385.5"/>
   <object id="339" template="objects/boxes/starebox.tx" x="439.5" y="399"/>
   <object id="340" template="objects/boxes/starebox.tx" x="458" y="414"/>
-  <object id="341" template="objects/boxes/starebox.tx" x="440" y="431"/>
+  <object id="341" template="objects/boxes/starebox.tx" x="348.333" y="434"/>
   <object id="342" template="objects/boxes/starebox.tx" x="423.5" y="450.5"/>
   <object id="343" template="objects/boxes/starebox.tx" x="436" y="462.5"/>
   <object id="344" template="objects/boxes/starebox.tx" x="406.5" y="478.5"/>
   <object id="345" template="objects/boxes/starebox.tx" x="450" y="479.5"/>
-  <object id="346" template="objects/boxes/starebox.tx" x="466.5" y="497.5"/>
-  <object id="347" template="objects/boxes/starebox.tx" x="450" y="505"/>
+  <object id="346" template="objects/boxes/starebox.tx" x="253.5" y="359.5"/>
+  <object id="347" template="objects/boxes/starebox.tx" x="261" y="445.667"/>
   <object id="348" template="objects/boxes/helpbox.tx" x="248.833" y="432.833"/>
   <object id="349" template="objects/boxes/helpbox.tx" x="220" y="449.5"/>
   <object id="350" template="objects/boxes/madbox.tx" x="464" y="178"/>
@@ -249,6 +249,20 @@
   <object id="375" template="objects/toilets/toiletnw.tx" x="648" y="384"/>
   <object id="376" template="objects/toilets/toiletse.tx" x="672" y="408"/>
   <object id="377" template="objects/toilets/toiletsw.tx" x="648" y="408"/>
+  <object id="380" template="objects/boxes/starebox.tx" x="299.667" y="249.333"/>
+  <object id="381" template="objects/boxes/helpbox.tx" x="392.667" y="228"/>
+  <object id="382" template="objects/boxes/dedbox.tx" x="476.333" y="161.333"/>
+  <object id="383" template="objects/boxes/sadbox.tx" x="455.667" y="428"/>
+  <object id="384" template="objects/boxes/helpbox.tx" x="433.667" y="87.6667"/>
+  <object id="385" template="objects/boxes/starebox.tx" x="393.667" y="350.667"/>
+  <object id="386" template="objects/boxes/dedbox.tx" x="551" y="330"/>
+  <object id="387" template="objects/boxes/sadbox.tx" x="512.333" y="128"/>
+  <object id="388" template="objects/conveyors/east/conveyor-east-path.tx" x="311" y="307.667"/>
+  <object id="390" template="objects/conveyors/west/conveyor-east-west.tx" x="335" y="307.667"/>
+  <object id="391" template="objects/conveyors/west/conveyor-east-west.tx" x="359" y="307.67"/>
+  <object id="392" template="objects/conveyors/east/conveyor-east-end.tx" x="383" y="307.67"/>
+  <object id="393" template="objects/boxes/sadbox.tx" x="379" y="328.333"/>
+  <object id="394" template="objects/boxes/madbox.tx" x="374.333" y="342"/>
  </objectgroup>
  <objectgroup id="9" name="Walls">
   <object id="139" template="objects/colliders/wall.tx" x="0" y="528" width="24" height="480"/>
