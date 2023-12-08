@@ -149,21 +149,38 @@ public class Enemy : Entity
     private bool LineIntersects(Line line1, Line line2, out Point2 point)
     {
         point = new Point2();
+        float m1, m2;
 
-        float a1 = line1.b.Y - line1.a.Y;
-        float b1 = line1.b.X - line1.a.X;
-        float c1 = a1 * line1.a.X + b1 * line1.a.Y;
+        // Prevent divide by zero errors.
+        if (line1.b.X == line1.a.X)
+        {
+            // 1e10 is arbitrary, but should be sufficient
+            m1 = 1e10f;
+        }
+        else
+        {
+            m1 = (line1.b.Y - line1.a.Y) / (line1.b.X - line1.a.X);
+        }
 
-        float a2 = line2.b.Y - line2.a.Y;
-        float b2 = line2.b.X - line2.a.X;
-        float c2 = a2 * line2.a.X + b2 * line2.a.Y;
+        if (line2.b.X == line2.a.X)
+        {
+            m2 = 1e10f;
+        }
+        else
+        {
+            m2 = (line2.b.Y - line2.a.Y) / (line2.b.X - line2.a.X);
+        }
+        // Now that we handled verticals, we can do it.
+        float b1 = line1.a.Y - line1.a.X * m1;
+        float b2 = line2.a.Y - line2.a.X * m2;
 
-        float det = a1 * b2 - a2 * b1;
+        if (Math.Abs(m1 - m2) < 0.001)
+        {
+            return false;
+        }
 
-        if (Math.Abs(det) < 0.001) return false;
-
-        float x = (b2 * c1 - b1 * c2) / det;
-        float y = (a1 * c2 - a2 * c1) / det;
+        float x = (line2.a.Y - line1.a.Y - line2.a.X * m2 + line1.a.X * m1) / (m1 - m2);
+        float y = m1 * x + b1;
         // Male sure our intersection is within the segments.
         if ((x < line1.a.X && x < line1.b.X)||
             (x < line2.a.X && x < line2.b.X)||
