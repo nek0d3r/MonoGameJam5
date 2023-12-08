@@ -179,7 +179,7 @@ public class Enemy : Entity
             return false;
         }
 
-        float x = (line2.a.Y - line1.a.Y - line2.a.X * m2 + line1.a.X * m1) / (m1 - m2);
+        float x = (b2 - b1) / (m1 - m2);
         float y = m1 * x + b1;
         // Male sure our intersection is within the segments.
         if ((x < line1.a.X && x < line1.b.X)||
