@@ -223,7 +223,7 @@ public class Enemy : Entity
 
         foreach (Entity entity in John.Entities)
         {
-            RectangleF bounds;
+            /*RectangleF bounds;
             if (entity.Bounds is CircleF)
             {
                 CircleF circle = (CircleF)entity.Bounds;
@@ -267,8 +267,24 @@ public class Enemy : Entity
                         }
                     }
                 }
+            }*/
+
+            if (entity is Player)
+            {
+                Vector2 diffPos = entity.Position - Position;
+                float len = diffPos.Length();
+                if (len < 75f)
+                {
+                    detectedPlayer = true;
+                    lastSpotted = entity.Position;
+                }
+                else
+                {
+                    detectedPlayer = false;
+                }
             }
         }
+
 
         // Update sprite animation
         if (didMove)
