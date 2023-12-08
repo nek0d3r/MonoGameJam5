@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="22" tilewidth="24" tileheight="24" infinite="0" nextlayerid="13" nextobjectid="395">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="22" tilewidth="24" tileheight="24" infinite="0" nextlayerid="13" nextobjectid="429">
  <tileset firstgid="1" source="spritesheets/spritesheet.tsx"/>
  <tileset firstgid="106" source="spritesheets/gameobjects.tsx"/>
  <layer id="4" name="Floor" width="30" height="22">
@@ -141,12 +141,6 @@
   <object id="165" template="objects/conveyors/north/conveyor-north-end.tx" x="312" y="312"/>
   <object id="166" template="objects/conveyors/east/conveyor-east-end.tx" x="555.5" y="158" visible="1"/>
   <object id="146" template="objects/conveyors/east/conveyor-east-path.tx" type="conveyor" x="531.5" y="158" visible="1"/>
-  <object id="172" x="452.492" y="110.138">
-   <properties>
-    <property name="actionType" type="int" value="0"/>
-   </properties>
-   <polyline points="0,0 137.115,0.578546 82.1535,111.659 49.7549,156.207 -17.9349,162.571 -64.7971,91.9888"/>
-  </object>
   <object id="258" template="objects/boxes/madbox.tx" x="53.8047" y="394.568"/>
   <object id="259" template="objects/boxes/madbox.tx" x="234.23" y="484.576"/>
   <object id="260" template="objects/boxes/madbox.tx" x="116.678" y="457.722"/>
@@ -174,8 +168,16 @@
   <object id="282" template="objects/boxes/starebox.tx" x="41.0767" y="208.276"/>
   <object id="283" template="objects/boxes/starebox.tx" x="59.0117" y="200.755"/>
   <object id="288" template="objects/boxes/starebox.tx" x="74.6324" y="223.319"/>
-  <object id="289" template="objects/characters/employee.tx" x="145.694" y="195.663"/>
-  <object id="290" template="objects/characters/manager.tx" x="60.7473" y="419.446"/>
+  <object id="289" template="objects/characters/employee.tx" x="145.694" y="195.663">
+   <properties>
+    <property name="actions" type="object" value="395"/>
+   </properties>
+  </object>
+  <object id="290" template="objects/characters/manager.tx" x="60.7473" y="419.446">
+   <properties>
+    <property name="actions" type="object" value="404"/>
+   </properties>
+  </object>
   <object id="295" template="objects/boxes/madbox.tx" x="241" y="461.167"/>
   <object id="296" template="objects/boxes/madbox.tx" x="129.5" y="417.5"/>
   <object id="297" template="objects/boxes/madbox.tx" x="195.667" y="428.667"/>
@@ -203,7 +205,11 @@
   <object id="321" template="objects/boxes/sadbox.tx" x="76" y="259"/>
   <object id="323" template="objects/boxes/sadbox.tx" x="32" y="306"/>
   <object id="324" template="objects/boxes/sadbox.tx" x="63.5" y="297.5"/>
-  <object id="325" template="objects/characters/employee.tx" x="282" y="344"/>
+  <object id="325" template="objects/characters/employee.tx" x="282" y="344">
+   <properties>
+    <property name="actions" type="object" value="428"/>
+   </properties>
+  </object>
   <object id="326" template="objects/boxes/starebox.tx" x="467.5" y="398"/>
   <object id="327" template="objects/boxes/starebox.tx" x="450.5" y="386"/>
   <object id="328" template="objects/boxes/starebox.tx" x="433.5" y="372.5"/>
@@ -236,13 +242,25 @@
   <object id="355" template="objects/boxes/madbox.tx" x="528" y="237.5"/>
   <object id="356" template="objects/boxes/madbox.tx" x="404" y="218"/>
   <object id="357" template="objects/boxes/madbox.tx" x="434" y="202"/>
-  <object id="358" template="objects/characters/employee.tx" x="410" y="414.5"/>
+  <object id="358" template="objects/characters/employee.tx" x="410" y="414.5">
+   <properties>
+    <property name="actions" type="object" value="420"/>
+   </properties>
+  </object>
   <object id="361" template="objects/conveyors/north/conveyor-south-north.tx" x="312" y="408"/>
   <object id="362" template="objects/conveyors/north/conveyor-south-north.tx" x="312" y="384"/>
   <object id="363" template="objects/conveyors/north/conveyor-south-north.tx" x="312" y="360"/>
   <object id="364" template="objects/conveyors/north/conveyor-south-north.tx" x="312" y="336"/>
-  <object id="365" template="objects/characters/manager.tx" x="644.5" y="230.5"/>
-  <object id="366" template="objects/characters/employee.tx" x="470" y="306"/>
+  <object id="365" template="objects/characters/manager.tx" x="644.5" y="230.5">
+   <properties>
+    <property name="actions" type="object" value="415"/>
+   </properties>
+  </object>
+  <object id="366" template="objects/characters/employee.tx" x="470" y="306">
+   <properties>
+    <property name="actions" type="object" value="419"/>
+   </properties>
+  </object>
   <object id="372" template="objects/conveyors/west/conveyor-west-end.tx" x="90.5" y="190.55"/>
   <object id="373" template="objects/conveyors/west/conveyor-west-start.tx" x="186.5" y="190.55"/>
   <object id="374" template="objects/toilets/toiletne.tx" x="672" y="384"/>
@@ -276,14 +294,14 @@
   <object id="379" template="objects/colliders/wall.tx" x="96" y="456" width="24" height="72"/>
  </objectgroup>
  <objectgroup id="10" name="Employee Actions">
-  <object id="168" name="Action 1: Walk" x="22.5" y="95.5">
+  <object id="168" name="Action 1: Walk" x="153.5" y="134.833">
    <properties>
     <property name="actionType" type="int" value="0"/>
     <property name="actions" type="object" value="169"/>
    </properties>
-   <polyline points="0,0 333,5.54913 304.366,174.798 230.131,240"/>
+   <polyline points="65.5,-24.5 34,29.6667 111.333,72.2158 176.033,-51.5353 -63.869,-56.3333"/>
   </object>
-  <object id="169" name="Action 2: Pause" x="443" y="299">
+  <object id="169" name="Action 2: Pause" x="377.333" y="231.333">
    <properties>
     <property name="actionType" type="int" value="2"/>
     <property name="actions" type="object" value="170"/>
@@ -291,7 +309,7 @@
    </properties>
    <point/>
   </object>
-  <object id="170" name="Action 3: Wander" x="355" y="106.5" width="76" height="76">
+  <object id="170" name="Action 3: Wander" x="19.6667" y="76.5" width="76" height="76">
    <properties>
     <property name="actionType" type="int" value="3"/>
     <property name="actions" type="object" value="171"/>
@@ -299,12 +317,258 @@
    </properties>
    <ellipse/>
   </object>
-  <object id="171" name="Action 4: Walk" x="328.5" y="377.5">
+  <object id="171" name="Action 4: Walk" x="298.167" y="390.833">
    <properties>
     <property name="actionType" type="int" value="0"/>
     <property name="actions" type="object" value="168"/>
    </properties>
-   <polyline points="0,0 -204,-43 -204,-215 -172,-268"/>
+   <polyline points="-235.667,-272.667 -208.667,-205.667 -96,-208 -96.6667,-285.333 -77.5,-281.167"/>
+  </object>
+  <object id="395" name="Action E2_1 - Walk" x="158.667" y="197">
+   <properties>
+    <property name="actionType" type="int" value="0"/>
+    <property name="actions" type="object" value="396"/>
+   </properties>
+   <polyline points="-1.33333,-9 76.6667,10.6667 95,63.6667 37,110 37.3333,157.333"/>
+  </object>
+  <object id="396" name="Action E2_2: Pause" x="197.667" y="355">
+   <properties>
+    <property name="actionType" type="int" value="2"/>
+    <property name="actions" type="object" value="397"/>
+    <property name="time" type="float" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="397" name="Action E2_3: Look for managers" x="196.667" y="359">
+   <properties>
+    <property name="actionType" type="int" value="0"/>
+    <property name="actions" type="object" value="398"/>
+   </properties>
+   <polyline points="-0.666667,-5.33333 1.66667,-9"/>
+  </object>
+  <object id="398" name="Action E2_4: Pause" x="199.667" y="358.333">
+   <properties>
+    <property name="actionType" type="int" value="2"/>
+    <property name="actions" type="object" value="400"/>
+    <property name="time" type="float" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="400" name="Action E2_5: Ride Conveyor" x="197.333" y="354.667">
+   <properties>
+    <property name="actionType" type="int" value="0"/>
+    <property name="actions" type="object" value="401"/>
+   </properties>
+   <polyline points="-0.333333,-5 -5,18.6667"/>
+  </object>
+  <object id="401" name="Action E2_6: Ride Conveyor" x="190.667" y="375.667">
+   <properties>
+    <property name="actionType" type="int" value="2"/>
+    <property name="actions" type="object" value="402"/>
+    <property name="time" type="float" value="3"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="402" name="Action E2_7: Run away" x="223.667" y="377">
+   <properties>
+    <property name="actionType" type="int" value="0"/>
+    <property name="actions" type="object" value="403"/>
+   </properties>
+   <polyline points="0,0 21,-163 -70.3333,-180.333 -66.3333,-188.333"/>
+  </object>
+  <object id="403" name="Action E2_8: Wait at start" x="151.667" y="194.333">
+   <properties>
+    <property name="actionType" type="int" value="2"/>
+    <property name="actions" type="object" value="395"/>
+    <property name="time" type="float" value="12"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="404" name="Action M1_1: Walk" x="72.3333" y="409.333">
+   <properties>
+    <property name="actionType" type="int" value="0"/>
+    <property name="actions" type="object" value="405"/>
+   </properties>
+   <polyline points="0,0 -7,65.3333 138,64.3333 139.333,81.3333 217.333,80.6667 327.667,39 304.333,-45 277.667,-84"/>
+  </object>
+  <object id="405" name="Action M1_2: Inspect" x="349.667" y="323.333">
+   <properties>
+    <property name="actionType" type="int" value="2"/>
+    <property name="actions" type="object" value="406"/>
+    <property name="time" type="float" value="14.5"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="406" name="Action M1_3: Walk" x="349.667" y="324">
+   <properties>
+    <property name="actionType" type="int" value="0"/>
+    <property name="actions" type="object" value="407"/>
+   </properties>
+   <polyline points="0,0 40.3333,98.6667 7,160 -51.6667,161.667 -42.3333,61.6667 -46,-48.3333 -76.6667,-89.3333 -77.3333,-170.667"/>
+  </object>
+  <object id="407" name="Action M1_4: Inspect" x="274.333" y="151.667">
+   <properties>
+    <property name="actionType" type="int" value="2"/>
+    <property name="actions" type="object" value="408"/>
+    <property name="time" type="float" value="8.8"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="408" name="Action M1_5: Return" x="273.333" y="152.667">
+   <properties>
+    <property name="actionType" type="int" value="0"/>
+    <property name="actions" type="object" value="409"/>
+   </properties>
+   <polyline points="0,0 -28,188.333 -29,233.333 -93.6667,242 -124.333,303.333 -221,332.667 -201,255.667"/>
+  </object>
+  <object id="409" name="Action M1_6: Wait" x="80" y="409">
+   <properties>
+    <property name="actionType" type="int" value="2"/>
+    <property name="actions" type="object" value="404"/>
+    <property name="time" type="float" value="21"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="415" name="Action M3_0: Wait" x="642" y="226.333">
+   <properties>
+    <property name="actionType" type="int" value="2"/>
+    <property name="actions" type="object" value="410"/>
+    <property name="time" type="float" value="3"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="410" name="Action M3_1: Walk" x="588.333" y="202">
+   <properties>
+    <property name="actionType" type="int" value="0"/>
+    <property name="actions" type="object" value="411"/>
+   </properties>
+   <polyline points="0,0 -18.3333,-37.6667 -15.6667,-77.3333"/>
+  </object>
+  <object id="411" name="Action M3_2: Wait" x="571" y="122">
+   <properties>
+    <property name="actionType" type="int" value="2"/>
+    <property name="actions" type="object" value="412"/>
+    <property name="time" type="float" value="5.5"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="412" name="Action M3_3: Walk" x="570.333" y="182.667">
+   <properties>
+    <property name="actionType" type="int" value="0"/>
+    <property name="actions" type="object" value="413"/>
+   </properties>
+   <polyline points="0,0 -79.6667,0.333333 -117.667,50.6667 -115.333,106"/>
+  </object>
+  <object id="413" name="Action M3_4: Wander" x="455" y="287.667" width="60.3333" height="56">
+   <properties>
+    <property name="actionType" type="int" value="3"/>
+    <property name="actions" type="object" value="414"/>
+    <property name="time" type="float" value="12.2"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="414" name="Action M3_5: Return" x="421.667" y="256.333">
+   <properties>
+    <property name="actionType" type="int" value="0"/>
+    <property name="actions" type="object" value="415"/>
+   </properties>
+   <polyline points="0,0 86.6667,-83.6667 220.667,-35.6667 258.667,-41.6667 257,-125.333 225.667,-132.333 254.333,-101 254,-41 234.667,-41"/>
+  </object>
+  <object id="172" name="Action M2_1: Walk" x="452.492" y="110.138">
+   <properties>
+    <property name="actionType" type="int" value="0"/>
+   </properties>
+   <polyline points="0,0 74.7817,32.5785 32.8202,75.9923 10.4216,154.207 -53.6016,161.238 -64.7971,91.9888"/>
+  </object>
+  <object id="416" name="Action E3_1: Walk" x="480" y="364">
+   <properties>
+    <property name="actionType" type="int" value="0"/>
+    <property name="actions" type="object" value="417"/>
+   </properties>
+   <polyline points="0,0 -48.6667,-45.3333 -60.6667,-38"/>
+  </object>
+  <object id="417" name="Action E3_2: Wait" x="414" y="320.667">
+   <properties>
+    <property name="actionType" type="int" value="2"/>
+    <property name="actions" type="object" value="418"/>
+    <property name="time" type="float" value="5"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="418" name="Action E3_3: Receive Theoretical Box" x="411.667" y="295.667">
+   <properties>
+    <property name="actionType" type="int" value="0"/>
+    <property name="actions" type="object" value="419"/>
+   </properties>
+   <polyline points="0,0 -19,-0.333333"/>
+  </object>
+  <object id="419" name="Action E3_4: Receive" x="394.333" y="289.333">
+   <properties>
+    <property name="actionType" type="int" value="2"/>
+    <property name="actions" type="object" value="416"/>
+    <property name="time" type="float" value="12.5"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="420" name="Action E4_1: Walk" x="393" y="476.667">
+   <properties>
+    <property name="actionType" type="int" value="0"/>
+    <property name="actions" type="object" value="421"/>
+   </properties>
+   <polyline points="0,0 -128,-4"/>
+  </object>
+  <object id="421" name="Action E4_2: Collect" x="268.667" y="467">
+   <properties>
+    <property name="actionType" type="int" value="2"/>
+    <property name="actions" type="object" value="422"/>
+    <property name="time" type="float" value="6"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="422" name="Action E4_3: Deliver" x="293.667" y="435.667">
+   <properties>
+    <property name="actionType" type="int" value="0"/>
+    <property name="actions" type="object" value="423"/>
+   </properties>
+   <polyline points="0,0 28.3333,-1"/>
+  </object>
+  <object id="423" name="Action E4_4: Deposit" x="330" y="436.667">
+   <properties>
+    <property name="actionType" type="int" value="2"/>
+    <property name="actions" type="object" value="420"/>
+    <property name="time" type="float" value="5"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="424" name="Action E5_1: Sequester" x="257.667" y="230.667">
+   <properties>
+    <property name="actionType" type="int" value="0"/>
+    <property name="actions" type="object" value="425"/>
+   </properties>
+   <polyline points="0,0 -128,0.666667 -157.667,43.3333 -208.333,23.3333 -215,-14.3333"/>
+  </object>
+  <object id="425" name="Action E5_2: Cry" x="39.6667" y="211">
+   <properties>
+    <property name="actionType" type="int" value="2"/>
+    <property name="actions" type="object" value="426"/>
+    <property name="time" type="float" value="35.4"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="426" name="Action E5_3: Return" x="37" y="217">
+   <properties>
+    <property name="actionType" type="int" value="0"/>
+    <property name="actions" type="object" value="428"/>
+   </properties>
+   <polyline points="0,0 4.33333,47 72.3333,56.3333 99.3333,114 116.667,167.333 209,176 209.333,87.6667 248.667,111.333"/>
+  </object>
+  <object id="428" name="Action E5_4: Wander" x="256.333" y="263" width="47" height="50.6667">
+   <properties>
+    <property name="actionType" type="int" value="3"/>
+    <property name="actions" type="object" value="424"/>
+    <property name="time" type="float" value="10"/>
+   </properties>
+   <ellipse/>
   </object>
  </objectgroup>
 </map>

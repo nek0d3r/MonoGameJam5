@@ -19,6 +19,8 @@ public class Action
 
     // Move uses destination
     public List<Vector2> Destinations { get; set; }
+    // Current destination
+    private int _destination = 0;
     // Wander and pause use a duration.
     public float Duration { get; set; }
     // NaN is our sentinel to denote unstarted timer.
@@ -33,7 +35,7 @@ public class Action
     {
         switch (ThisAction) {
             case ActionType.Move:
-                return doMoveAction(actor);
+                return doMoveAction(actor, tm);
             case ActionType.Interact:
                 // TODO: Implement
                 break;
@@ -45,10 +47,65 @@ public class Action
         return false;
     }
 
-    private bool doMoveAction(Entity actor)
+    private bool doMoveAction(Entity actor, GameTime tm)
     {
-        // TODO: Implement
-        return false;
+        bool isDone = false;
+
+        // Total distance actor can move
+        float totalDistance = Vector2.Distance(
+            actor.Position,
+            actor.Position + actor.Speed * Vector2.UnitX * tm.GetElapsedSeconds()
+        );
+
+        // New position for actor to eventually move to
+        Vector2 newPosition = actor.Position;
+
+        // As long as we have distance remaining to move
+        while (totalDistance > 0)
+        {
+            Vector2 direction = Destinations[_destination] - actor.Position;
+
+            // Direction shouldn't be a zero vector, but just in case
+            if (direction != Vector2.Zero)
+            {
+                direction.Normalize();
+            }
+
+            // The distance between the actor and this destination
+            float displacement = Vector2.Distance(actor.Position, Destinations[_destination]);
+
+            // Can't quite reach this destination
+            if (displacement > totalDistance)
+            {
+                newPosition += direction * totalDistance;
+                totalDistance = 0;
+            }
+            // This destination was reached
+            else
+            {
+                // Set new position to destination and mark off distance
+                newPosition = Destinations[_destination];
+                totalDistance -= displacement;
+
+                // If we have no more destinations, this action is complete
+                if (_destination == Destinations.Count - 1)
+                {
+                    totalDistance = 0;
+                    isDone = true;
+                    _destination = 0;
+                }
+                // Otherwise, start moving to next destination
+                else
+                {
+                    _destination++;
+                }
+            }
+
+            // Update actor to new position
+            actor.Position = newPosition;
+        }
+
+        return isDone;
     }
 
     private bool doWait(GameTime tm)
@@ -58,7 +115,15 @@ public class Action
             _durationLeft = Duration;
         }
         _durationLeft -= tm.GetElapsedSeconds();
-        return _durationLeft <= 0f;
+        if (_durationLeft > 0f)
+        {
+            return false;
+        }
+        else
+        {
+            _durationLeft = float.NaN;
+        }
+        return true;
     }
 
     private bool doWander(Entity actor, GameTime tm) {

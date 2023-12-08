@@ -12,6 +12,7 @@ public class Box : Entity
     public Vector2 influence = Vector2.Zero;
     protected float maxInfluence = 0;
     public override AnimatedSprite Sprite { get; set; }
+    public override float Speed { get; set; }
     public override Vector2 Position
     {
         get => _position;

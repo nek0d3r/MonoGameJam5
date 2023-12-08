@@ -9,7 +9,8 @@ using MonoGame.Extended.Sprites;
 
 public class Enemy : Entity
 {
-    public LinkedList<Action> IdleActions { get; set; }
+    public SingleLinkedList<Action> IdleActions { get; set; }
+    private SingleLinkedListNode<Action> _actionCursor;
     public bool detectedPlayer { get; private set; }
     private Vector2 lastSpotted { get; set; }
     private float sightRange { get; }
@@ -21,7 +22,7 @@ public class Enemy : Entity
     // Managers are intentionally faster than you,
     // so that you cannot cheese their speed easily.
     private float _defaultSpeed = 75f;
-    public float Speed { get; set; }
+    public override float Speed { get; set; }
     public override AnimatedSprite Sprite { get; set; }
     protected override Vector2 ColliderPosition
     {
@@ -58,6 +59,8 @@ public class Enemy : Entity
             Bounds = new CircleF(ColliderPosition, ColliderRadius);
         }
     }
+    public Vector2 influence = Vector2.Zero;
+    protected float maxInfluence = 0;
     public override IShapeF Bounds { get; protected set; }
 
     public List<Point> SoundsToParse { get; set; }
@@ -118,7 +121,7 @@ public class Enemy : Entity
         // Otherwise, we're goin N/S
         else
         {
-            if (PosDiff.Y > 0)
+            if (PosDiff.Y < 0)
             {
                 Direction = Facing.North;
             }
@@ -138,13 +141,22 @@ public class Enemy : Entity
         if (!detectedPlayer && IdleActions.First != null)
         {
             // Handle idleActions
-            Action current = IdleActions.First.Value;
-            bool isDone = current.PerformAction(this, tm);
-            if (isDone) {
-                // Rotate the action to the end of the list.
-                IdleActions.RemoveFirst();
-                current.Reset();
-                IdleActions.AddLast(current);
+            if (_actionCursor == null)
+            {
+                _actionCursor = IdleActions.First;
+            }
+
+            bool isDone = _actionCursor.Value.PerformAction(this, tm);
+            if (isDone)
+            {
+                if (_actionCursor.Next == null)
+                {
+                    IdleActions = new SingleLinkedList<Action>();
+                }
+                else
+                {
+                    _actionCursor = _actionCursor.Next;
+                }
             }
         }
         // TODO: Figure out if how to get map contents in here.
@@ -178,6 +190,18 @@ public class Enemy : Entity
                 _lastStepSound = 0f;
             }
         }
+
+        // Can't normalize the zero vector so test for it before normalizing
+        if (influence != Vector2.Zero)
+        {
+            influence.Normalize();
+        }
+
+        // Now add outside influences if they exist
+        Position += maxInfluence * influence * tm.GetElapsedSeconds();
+
+        influence = Vector2.Zero;
+        maxInfluence = 0;
     }
     public override void Draw(SpriteBatch spriteBatch, bool drawCollider = false)
     {
@@ -190,5 +214,31 @@ public class Enemy : Entity
     }
     public override void OnCollision(CollisionEventArgs collisionInfo)
     {
+        if (collisionInfo.Other is Conveyor)
+        {
+            Conveyor conveyor = (Conveyor)collisionInfo.Other;
+            Vector2 force;
+            switch (conveyor.Direction)
+            {
+                case Facing.North:
+                    force = -Vector2.UnitY;
+                    break;
+                case Facing.South:
+                    force = Vector2.UnitY;
+                    break;
+                case Facing.West:
+                    force = -Vector2.UnitX;
+                    break;
+                default:
+                    force = Vector2.UnitX;
+                    break;
+            }
+            influence += force;
+
+            if (conveyor.Speed > maxInfluence)
+            {
+                maxInfluence = conveyor.Speed;
+            }
+        }
     }
 }

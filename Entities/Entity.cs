@@ -26,6 +26,7 @@ public abstract class Entity : ICollisionActor
     public abstract string Animation { get; set; }
     public abstract IShapeF Bounds { get; protected set; }
     public abstract int DrawPriority { get; set; }
+    public abstract float Speed { get; set; }
 
     public abstract void Update(GameTime gameTime);
     public abstract void Draw(SpriteBatch spriteBatch, bool drawCollider = false);
@@ -74,7 +75,7 @@ public abstract class Entity : ICollisionActor
                             Animation = tiledObject.Properties["animation"],
                             Position = position,
                             DrawPriority = 2,
-                            IdleActions = new LinkedList<Action>()
+                            IdleActions = new SingleLinkedList<Action>()
                         });
                         break;
                     case "manager":
@@ -86,7 +87,7 @@ public abstract class Entity : ICollisionActor
                             Animation = tiledObject.Properties["animation"],
                             Position = position,
                             DrawPriority = 2,
-                            IdleActions = new LinkedList<Action>(),
+                            IdleActions = new SingleLinkedList<Action>(),
                             SoundsToParse = new List<Point>()
                         });
                         break;
@@ -144,16 +145,16 @@ public abstract class Entity : ICollisionActor
     {
         if (entity is NPC || entity is Enemy)
         {
-            TiledMapObject gameObject = Entity.GetGameObjectById(tiledMap, entity.Identifier);
-            LinkedList<Action> actions = new LinkedList<Action>();
+            TiledMapObject gameObject = GetGameObjectById(tiledMap, entity.Identifier);
+            SingleLinkedList<Action> actions = new SingleLinkedList<Action>();
 
             if (gameObject.Properties.ContainsKey("actions"))
             {
                 int actionObjectId = Convert.ToInt32(gameObject.Properties["actions"]);
 
-                while (!actions.Any(action => action.GameObjectIdentifier == actionObjectId))
+                while (!actions.Any(action => ((SingleLinkedListNode<Action>)action).Value.GameObjectIdentifier == actionObjectId))
                 {
-                    TiledMapObject actionObject = Entity.GetGameObjectById(tiledMap, actionObjectId);
+                    TiledMapObject actionObject = GetGameObjectById(tiledMap, actionObjectId);
 
                     Action idleAction = new Action()
                     {
@@ -224,13 +225,17 @@ public abstract class Entity : ICollisionActor
                             break;
                     }
 
-                    actions.AddLast(new LinkedListNode<Action>(idleAction));
+                    actions.Push(new SingleLinkedListNode<Action>(idleAction));
 
                     if (!actionObject.Properties.ContainsKey("actions"))
                     {
                         break;
                     }
                     actionObjectId = Convert.ToInt32(actionObject.Properties["actions"]);
+                    if (actions.First.Value.GameObjectIdentifier == actionObjectId)
+                    {
+                        actions.Last.Next = actions.First;
+                    }
                 }
             }
 

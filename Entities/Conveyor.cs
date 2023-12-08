@@ -23,7 +23,7 @@ public class Conveyor : Entity
     // If we don't want to have to twiddle with animation speeds for any speed of conveyor,
     // we'll want some infrastructure to always store a default speed.
     private const float _defaultSpeed = 30f;
-    public float Speed { get; set; } = _defaultSpeed;
+    public override float Speed { get; set; } = _defaultSpeed;
     public override AnimatedSprite Sprite { get; set; }
 
     public SoundEffect IdleSound { get; set; }
