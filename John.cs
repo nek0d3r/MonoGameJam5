@@ -265,11 +265,6 @@ public class John : Game
 
     }
 
-    public static Entity GetDefaultPlayerObject()
-    {
-        return Entities.Where(entity => entity.GetType() == typeof(Player)).FirstOrDefault();
-    }
-
     // Called repeatedly until game ends, handles logic updates (e.g. object positions, game state)
     protected override void Update(GameTime gameTime)
     {

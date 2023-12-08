@@ -6,6 +6,13 @@ using Microsoft.Xna.Framework.Audio;
 using MonoGame.Extended;
 using MonoGame.Extended.Collisions;
 using MonoGame.Extended.Sprites;
+using MonoGameJam5;
+using MonoGame.Extended.Collections;
+
+public struct Line
+{
+    public Vector2 a, b;
+}
 
 public class Enemy : Entity
 {
@@ -138,6 +145,30 @@ public class Enemy : Entity
         doAnim(false);
         return true;
     }
+
+    private Vector2? LineIntersection(Line line1, Line line2)
+    {
+        Vector2 diffX = new Vector2(line1.a.X - line1.b.X, line2.a.X - line2.b.X);
+        Vector2 diffY = new Vector2(line1.a.Y - line1.b.Y, line2.a.Y - line2.b.Y);
+
+        var det = (Vector2 a, Vector2 b) => a.X * b.Y - a.Y * b.X;
+
+        float div = det(diffX, diffY);
+        if (Math.Abs(div) < 0.01)
+        {
+            return null;
+        }
+
+        Vector2 d = new Vector2(
+            det(line1.a, line1.b),
+            det(line2.a, line2.b)
+        );
+        float x = det(d, diffX) / div;
+        float y = det(d, diffY) / div;
+        
+        return new Vector2(x, y);
+    }
+
     public override void Update(GameTime tm)
     {
         _lastPos = Position;
@@ -183,6 +214,13 @@ public class Enemy : Entity
         for (int i = 0; i < _sightRays; i++)
         {
             _sightState.Add(Vector2.Transform(-Vector2.UnitX, Matrix.CreateRotationZ(leftRay + i * rayIncrement)));
+        }
+
+        foreach (Entity entity in John.Entities)
+        {
+            foreach (Vector2 ray in _sightState)
+            {
+            }
         }
 
         // Update sprite animation
