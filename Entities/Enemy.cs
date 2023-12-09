@@ -154,8 +154,7 @@ public class Enemy : Entity
         // Prevent divide by zero errors.
         if (line1.b.X == line1.a.X)
         {
-            // 1e10 is arbitrary, but should be sufficient
-            m1 = 1e10f;
+            m1 = float.MaxValue;
         }
         else
         {
@@ -164,7 +163,7 @@ public class Enemy : Entity
 
         if (line2.b.X == line2.a.X)
         {
-            m2 = 1e10f;
+            m2 = float.MaxValue;
         }
         else
         {
