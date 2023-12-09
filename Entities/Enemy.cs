@@ -27,7 +27,7 @@ public class Enemy : Entity
     private float sightRange { get; } = 105.4f;
     private float sightAngle { get; } = Convert.ToSingle(Math.PI / 2);
     private int _sightRays = 10;
-    private List<Point2> test = new List<Point2>();
+    private List<Point2> rayCollisions = new List<Point2>();
 
     private float hearingRange { get; }
     private float hearingSensitivity { get; }
@@ -258,7 +258,7 @@ public class Enemy : Entity
             _sightState.Add(Vector2.Transform(-Vector2.UnitX * sightRange, Matrix.CreateRotationZ(leftRay + i * rayIncrement)));
         }
 
-        test = new List<Point2>();
+        rayCollisions = new List<Point2>();
 
         foreach (Entity entity in John.Entities)
         {
@@ -295,13 +295,20 @@ public class Enemy : Entity
 
             for (int ray = 0; ray < _sightState.Count; ray++)
             {
-                Line rayLine = new Line() { p1 = Position, p2 = Position + _sightState[ray] };
+                Line rayLine = new Line()
+                {
+                    p1 = Position,
+                    p2 = Position + Vector2.Transform(
+                        _sightState[ray],
+                        Matrix.CreateRotationZ(Convert.ToSingle(Math.PI / 2))
+                    )
+                };
                 foreach (Line line in lines)
                 {
                     Point2 intersection;
                     if (LineIntersects(rayLine, line, out intersection))
                     {
-                        test.Add(intersection);
+                        rayCollisions.Add(intersection);
                         if (entity is Player)
                         {
                             // Detect player
@@ -386,8 +393,18 @@ public class Enemy : Entity
             foreach (Vector2 line in _sightState)
             {
                 spriteBatch.DrawLine(Position, line.Length(), line.ToAngle(), Color.Red, 2);
+                Line rayLine = new Line()
+                {
+                    p1 = Position,
+                    p2 = Position + Vector2.Transform(
+                        line,
+                        Matrix.CreateRotationZ(Convert.ToSingle(Math.PI / 2))
+                    )
+                };
+                spriteBatch.DrawPoint(rayLine.p1, Color.Blue, 5);
+                spriteBatch.DrawPoint(rayLine.p2, Color.Blue, 5);
             }
-            foreach (Point2 point in test)
+            foreach (Point2 point in rayCollisions)
             {
                 spriteBatch.DrawPoint(point, Color.DeepPink, 5);
             }
