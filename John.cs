@@ -38,6 +38,8 @@ public class John : Game
         VictoryEnd // Animating back to the main menu.
     }
 
+    public static readonly bool DEVELOPMENT_MODE = true;
+
     // Handles some animation durations
     // TODO: use time instead of frames
     private const int _fadeFrames = 90;
@@ -584,7 +586,7 @@ public class John : Game
                                 .ToList();
 
             // Draw each entity
-            Entities.ForEach(entity => { entity.Draw(_spriteBatch, true); });
+            Entities.ForEach(entity => { entity.Draw(_spriteBatch, DEVELOPMENT_MODE); });
 
             // End drawing
             _spriteBatch.End();
