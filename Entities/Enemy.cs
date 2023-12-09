@@ -11,7 +11,10 @@ using MonoGame.Extended.Collections;
 
 public struct Line
 {
-    public Point2 a, b;
+    public Point2 p1, p2;
+    public float A { get => p1.Y - p2.Y; }
+    public float B { get => p2.X - p1.X; }
+    public float C { get => -(p1.X * p2.Y - p2.X * p1.Y); }
 }
 
 public class Enemy : Entity
@@ -146,52 +149,58 @@ public class Enemy : Entity
         return true;
     }
 
+    // Determine intersection of two lines using Cramer's rule
     private bool LineIntersects(Line line1, Line line2, out Point2 point)
     {
         point = new Point2();
-        float m1, m2;
 
-        // Prevent divide by zero errors.
-        if (line1.b.X == line1.a.X)
-        {
-            m1 = float.MaxValue;
-        }
-        else
-        {
-            m1 = (line1.b.Y - line1.a.Y) / (line1.b.X - line1.a.X);
-        }
+        /*********************************
+        * Starting with linear system:
+        * | A1 * x + B1 * y = C1
+        * | A2 * x + B2 * y = C2
+        * 
+        * Use D as the main determinant of the system:
+        * | A1 | B1 |
+        * | A2 | B2 |
+        *********************************/
+        float D = line1.A * line2.B - line1.B * line2.A;
 
-        if (line2.b.X == line2.a.X)
-        {
-            m2 = float.MaxValue;
-        }
-        else
-        {
-            m2 = (line2.b.Y - line2.a.Y) / (line2.b.X - line2.a.X);
-        }
-        // Now that we handled verticals, we can do it.
-        float b1 = line1.a.Y - line1.a.X * m1;
-        float b2 = line2.a.Y - line2.a.X * m2;
-
-        if (Math.Abs(m1 - m2) < 0.001)
+        if (Math.Abs(D) < 0.001)
         {
             return false;
         }
 
-        float x = (b2 - b1) / (m1 - m2);
-        float y = m1 * x + b1;
+        /*********************************
+        * X determinant from the matrix:
+        * | C1 | B1 |
+        * | C2 | B2 |
+        *********************************/
+        float Dx = line1.C * line2.B - line1.B * line2.C;
+
+        /*********************************
+        * Y determinant from the matrix:
+        * | A1 | C1 |
+        * | A2 | C2 |
+        *********************************/
+        float Dy = line1.A * line2.C - line1.C * line2.A;
+
+        // Now we can apply Cramer's rule
+        float x = Dx / D;
+        float y = Dy / D;
+
         // Male sure our intersection is within the segments.
-        if ((x < line1.a.X && x < line1.b.X)||
-            (x < line2.a.X && x < line2.b.X)||
-            (x > line1.a.X && x > line1.b.X)||
-            (x > line2.a.X && x > line2.b.X)||
-            (y < line1.a.Y && y < line1.b.Y)||
-            (y < line2.a.Y && y < line2.b.Y)||
-            (y > line1.a.Y && y > line1.b.Y)||
-            (y > line2.a.Y && y > line2.b.Y))
+        if ((x < line1.p1.X && x < line1.p2.X)||
+            (x < line2.p1.X && x < line2.p2.X)||
+            (x > line1.p1.X && x > line1.p2.X)||
+            (x > line2.p1.X && x > line2.p2.X)||
+            (y < line1.p1.Y && y < line1.p2.Y)||
+            (y < line2.p1.Y && y < line2.p2.Y)||
+            (y > line1.p1.Y && y > line1.p2.Y)||
+            (y > line2.p1.Y && y > line2.p2.Y))
         {
             return false;
         }
+
         point = new Point2(x, y);
         return true;
     }
@@ -273,17 +282,17 @@ public class Enemy : Entity
                 bounds = (RectangleF)entity.Bounds;
             }
             Line[] lines = {
-                new Line() { a = bounds.TopLeft, b = bounds.TopRight },
-                new Line() { a = bounds.TopRight, b = bounds.BottomRight },
-                new Line() { a = bounds.BottomRight, b = bounds.BottomLeft },
-                new Line() { a = bounds.BottomLeft, b = bounds.TopLeft }
+                new Line() { p1 = bounds.TopLeft, p2 = bounds.TopRight },
+                new Line() { p1 = bounds.TopRight, p2 = bounds.BottomRight },
+                new Line() { p1 = bounds.BottomRight, p2 = bounds.BottomLeft },
+                new Line() { p1 = bounds.BottomLeft, p2 = bounds.TopLeft }
             };
 
             bool intersectedPlayer = false;
 
             for (int ray = 0; ray < _sightState.Count; ray++)
             {
-                Line rayLine = new Line() { a = Position, b = Position + _sightState[ray] };
+                Line rayLine = new Line() { p1 = Position, p2 = Position + _sightState[ray] };
                 foreach (Line line in lines)
                 {
                     Point2 intersection;
