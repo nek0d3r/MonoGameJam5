@@ -8,10 +8,16 @@ using MonoGame.Extended.Collisions;
 using MonoGame.Extended.Sprites;
 using MonoGameJam5;
 using MonoGame.Extended.Collections;
+using System.Linq;
+using System.Dynamic;
+using MonoGame.Extended.Timers;
 
 public struct Line
 {
-    public Point2 a, b;
+    public Point2 p1, p2;
+    public float A { get => p1.Y - p2.Y; }
+    public float B { get => p2.X - p1.X; }
+    public float C { get => -(p1.X * p2.Y - p2.X * p1.Y); }
 }
 
 public class Enemy : Entity
@@ -21,12 +27,15 @@ public class Enemy : Entity
     public bool detectedPlayer { get; private set; }
     private Vector2 lastSpotted { get; set; }
     private List<Vector2> _sightState { get; set; } = new List<Vector2>();
-    private float sightRange { get; } = 50;
+    private float sightRange { get; } = 105.4f;
     private float sightAngle { get; } = Convert.ToSingle(Math.PI / 2);
-    private int _sightRays = 10;
+    private int _sightRays = 20;
+    private List<Point2> rayCollisions = new List<Point2>();
 
     private float hearingRange { get; }
     private float hearingSensitivity { get; }
+    private float _playerSpotDelayTime = 5f;
+    private float _elapsedSpotDelay = 0;
 
     // Managers are intentionally faster than you,
     // so that you cannot cheese their speed easily.
@@ -146,26 +155,98 @@ public class Enemy : Entity
         return true;
     }
 
-    private bool LineIntersects(Line line1, Line line2, out Point2 point)
+    // Determine intersection of two lines using Cramer's rule
+    private static bool LineIntersects(Line line1, Line line2, out Point2 point)
     {
         point = new Point2();
 
-        float a1 = line1.b.Y - line1.a.Y;
-        float b1 = line1.b.X - line1.a.X;
-        float c1 = a1 * line1.a.X + b1 * line1.a.Y;
+        /*********************************
+        * Starting with linear system:
+        * | A1 * x + B1 * y = C1
+        * | A2 * x + B2 * y = C2
+        * 
+        * Use D as the main determinant of the system:
+        * | A1 | B1 |
+        * | A2 | B2 |
+        *********************************/
+        float D = line1.A * line2.B - line1.B * line2.A;
 
-        float a2 = line2.b.Y - line2.a.Y;
-        float b2 = line2.b.X - line2.a.X;
-        float c2 = a2 * line2.a.X + b2 * line2.a.Y;
+        if (Math.Abs(D) < 0.001)
+        {
+            return false;
+        }
 
-        float det = a1 * b2 - a2 * b1;
+        /*********************************
+        * X determinant from the matrix:
+        * | C1 | B1 |
+        * | C2 | B2 |
+        *********************************/
+        float Dx = line1.C * line2.B - line1.B * line2.C;
 
-        if (Math.Abs(det) < 0.001) return false;
+        /*********************************
+        * Y determinant from the matrix:
+        * | A1 | C1 |
+        * | A2 | C2 |
+        *********************************/
+        float Dy = line1.A * line2.C - line1.C * line2.A;
 
-        float x = (b2 * c1 - b1 * c2) / det;
-        float y = (a1 * c2 - a2 * c1) / det;
+        // Now we can apply Cramer's rule
+        float x = Dx / D;
+        float y = Dy / D;
+
+        // Male sure our intersection is within the segments.
+        if ((x < line1.p1.X && x < line1.p2.X)||
+            (x < line2.p1.X && x < line2.p2.X)||
+            (x > line1.p1.X && x > line1.p2.X)||
+            (x > line2.p1.X && x > line2.p2.X)||
+            (y < line1.p1.Y && y < line1.p2.Y)||
+            (y < line2.p1.Y && y < line2.p2.Y)||
+            (y > line1.p1.Y && y > line1.p2.Y)||
+            (y > line2.p1.Y && y > line2.p2.Y))
+        {
+            return false;
+        }
+
         point = new Point2(x, y);
         return true;
+    }
+
+    private static Line[] GetLinesFromCollisionBounds(IShapeF shape)
+    {
+        RectangleF bounds;
+        if (shape is CircleF)
+        {
+            CircleF circle = (CircleF)shape;
+            bounds = new RectangleF(
+                new Point2(
+                    circle.Center.X - circle.Radius,
+                    circle.Center.Y - circle.Radius
+                ),
+                new Size2(circle.Diameter, circle.Diameter)
+            );
+        }
+        else
+        {
+            bounds = (RectangleF)shape;
+        }
+        return new Line[] {
+            new Line() { p1 = bounds.TopLeft, p2 = bounds.TopRight },
+            new Line() { p1 = bounds.TopRight, p2 = bounds.BottomRight },
+            new Line() { p1 = bounds.BottomRight, p2 = bounds.BottomLeft },
+            new Line() { p1 = bounds.BottomLeft, p2 = bounds.TopLeft }
+        };
+    }
+
+    public Line GetSegmentedLineFromRay(Vector2 ray)
+    {
+        return new Line()
+        {
+            p1 = Position,
+            p2 = Position + Vector2.Transform(
+                ray,
+                Matrix.CreateRotationZ(Convert.ToSingle(Math.PI / 2))
+            )
+        };
     }
 
     public override void Update(GameTime tm)
@@ -196,11 +277,23 @@ public class Enemy : Entity
         else if (detectedPlayer)
         {
             Vector2 toPlayer = lastSpotted - Position;
-            toPlayer.Normalize();
-            toPlayer *= this.Speed*tm.GetElapsedSeconds();
-            Position += toPlayer;
+            if (toPlayer.Length() < ((CircleF)Bounds).Radius)
+            {
+                _elapsedSpotDelay += tm.GetElapsedSeconds();
+                if (_elapsedSpotDelay > _playerSpotDelayTime)
+                {
+                    _elapsedSpotDelay = 0;
+                    detectedPlayer = false;
+                }
+            }
+            else
+            {
+                ActualDirection = toPlayer;
+                toPlayer.Normalize();
+                toPlayer *= this.Speed*tm.GetElapsedSeconds();
+                Position += toPlayer;
+            }
         }
-        // TODO: Figure out if how to get map contents in here.
 
         // For each sound within range, discern if it is audible enough for them to pay heed.
         foreach (Point snd in SoundsToParse)
@@ -221,69 +314,68 @@ public class Enemy : Entity
             _sightState.Add(Vector2.Transform(-Vector2.UnitX * sightRange, Matrix.CreateRotationZ(leftRay + i * rayIncrement)));
         }
 
+        rayCollisions = new List<Point2>();
+
         foreach (Entity entity in John.Entities)
         {
-            /*RectangleF bounds;
-            if (entity.Bounds is CircleF)
+            // Wait until rays are calculated before testing players
+            // Don't intersect with ourselves
+            if (entity is Enemy || entity is Player)
             {
-                CircleF circle = (CircleF)entity.Bounds;
-                bounds = new RectangleF(
-                    new Point2(
-                        circle.Center.X - circle.Radius,
-                        circle.Center.Y - circle.Radius
-                    ),
-                    new Size2(circle.Radius, circle.Radius)
-                );
+                continue;
             }
-            else
-            {
-                bounds = (RectangleF)entity.Bounds;
-            }
-            Line[] lines = {
-                new Line() { a = bounds.TopLeft, b = bounds.TopRight },
-                new Line() { a = bounds.TopRight, b = bounds.BottomRight },
-                new Line() { a = bounds.BottomRight, b = bounds.BottomLeft },
-                new Line() { a = bounds.BottomLeft, b = bounds.TopLeft }
-            };
+            
+            Line[] lines = GetLinesFromCollisionBounds(entity.Bounds);
 
             for (int ray = 0; ray < _sightState.Count; ray++)
             {
-                Line rayLine = new Line() { a = Position, b = Position + _sightState[ray] };
+                Line rayLine = GetSegmentedLineFromRay(_sightState[ray]);
+
                 foreach (Line line in lines)
                 {
-                    Point2 intersection;
-                    if (LineIntersects(rayLine, line, out intersection))
+                    if (LineIntersects(rayLine, line, out Point2 intersection))
                     {
-                        if (entity is Player)
+                        rayCollisions.Add(intersection);
+                        if (entity is Box || entity is Wall)
                         {
-                            // TODO: Chase player
-                            detectedPlayer = true;
-                            lastSpotted = entity.Position;
-                        }
-                        else if (entity is Box)
-                        {
-                            _sightState[ray].Normalize();
-                            _sightState[ray] *= Vector2.Distance(Position, intersection);
+                            float lastDist = _sightState[ray].Length();
+                            // Only change if collision is closer than the last one.
+                            if (lastDist > Vector2.Distance(Position, intersection))
+                            {
+                                _sightState[ray] = Vector2.Normalize(_sightState[ray]);
+                                _sightState[ray] *= Vector2.Distance(Position, intersection);
+                            }
                         }
                     }
                 }
-            }*/
-
-            if (entity is Player)
-            {
-                Vector2 diffPos = entity.Position - Position;
-                float len = diffPos.Length();
-                if (len < 75f)
-                {
-                    detectedPlayer = true;
-                    lastSpotted = entity.Position;
-                }
-                else
-                {
-                    detectedPlayer = false;
-                }
             }
         }
+
+        John.Entities.Where(entity => entity is Player)
+                     .ToList()
+                     .ForEach(entity =>
+                     {
+                        IShapeF playerBounds = new RectangleF(
+                            entity.Position.X - TileRender.TILE_SIZE / 4,
+                            entity.Position.Y - TileRender.TILE_SIZE / 2,
+                            TileRender.TILE_SIZE / 2,
+                            TileRender.TILE_SIZE
+                        );
+                        Line[] lines = GetLinesFromCollisionBounds(playerBounds);
+                        for (int ray = 0; ray < _sightState.Count; ray++)
+                        {
+                            Line rayLine = GetSegmentedLineFromRay(_sightState[ray]);
+
+                            foreach (Line line in lines)
+                            {
+                                if (LineIntersects(rayLine, line, out Point2 intersection))
+                                {
+                                    detectedPlayer = true;
+                                    lastSpotted = entity.Position;
+                                }
+                            }
+                        }
+                     });
 
 
         // Update sprite animation
@@ -325,7 +417,21 @@ public class Enemy : Entity
             spriteBatch.DrawCircle((CircleF)Bounds, 8, Color.Red, 3);
             foreach (Vector2 line in _sightState)
             {
-                spriteBatch.DrawLine(Position, sightRange, line.ToAngle(), Color.Red, 2);
+                spriteBatch.DrawLine(Position, line.Length(), line.ToAngle(), Color.Red, 2);
+                Line rayLine = new Line()
+                {
+                    p1 = Position,
+                    p2 = Position + Vector2.Transform(
+                        line,
+                        Matrix.CreateRotationZ(Convert.ToSingle(Math.PI / 2))
+                    )
+                };
+                spriteBatch.DrawPoint(rayLine.p1, Color.Blue, 5);
+                spriteBatch.DrawPoint(rayLine.p2, Color.Blue, 5);
+            }
+            foreach (Point2 point in rayCollisions)
+            {
+                spriteBatch.DrawPoint(point, Color.DeepPink, 5);
             }
         }
     }

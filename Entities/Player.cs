@@ -192,6 +192,13 @@ public class Player : Entity
         spriteBatch.Draw(Sprite, Position);
         if (drawCollider)
         {
+            IShapeF playerBounds = new RectangleF(
+                Position.X - TileRender.TILE_SIZE / 4,
+                Position.Y - TileRender.TILE_SIZE / 2,
+                TileRender.TILE_SIZE / 2,
+                TileRender.TILE_SIZE
+            );
+            spriteBatch.DrawRectangle((RectangleF)playerBounds, Color.Green, 2);
             spriteBatch.DrawCircle((CircleF)Bounds, 15, Color.Red, 2);
         }
     }
