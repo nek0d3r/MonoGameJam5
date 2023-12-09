@@ -355,7 +355,13 @@ public class Enemy : Entity
                      .ToList()
                      .ForEach(entity =>
                      {
-                        Line[] lines = GetLinesFromCollisionBounds(entity.Bounds);
+                        IShapeF playerBounds = new RectangleF(
+                            entity.Position.X - TileRender.TILE_SIZE / 4,
+                            entity.Position.Y - TileRender.TILE_SIZE / 2,
+                            TileRender.TILE_SIZE / 2,
+                            TileRender.TILE_SIZE
+                        );
+                        Line[] lines = GetLinesFromCollisionBounds(playerBounds);
                         for (int ray = 0; ray < _sightState.Count; ray++)
                         {
                             Line rayLine = GetSegmentedLineFromRay(_sightState[ray]);

@@ -38,7 +38,7 @@ public class John : Game
         VictoryEnd // Animating back to the main menu.
     }
 
-    public static readonly bool DEVELOPMENT_MODE = false;
+    public static readonly bool DEVELOPMENT_MODE = true;
 
     // Handles some animation durations
     // TODO: use time instead of frames
