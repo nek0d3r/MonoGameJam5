@@ -27,6 +27,7 @@ public class Enemy : Entity
     private float sightRange { get; } = 105.4f;
     private float sightAngle { get; } = Convert.ToSingle(Math.PI / 2);
     private int _sightRays = 10;
+    private List<Point2> test = new List<Point2>();
 
     private float hearingRange { get; }
     private float hearingSensitivity { get; }
@@ -257,6 +258,8 @@ public class Enemy : Entity
             _sightState.Add(Vector2.Transform(-Vector2.UnitX * sightRange, Matrix.CreateRotationZ(leftRay + i * rayIncrement)));
         }
 
+        test = new List<Point2>();
+
         foreach (Entity entity in John.Entities)
         {
 #if true
@@ -298,6 +301,7 @@ public class Enemy : Entity
                     Point2 intersection;
                     if (LineIntersects(rayLine, line, out intersection))
                     {
+                        test.Add(intersection);
                         if (entity is Player)
                         {
                             // Detect player
@@ -382,6 +386,10 @@ public class Enemy : Entity
             foreach (Vector2 line in _sightState)
             {
                 spriteBatch.DrawLine(Position, line.Length(), line.ToAngle(), Color.Red, 2);
+            }
+            foreach (Point2 point in test)
+            {
+                spriteBatch.DrawPoint(point, Color.DeepPink, 5);
             }
         }
     }
