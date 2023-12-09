@@ -10,6 +10,7 @@ using MonoGameJam5;
 using MonoGame.Extended.Collections;
 using System.Linq;
 using System.Dynamic;
+using MonoGame.Extended.Timers;
 
 public struct Line
 {
@@ -28,11 +29,13 @@ public class Enemy : Entity
     private List<Vector2> _sightState { get; set; } = new List<Vector2>();
     private float sightRange { get; } = 105.4f;
     private float sightAngle { get; } = Convert.ToSingle(Math.PI / 2);
-    private int _sightRays = 10;
+    private int _sightRays = 20;
     private List<Point2> rayCollisions = new List<Point2>();
 
     private float hearingRange { get; }
     private float hearingSensitivity { get; }
+    private float _playerSpotDelayTime = 5f;
+    private float _elapsedSpotDelay = 0;
 
     // Managers are intentionally faster than you,
     // so that you cannot cheese their speed easily.
@@ -274,9 +277,22 @@ public class Enemy : Entity
         else if (detectedPlayer)
         {
             Vector2 toPlayer = lastSpotted - Position;
-            toPlayer.Normalize();
-            toPlayer *= this.Speed*tm.GetElapsedSeconds();
-            Position += toPlayer;
+            if (toPlayer.Length() < ((CircleF)Bounds).Radius)
+            {
+                _elapsedSpotDelay += tm.GetElapsedSeconds();
+                if (_elapsedSpotDelay > _playerSpotDelayTime)
+                {
+                    _elapsedSpotDelay = 0;
+                    detectedPlayer = false;
+                }
+            }
+            else
+            {
+                ActualDirection = toPlayer;
+                toPlayer.Normalize();
+                toPlayer *= this.Speed*tm.GetElapsedSeconds();
+                Position += toPlayer;
+            }
         }
 
         // For each sound within range, discern if it is audible enough for them to pay heed.
